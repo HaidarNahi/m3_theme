@@ -1,0 +1,21 @@
+// Multi-layer Sidebar Structure
+.side-menu {
+    background: var(--bg-color);
+    display: flex;
+
+    .side-menu-icons {
+        width: 80px;
+        border-right: 1px solid var(--border-color);
+
+        // nesting makes it easy to read
+        ul li a {
+            border-radius: 12px; // M3 rounding
+            transition: all 0.2s ease;
+        }
+    }
+
+    .side-menu-items {
+        width: 260px;
+        padding: 15px;
+    }
+}

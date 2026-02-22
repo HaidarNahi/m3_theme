@@ -1,0 +1,391 @@
+/* =====================================================================
+   animations.css — M3 Motion System
+   All 12 easing curves, duration tokens, keyframes, transitions
+   ===================================================================== */
+
+/* =====================================================================
+   1. SNACKBAR ANIMATIONS
+   ===================================================================== */
+@keyframes snackbar-enter {
+    from {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes snackbar-leave {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+}
+
+/* =====================================================================
+   2. DIALOG ANIMATIONS
+   enter: scale 80% → 100%, fade in
+   ===================================================================== */
+@keyframes dialog-enter {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes dialog-leave {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* =====================================================================
+   3. MENU SURFACE ANIMATIONS
+   ===================================================================== */
+@keyframes menu-enter {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes menu-leave {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* =====================================================================
+   4. PAGE TRANSITION (Shared Axis Z — fade through)
+   M3 long1 (450ms) for page-level transitions
+   ===================================================================== */
+.page-enter {
+    animation: page-fade-in var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-decelerate) forwards;
+}
+
+.page-leave {
+    animation: page-fade-out var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard-accelerate) forwards;
+}
+
+@keyframes page-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes page-fade-out {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+}
+
+/* =====================================================================
+   5. NAV INDICATOR SLIDE ANIMATION
+   Rail active indicator — slide + scale, medium2, emphasized
+   ===================================================================== */
+.nav-item-indicator {
+    transition:
+        background-color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+/* =====================================================================
+   6. FAB EXPAND ANIMATION
+   Adds label text next to icon when switching from mini to extended
+   ===================================================================== */
+@keyframes fab-expand {
+    from {
+        width: 56px;
+        opacity: 0.8;
+    }
+
+    to {
+        width: auto;
+        opacity: 1;
+    }
+}
+
+.fab-extended {
+    animation: fab-expand var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized) forwards;
+}
+
+/* =====================================================================
+   7. CARD HOVER ELEVATION LIFT
+   Short3 (150ms), shadow transition
+   Already defined in components.css via transition: box-shadow / transform.
+   Here are the keyframe versions for more complex orchestrations:
+   ===================================================================== */
+@keyframes card-hover-in {
+    from {
+        box-shadow: var(--md-sys-elevation-level1);
+        transform: translateY(0);
+    }
+
+    to {
+        box-shadow: var(--md-sys-elevation-level2);
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes card-hover-out {
+    from {
+        box-shadow: var(--md-sys-elevation-level2);
+        transform: translateY(-2px);
+    }
+
+    to {
+        box-shadow: var(--md-sys-elevation-level1);
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================================
+   8. TOP APP BAR SCROLL ELEVATION
+   ===================================================================== */
+@keyframes top-bar-elevate {
+    from {
+        background-color: var(--md-sys-color-surface-container);
+        box-shadow: none;
+    }
+
+    to {
+        background-color: var(--md-sys-color-surface-container-high);
+        box-shadow: var(--md-sys-elevation-level2);
+    }
+}
+
+/* =====================================================================
+   9. SHIMMER LOADING SKELETON
+   ===================================================================== */
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--md-sys-color-surface-container-high) 25%,
+            var(--md-sys-color-surface-container-highest) 50%,
+            var(--md-sys-color-surface-container-high) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite var(--md-sys-motion-easing-standard);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* =====================================================================
+   10. BULK ACTION BAR SLIDE-UP
+   Medium1 (250ms), emphasized-decelerate
+   ===================================================================== */
+@keyframes bulk-bar-in {
+    from {
+        transform: translateY(56px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* =====================================================================
+   11. NOTIFICATION BADGE BOUNCE (when new notification arrives)
+   ===================================================================== */
+@keyframes badge-bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.4);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.nav-badge.new {
+    animation: badge-bounce var(--md-sys-motion-duration-medium3) var(--md-sys-motion-easing-emphasized);
+}
+
+/* =====================================================================
+   12. RIPPLE EFFECT
+   Applied by ripple.js via .ripple-circle spans
+   ===================================================================== */
+@keyframes ripple-anim {
+    0% {
+        transform: scale(0);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* =====================================================================
+   13. SIDE SHEET ENTRANCE
+   Long1 (450ms), emphasized-decelerate (slide from right)
+   ===================================================================== */
+.side-sheet {
+    transition:
+        transform var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.side-sheet.closing {
+    transition:
+        transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+/* =====================================================================
+   14. NUMBER COUNTER (KPI value animate in)
+   ===================================================================== */
+@keyframes count-up-fade {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.kpi-value {
+    animation: count-up-fade var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized-decelerate) calc(var(--animation-delay, 0) * 1ms) both;
+}
+
+/* =====================================================================
+   15. STAGGER ANIMATION (for module grid cards)
+   Each card gets a CSS variable --card-index for stagger
+   ===================================================================== */
+.module-card {
+    animation: page-fade-in var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized-decelerate) calc(var(--card-index, 0) * 40ms) both;
+}
+
+/* =====================================================================
+   16. BOTTOM SHEET (Mobile)
+   Extra-large radius top-only, slides from bottom
+   ===================================================================== */
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large) 0 0;
+    z-index: 300;
+    transform: translateY(100%);
+    transition: transform var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-decelerate);
+    padding: 16px 24px 32px;
+    box-shadow: var(--md-sys-elevation-level4);
+}
+
+.bottom-sheet.open {
+    transform: translateY(0);
+}
+
+.bottom-sheet-handle {
+    width: 32px;
+    height: 4px;
+    background-color: var(--md-sys-color-outline-variant);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+}
+
+/* =====================================================================
+   17. FOCUS RING ANIMATION
+   M3 focus ring with slight pulse
+   ===================================================================== */
+@keyframes focus-ring-pulse {
+    0% {
+        outline-width: 2px;
+        outline-offset: 1px;
+    }
+
+    50% {
+        outline-width: 3px;
+        outline-offset: 3px;
+    }
+
+    100% {
+        outline-width: 3px;
+        outline-offset: 2px;
+    }
+}
+
+.m3-interactive:focus-visible {
+    outline: 3px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+    animation: focus-ring-pulse var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate) forwards;
+}
+
+/* =====================================================================
+   REDUCED MOTION OVERRIDE
+   Disables all visible animations for accessibility
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

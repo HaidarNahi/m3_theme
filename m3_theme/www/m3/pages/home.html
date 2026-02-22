@@ -1,0 +1,353 @@
+<!-- ======================================================
+     Home / Workspace Page
+     ====================================================== -->
+<div class="page-content">
+
+    <!-- Greeting Card -->
+    <div class="greeting-card">
+        <div class="greeting-text">
+            <div class="greeting-hello">Good morning, Haidar 👋</div>
+            <div class="greeting-date">Sunday, 22 February 2026 · You have 7 pending tasks</div>
+            <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+                <button class="btn btn-filled m3-ripple m3-interactive" data-navigate="form"
+                    style="height:36px;padding:0 16px;font-size:13px">
+                    <span class="material-symbols-outlined" style="font-size:16px">add</span> New Invoice
+                </button>
+                <button class="btn btn-outlined m3-ripple m3-interactive" data-navigate="dashboard"
+                    style="height:36px;padding:0 16px;font-size:13px;border-color:var(--md-sys-color-on-primary-container);color:var(--md-sys-color-on-primary-container)">
+                    <span class="material-symbols-outlined" style="font-size:16px">dashboard</span> Dashboard
+                </button>
+            </div>
+        </div>
+        <div class="greeting-avatar">HN</div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="grid-4 mb-24">
+        <div class="kpi-card">
+            <div class="kpi-label">Revenue MTD</div>
+            <div class="kpi-value">$284,500</div>
+            <div class="kpi-trend up">
+                <span class="material-symbols-outlined icon-sm">trending_up</span>
+                <span>+12.4% vs last month</span>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Open Invoices</div>
+            <div class="kpi-value">47</div>
+            <div class="kpi-trend down">
+                <span class="material-symbols-outlined icon-sm">trending_down</span>
+                <span>+3 vs yesterday</span>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Overdue Receivables</div>
+            <div class="kpi-value">$38,200</div>
+            <div class="kpi-trend down">
+                <span class="material-symbols-outlined icon-sm">warning</span>
+                <span>8 invoices overdue</span>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Open Purchase Orders</div>
+            <div class="kpi-value">23</div>
+            <div class="kpi-trend up">
+                <span class="material-symbols-outlined icon-sm">trending_up</span>
+                <span>-5 from last week</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Grid -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 class="md-title-large" style="margin:0;color:var(--md-sys-color-on-surface)">All Modules</h2>
+        <button class="btn btn-text m3-ripple m3-interactive" style="height:32px;font-size:13px">Customize <span
+                class="material-symbols-outlined icon-sm">tune</span></button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px">
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#accounting" data-page="accounting">
+            <div class="module-icon-container"><span class="material-symbols-outlined icon-lg">account_balance</span>
+            </div>
+            <div>
+                <div class="md-title-small">Accounting</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">GL, AR, AP</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#procurement" data-page="procurement"
+            style="--card-index:1">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                <span class="material-symbols-outlined icon-lg">shopping_cart</span></div>
+            <div>
+                <div class="md-title-small">Procurement</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">PO, Suppliers</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#sales" data-page="sales"
+            style="--card-index:2">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container)">
+                <span class="material-symbols-outlined icon-lg">point_of_sale</span></div>
+            <div>
+                <div class="md-title-small">Sales</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Quotations, Orders</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#crm" data-page="crm"
+            style="--card-index:3">
+            <div class="module-icon-container"><span class="material-symbols-outlined icon-lg">groups</span></div>
+            <div>
+                <div class="md-title-small">CRM</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Leads, Pipelines</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#stock" data-page="stock"
+            style="--card-index:4">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                <span class="material-symbols-outlined icon-lg">inventory_2</span></div>
+            <div>
+                <div class="md-title-small">Stock</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Warehouses, Items</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#manufacturing"
+            data-page="manufacturing" style="--card-index:5">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container)">
+                <span class="material-symbols-outlined icon-lg">precision_manufacturing</span></div>
+            <div>
+                <div class="md-title-small">Manufacturing</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">BOM, Work Orders</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#projects" data-page="projects"
+            style="--card-index:6">
+            <div class="module-icon-container"><span class="material-symbols-outlined icon-lg">work</span></div>
+            <div>
+                <div class="md-title-small">Projects</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Tasks, Timesheets</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#assets" data-page="assets"
+            style="--card-index:7">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                <span class="material-symbols-outlined icon-lg">domain</span></div>
+            <div>
+                <div class="md-title-small">Assets</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Fixed Assets, Depreciation
+                </div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#pos" data-page="pos"
+            style="--card-index:8">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container)">
+                <span class="material-symbols-outlined icon-lg">storefront</span></div>
+            <div>
+                <div class="md-title-small">Point of Sale</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Retail, Shifts</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#hr" data-page="hr"
+            style="--card-index:9">
+            <div class="module-icon-container"><span class="material-symbols-outlined icon-lg">badge</span></div>
+            <div>
+                <div class="md-title-small">HR &amp; Payroll</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Employees, Leaves</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#quality" data-page="quality"
+            style="--card-index:10">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                <span class="material-symbols-outlined icon-lg">verified</span></div>
+            <div>
+                <div class="md-title-small">Quality</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Inspections, Goals</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#support" data-page="support"
+            style="--card-index:11">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container)">
+                <span class="material-symbols-outlined icon-lg">support_agent</span></div>
+            <div>
+                <div class="md-title-small">Support</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Issues, SLA</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#reports" data-page="reports"
+            style="--card-index:12">
+            <div class="module-icon-container"><span class="material-symbols-outlined icon-lg">bar_chart</span></div>
+            <div>
+                <div class="md-title-small">Reports</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">Analytics, Exports</div>
+            </div>
+        </a>
+
+        <a class="card card-elevated module-card m3-ripple m3-interactive" href="#settings" data-page="settings"
+            style="--card-index:13">
+            <div class="module-icon-container"
+                style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                <span class="material-symbols-outlined icon-lg">tune</span></div>
+            <div>
+                <div class="md-title-small">Settings</div>
+                <div class="md-body-small text-on-surface-variant" style="margin-top:2px">System, Users</div>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- Bottom grid: Recent Activity + Shortcuts -->
+    <div class="grid-2" style="gap:24px;align-items:start">
+
+        <!-- Recent Activity -->
+        <div class="card card-outlined" style="padding:0;overflow:hidden">
+            <div
+                style="padding:16px 20px;border-bottom:1px solid var(--md-sys-color-outline-variant);display:flex;align-items:center;justify-content:space-between">
+                <span class="md-title-medium">Recent Activity</span>
+                <button class="btn btn-text m3-ripple m3-interactive" style="height:32px;font-size:13px">View
+                    all</button>
+            </div>
+            <div style="padding:8px">
+                <div class="list-tile m3-ripple m3-interactive">
+                    <div class="list-tile-icon"
+                        style="background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container)">
+                        <span class="material-symbols-outlined icon-sm">receipt_long</span></div>
+                    <div class="list-tile-content">
+                        <div class="list-tile-title">INV-2026-00142 created</div>
+                        <div class="list-tile-subtitle">Customer: Al-Rasheed Trading Co.</div>
+                    </div>
+                    <div class="list-tile-trailing">2m ago</div>
+                </div>
+                <div class="list-tile m3-ripple m3-interactive">
+                    <div class="list-tile-icon"
+                        style="background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container)">
+                        <span class="material-symbols-outlined icon-sm">payments</span></div>
+                    <div class="list-tile-content">
+                        <div class="list-tile-title">Payment received $12,400</div>
+                        <div class="list-tile-subtitle">From: Gulf Star LLC</div>
+                    </div>
+                    <div class="list-tile-trailing">18m ago</div>
+                </div>
+                <div class="list-tile m3-ripple m3-interactive">
+                    <div class="list-tile-icon"
+                        style="background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container)">
+                        <span class="material-symbols-outlined icon-sm">local_shipping</span></div>
+                    <div class="list-tile-content">
+                        <div class="list-tile-title">Purchase Order PO-0082 submitted</div>
+                        <div class="list-tile-subtitle">Supplier: Riyadh Industrial Supply</div>
+                    </div>
+                    <div class="list-tile-trailing">1h ago</div>
+                </div>
+                <div class="list-tile m3-ripple m3-interactive">
+                    <div class="list-tile-icon"
+                        style="background:var(--md-sys-color-error-container);color:var(--md-sys-color-on-error-container)">
+                        <span class="material-symbols-outlined icon-sm">warning</span></div>
+                    <div class="list-tile-content">
+                        <div class="list-tile-title">Stock alert: Item BRK-201 low</div>
+                        <div class="list-tile-subtitle">Qty 3 remaining in Main Warehouse</div>
+                    </div>
+                    <div class="list-tile-trailing">3h ago</div>
+                </div>
+                <div class="list-tile m3-ripple m3-interactive">
+                    <div class="list-tile-icon"
+                        style="background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container)">
+                        <span class="material-symbols-outlined icon-sm">person_add</span></div>
+                    <div class="list-tile-content">
+                        <div class="list-tile-title">New employee onboarded</div>
+                        <div class="list-tile-subtitle">Sara Al-Khalidi — Engineering Dept.</div>
+                    </div>
+                    <div class="list-tile-trailing">Yesterday</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shortcuts + Pending Tasks -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="card card-outlined" style="padding:0;overflow:hidden">
+                <div style="padding:16px 20px;border-bottom:1px solid var(--md-sys-color-outline-variant)">
+                    <span class="md-title-medium">Quick Actions</span>
+                </div>
+                <div style="padding:16px;display:flex;flex-wrap:wrap;gap:8px">
+                    <button class="btn btn-tonal m3-ripple m3-interactive" data-navigate="form"
+                        style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">receipt_long</span> New Invoice
+                    </button>
+                    <button class="btn btn-tonal m3-ripple m3-interactive" style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">shopping_cart</span> New PO
+                    </button>
+                    <button class="btn btn-tonal m3-ripple m3-interactive" style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">payments</span> New Payment
+                    </button>
+                    <button class="btn btn-tonal m3-ripple m3-interactive" style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">person_add</span> New Lead
+                    </button>
+                    <button class="btn btn-tonal m3-ripple m3-interactive" style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">inventory_2</span> Stock Entry
+                    </button>
+                    <button class="btn btn-tonal m3-ripple m3-interactive" style="height:36px;font-size:13px">
+                        <span class="material-symbols-outlined icon-sm">bar_chart</span> Run Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="card card-outlined" style="padding:0;overflow:hidden">
+                <div
+                    style="padding:16px 20px;border-bottom:1px solid var(--md-sys-color-outline-variant);display:flex;align-items:center;justify-content:space-between">
+                    <span class="md-title-medium">Pending Tasks</span>
+                    <span class="chip chip-status chip-submitted" style="cursor:default">7 open</span>
+                </div>
+                <div style="padding:8px">
+                    <div class="list-tile m3-ripple m3-interactive" style="gap:12px">
+                        <input type="checkbox" class="m3-checkbox" aria-label="Task">
+                        <div class="list-tile-content">
+                            <div class="list-tile-title">Approve 3 leave applications</div>
+                            <div class="list-tile-subtitle">HR &amp; Payroll · Due today</div>
+                        </div>
+                        <span class="chip chip-status chip-overdue" style="font-size:11px">Urgent</span>
+                    </div>
+                    <div class="list-tile m3-ripple m3-interactive" style="gap:12px">
+                        <input type="checkbox" class="m3-checkbox" aria-label="Task">
+                        <div class="list-tile-content">
+                            <div class="list-tile-title">Review quotation QT-0021</div>
+                            <div class="list-tile-subtitle">Sales · Awaiting your approval</div>
+                        </div>
+                    </div>
+                    <div class="list-tile m3-ripple m3-interactive" style="gap:12px">
+                        <input type="checkbox" class="m3-checkbox" aria-label="Task">
+                        <div class="list-tile-content">
+                            <div class="list-tile-title">Submit monthly payroll</div>
+                            <div class="list-tile-subtitle">HR &amp; Payroll · Due Feb 25</div>
+                        </div>
+                    </div>
+                    <div class="list-tile m3-ripple m3-interactive" style="gap:12px">
+                        <input type="checkbox" class="m3-checkbox" aria-label="Task">
+                        <div class="list-tile-content">
+                            <div class="list-tile-title">Reconcile bank statement</div>
+                            <div class="list-tile-subtitle">Accounting · Feb statement pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /bottom grid -->
+
+</div><!-- /page-content -->

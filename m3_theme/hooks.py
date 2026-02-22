@@ -25,12 +25,15 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/m3_theme/css/m3_theme.css"
-# app_include_js = "/assets/m3_theme/js/m3_theme.js"
+app_include_css = [
+    "https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+    "/assets/m3_theme/css/m3_theme.bundle.css"
+]
+app_include_js = "/assets/m3_theme/js/m3_theme.bundle.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/m3_theme/css/m3_theme.css"
-# web_include_js = "/assets/m3_theme/js/m3_theme.js"
+web_include_css = "/assets/m3_theme/css/m3_theme.bundle.css"
+web_include_js = "/assets/m3_theme/js/m3_theme.bundle.js"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "m3_theme/public/scss/website"
@@ -241,4 +244,3 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
