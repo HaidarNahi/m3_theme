@@ -1,14 +1,23 @@
-// Material 3 Color Tokens
-$md-sys-color-primary: rgb(101, 85, 143);
-$md-sys-color-on-primary: rgb(255, 255, 255);
-$md-sys-color-surface: rgb(254, 247, 255);
-$md-sys-color-surface-container: rgb(243, 237, 247);
-$md-sys-color-outline: rgb(121, 116, 126);
+// Material 3 Light Mode Tokens
+$m3-primary: rgb(101, 85, 143);
+$m3-on-primary: rgb(255, 255, 255);
+$m3-primary-container: rgb(234, 221, 255);
+$m3-on-primary-container: rgb(33, 16, 76);
 
-// Frappe Variable Mapping
+$m3-surface: rgb(254, 247, 255);
+$m3-surface-container: rgb(243, 237, 247);
+$m3-on-surface: rgb(29, 27, 32);
+$m3-outline: rgb(121, 116, 126);
+
+// Mapping M3 to Frappe's Global CSS Variables
 :root {
-    --primary-color: #{$md-sys-color-primary};
-    --bg-color: #{$md-sys-color-surface};
-    --card-bg: #{$md-sys-color-surface-container};
-    --border-color: #{$md-sys-color-outline};
+    --primary: #{$m3-primary};
+    --bg-color: #{$m3-surface};
+    --card-bg: #{$m3-surface-container};
+    --border-color: #{$m3-outline};
+    --text-color: #{$m3-on-surface};
+
+    // DataValue specific overrides found in your extracted CSS
+    --blue_color_style: #{$m3-primary};
+    --blue_color_style_light: #{$m3-primary-container};
 }

@@ -1,21 +1,32 @@
-// Multi-layer Sidebar Structure
+// Target the DataValue sidebar classes you found
 .side-menu {
     background: var(--bg-color);
-    display: flex;
 
     .side-menu-icons {
         width: 80px;
-        border-right: 1px solid var(--border-color);
+        background: var(--card-bg); // Surface Container
 
-        // nesting makes it easy to read
         ul li a {
-            border-radius: 12px; // M3 rounding
-            transition: all 0.2s ease;
+            border-radius: 16px; // M3 Standard rounding
+            transition: all 0.2s cubic-bezier(0.05, 0.7, 0.1, 1);
+
+            &:hover {
+                background: var(--blue_color_style_light);
+            }
+
+            &.active {
+                background: var(--primary);
+                color: white;
+            }
         }
     }
+}
 
-    .side-menu-items {
-        width: 260px;
-        padding: 15px;
-    }
+// Rounding all ERPNext Cards/Widgets to match M3
+.widget,
+.frappe-card,
+.shortcut-widget-box {
+    border-radius: 12px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
 }

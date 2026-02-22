@@ -1,8 +1,15 @@
+// This is the file Frappe compiles
 @import "variables";
 @import "layout";
 
-// Add global tweaks here
+// Global smoothing tweaks
 body {
-    font-family: 'Roboto Flex', sans-serif;
+    font-family: 'Roboto Flex', sans-serif !important;
+    background-color: var(--bg-color) !important;
     -webkit-font-smoothing: antialiased;
+}
+
+// Clean up standard Frappe borders
+.page-head {
+    border-bottom: 1px solid var(--border-color) !important;
 }

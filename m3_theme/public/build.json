@@ -1,5 +1,8 @@
 {
     "css/m3_theme.bundle.css": [
         "public/scss/m3_theme.bundle.scss"
+    ],
+    "js/m3_theme.bundle.js": [
+        "public/js/m3_theme.bundle.js"
     ]
 }
