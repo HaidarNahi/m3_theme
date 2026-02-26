@@ -414,7 +414,7 @@
                 ul.querySelectorAll('.m3-external-link').forEach(el => el.remove());
                 var li = document.createElement('li');
                 li.className = 'm3-external-link nav-item';
-                li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
+                li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" onclick="window.open(this.href, '_blank'); return false;" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
 
                 var helpParent = ul.querySelector('.dropdown-help');
                 var profileParent = ul.querySelector('.dropdown-navbar-user');
@@ -425,6 +425,48 @@
                     ul.insertBefore(li, profileParent);
                 } else {
                     ul.insertBefore(li, ul.lastElementChild);
+                }
+            }
+        }
+
+        // Language Switcher Injection
+        if (doc.language_switcher && doc.language_switcher.length > 0) {
+            var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right') || document.querySelector('.dropdown-navbar-user')?.closest('ul');
+            if (ul) {
+                ul.querySelectorAll('.m3-lang-switcher').forEach(el => el.remove());
+                var lang_li = document.createElement('li');
+                lang_li.className = 'm3-lang-switcher nav-item';
+                lang_li.style.cssText = 'display: flex; align-items: center; justify-content: center; margin: 0 8px;';
+
+                var currentLang = (frappe.boot && frappe.boot.lang) ? frappe.boot.lang : 'en';
+                var optionsHtml = doc.language_switcher.map(row => {
+                    var selected = (row.language === currentLang) ? "selected" : "";
+                    var label = row.language.toUpperCase(); // Simple uppercase for language native name mapping fallback
+                    return `<option value="${row.language}" ${selected}>${label}</option>`;
+                }).join('');
+
+                lang_li.innerHTML = `
+                    <select class="form-control" style="border: none; background: var(--surface-container); border-radius: 8px; font-size: 12px; padding: 4px 10px; font-family: var(--font-family); font-weight: 500; cursor: pointer; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); outline: none;">
+                        ${optionsHtml}
+                    </select>
+                `;
+
+                lang_li.querySelector('select').addEventListener('change', function (e) {
+                    var new_lang = e.target.value;
+                    if (new_lang && new_lang !== currentLang) {
+                        frappe.call({
+                            method: "frappe.client.set_value",
+                            args: { doctype: "User", name: frappe.session.user, fieldname: "language", value: new_lang },
+                            callback: function () { window.location.reload(); }
+                        });
+                    }
+                });
+
+                var profileParent = ul.querySelector('.dropdown-navbar-user');
+                if (profileParent) {
+                    ul.insertBefore(lang_li, profileParent);
+                } else {
+                    ul.insertBefore(lang_li, ul.lastElementChild);
                 }
             }
         }
@@ -464,9 +506,11 @@
                             items.forEach(el => {
                                 if (el.textContent && el.textContent.trim() === row.element) {
                                     el.style.setProperty('display', 'none', 'important');
-                                    // Make sure we also hide the parent 'li' if it's nested
+                                    // Ensure we don't climb out to the root user dropdown li! Only hide if li is actually inside the .dropdown-menu
                                     var li = el.closest('li');
-                                    if (li) li.style.setProperty('display', 'none', 'important');
+                                    if (li && li.parentElement === menu) {
+                                        li.style.setProperty('display', 'none', 'important');
+                                    }
                                 }
                             });
                         }

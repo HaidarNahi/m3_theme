@@ -38,6 +38,8 @@
   "external_link_label",
   "external_link_url",
   "navbar_builder_section",
+  "language_switcher_section",
+  "language_switcher",
   "custom_navbar_html",
   "custom_navbar_data",
   "profile_tab",
@@ -202,6 +204,17 @@
    "fieldtype": "Section Break",
    "label": "Custom Navbar Builder",
    "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+  },
+  {
+   "fieldname": "language_switcher_section",
+   "fieldtype": "Section Break",
+   "label": "Languages Switcher"
+  },
+  {
+   "fieldname": "language_switcher",
+   "fieldtype": "Table",
+   "label": "Language Switcher Options",
+   "options": "M3 Language Switcher Item"
   },
   {
    "fieldname": "custom_navbar_html",
