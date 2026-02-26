@@ -464,8 +464,14 @@
                         </select>
                     `;
 
-                    lang_li.querySelector('select').addEventListener('change', function (e) {
+                    var select = lang_li.querySelector('select');
+                    select.addEventListener('click', function (e) {
                         e.stopPropagation();
+                    });
+
+                    select.addEventListener('change', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
                         var new_lang = e.target.value;
                         if (new_lang && new_lang !== currentLang) {
                             frappe.call({
