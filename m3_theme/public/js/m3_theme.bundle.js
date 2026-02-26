@@ -441,7 +441,15 @@
                 var currentLang = (frappe.boot && frappe.boot.lang) ? frappe.boot.lang : 'en';
                 var optionsHtml = doc.language_switcher.map(row => {
                     var selected = (row.language === currentLang) ? "selected" : "";
-                    var label = row.language.toUpperCase(); // Simple uppercase for language native name mapping fallback
+                    var label = row.language.toUpperCase();
+                    if (frappe.boot && frappe.boot.lang_dict) {
+                        for (var name in frappe.boot.lang_dict) {
+                            if (frappe.boot.lang_dict[name] === row.language) {
+                                label = name;
+                                break;
+                            }
+                        }
+                    }
                     return `<option value="${row.language}" ${selected}>${label}</option>`;
                 }).join('');
 
@@ -469,54 +477,6 @@
                     ul.insertBefore(lang_li, ul.lastElementChild);
                 }
             }
-        }
-    }
-
-    // Safely hide DOM elements by exact text or fallback classes
-    function hideSpecificElements(doc) {
-        if (!doc) return;
-
-        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar_data) {
-            try {
-                var navData = JSON.parse(doc.custom_navbar_data);
-                navData.forEach(function (row) {
-                    if (row.hidden) {
-                        if (row.element === 'search bar') {
-                            document.querySelectorAll('.navbar .search-bar, .navbar-form.search-bar').forEach(e => e.style.setProperty('display', 'none', 'important'));
-                        } else if (row.element === 'notifications') {
-                            document.querySelectorAll('.navbar .notification-list, .navbar .dropdown-notifications, .notifications-icon, [data-route="notifications"], .dropdown-message').forEach(e => e.style.setProperty('display', 'none', 'important'));
-                        } else if (row.element === 'help') {
-                            document.querySelectorAll('.navbar .dropdown-help').forEach(e => e.style.setProperty('display', 'none', 'important'));
-                        } else if (row.element === 'breadcrumbs') {
-                            document.querySelectorAll('#navbar-breadcrumbs, .navbar-breadcrumbs, .breadcrumb-container, .page-breadcrumbs, .app-switcher-menu').forEach(e => e.style.setProperty('display', 'none', 'important'));
-                        }
-                    }
-                });
-            } catch (e) { }
-        }
-
-        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.custom_profile_data) {
-            try {
-                var profData = JSON.parse(doc.custom_profile_data);
-                var menu = document.querySelector('.dropdown-navbar-user .dropdown-menu');
-                if (menu) {
-                    var items = Array.from(menu.querySelectorAll('li, a, button'));
-                    profData.forEach(function (row) {
-                        if (row.hidden) {
-                            items.forEach(el => {
-                                if (el.textContent && el.textContent.trim() === row.element) {
-                                    el.style.setProperty('display', 'none', 'important');
-                                    // Ensure we don't climb out to the root user dropdown li! Only hide if li is actually inside the .dropdown-menu
-                                    var li = el.closest('li');
-                                    if (li && li.parentElement === menu) {
-                                        li.style.setProperty('display', 'none', 'important');
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-            } catch (e) { }
         }
     }
 
@@ -549,7 +509,6 @@
                 checkCurrentSidebar();
                 syncLikedByMeButton();
                 injectCustomNavbarAndProfile();
-                hideSpecificElements(frappe.boot.m3_theme_settings);
             }, 50); // Speed up alignment tick on observe
         }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
     }
@@ -696,8 +655,47 @@
             `;
         }
 
-        // Synchronously run element text matcher
-        hideSpecificElements(doc);
+        // Toggles - Navbar (using CSS Selectors to avoid language mismatches)
+        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar_data) {
+            try {
+                var navData = JSON.parse(doc.custom_navbar_data);
+                navData.forEach(function (row) {
+                    if (row.hidden) {
+                        if (row.element === 'search bar') {
+                            dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
+                        } else if (row.element === 'notifications') {
+                            dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon, [data-route="notifications"] { display: none !important; }\n`;
+                        } else if (row.element === 'help') {
+                            dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
+                        } else if (row.element === 'breadcrumbs') {
+                            dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu, #navbar-breadcrumbs, .breadcrumb-container, .page-breadcrumbs { display: none !important; }\n`;
+                        }
+                    }
+                });
+            } catch (e) { }
+        }
+
+        // Toggles - Profile Menu (using exact href and onclick instead of translations)
+        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.custom_profile_data) {
+            try {
+                var profData = JSON.parse(doc.custom_profile_data);
+                profData.forEach(function (row) {
+                    if (row.hidden) {
+                        if (row.element === 'My Profile') {
+                            dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"], .dropdown-navbar-user a[href="/app/user"] { display: none !important; }\n`;
+                        } else if (row.element === 'Session Defaults') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="session_default"] { display: none !important; }\n`;
+                        } else if (row.element === 'View Website') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
+                        } else if (row.element === 'Apps') {
+                            dynamicCSS += `.dropdown-navbar-user a[href="/app"] { display: none !important; }\n`;
+                        } else if (row.element === 'Toggle Full Width') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="toggle_full_width"] { display: none !important; }\n`;
+                        }
+                    }
+                });
+            } catch (e) { }
+        }
 
         // Custom Logo Replacement
         if (doc.custom_logo) {
