@@ -411,11 +411,13 @@
         if (doc.external_link_url && doc.external_link_label) {
             var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right') || document.querySelector('.dropdown-navbar-user') ? document.querySelector('.dropdown-navbar-user').closest('ul') : null;
             if (ul) {
-                var existingLink = ul.querySelector('.m3-external-link a');
-                if (!existingLink || !existingLink.href.includes(doc.external_link_url) || existingLink.textContent !== doc.external_link_label) {
-                    ul.querySelectorAll('.m3-external-link').forEach(el => el.remove());
+                var existingLi = ul.querySelector('.m3-external-link');
+                if (!existingLi || existingLi.getAttribute('data-href') !== doc.external_link_url || existingLi.getAttribute('data-label') !== doc.external_link_label) {
+                    if (existingLi) existingLi.remove();
                     var li = document.createElement('li');
                     li.className = 'm3-external-link nav-item';
+                    li.setAttribute('data-href', doc.external_link_url);
+                    li.setAttribute('data-label', doc.external_link_label);
                     li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" data-bypass="true" rel="noopener noreferrer" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
 
                     var helpParent = ul.querySelector('.dropdown-help');
