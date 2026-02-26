@@ -437,8 +437,17 @@
             var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right') || document.querySelector('.dropdown-navbar-user')?.closest('ul');
             if (ul) {
                 var currentLang = (frappe.boot && frappe.boot.lang) ? frappe.boot.lang : 'en';
+                var currentLangLabel = currentLang.toUpperCase();
+                if (frappe.boot && frappe.boot.lang_dict) {
+                    for (var name in frappe.boot.lang_dict) {
+                        if (frappe.boot.lang_dict[name] === currentLang) {
+                            currentLangLabel = name;
+                            break;
+                        }
+                    }
+                }
+
                 var optionsHtml = doc.language_switcher.map(row => {
-                    var selected = (row.language === currentLang) ? "selected" : "";
                     var label = row.language.toUpperCase();
                     if (frappe.boot && frappe.boot.lang_dict) {
                         for (var name in frappe.boot.lang_dict) {
@@ -448,38 +457,39 @@
                             }
                         }
                     }
-                    return `<option value="${row.language}" ${selected}>${label}</option>`;
+                    var activeClass = (row.language === currentLang) ? "active" : "";
+                    return `<li><a href="#" class="dropdown-item m3-lang-option ${activeClass}" data-lang="${row.language}" onclick="return false;">${label}</a></li>`;
                 }).join('');
 
-                var existingLangSelect = ul.querySelector('.m3-lang-switcher select');
+                var existingLangSelect = ul.querySelector('.m3-lang-switcher .dropdown-menu');
                 if (!existingLangSelect || existingLangSelect.innerHTML.replace(/\s/g, '') !== optionsHtml.replace(/\s/g, '')) {
                     ul.querySelectorAll('.m3-lang-switcher').forEach(el => el.remove());
                     var lang_li = document.createElement('li');
-                    lang_li.className = 'm3-lang-switcher nav-item';
-                    lang_li.style.cssText = 'display: flex; align-items: center; justify-content: center; margin: 0 8px;';
+                    lang_li.className = 'm3-lang-switcher nav-item dropdown dropdown-language';
 
                     lang_li.innerHTML = `
-                        <select class="form-control" style="border: none; background: var(--surface-container); border-radius: 8px; font-size: 12px; padding: 4px 10px; font-family: var(--font-family); font-weight: 500; cursor: pointer; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); outline: none;">
+                        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:6px; font-weight: 500; font-size: 13px;">
+                            <span>${currentLangLabel}</span>
+                            <svg class="icon icon-xs" style="width: 12px; height: 12px; fill: currentColor;"><use href="#icon-down"></use></svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             ${optionsHtml}
-                        </select>
+                        </ul>
                     `;
 
-                    var select = lang_li.querySelector('select');
-                    select.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                    });
-
-                    select.addEventListener('change', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        var new_lang = e.target.value;
-                        if (new_lang && new_lang !== currentLang) {
-                            frappe.call({
-                                method: "frappe.client.set_value",
-                                args: { doctype: "User", name: frappe.session.user, fieldname: "language", value: new_lang },
-                                callback: function () { window.location.reload(); }
-                            });
-                        }
+                    lang_li.querySelectorAll('.m3-lang-option').forEach(opt => {
+                        opt.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            var new_lang = this.getAttribute('data-lang');
+                            if (new_lang && new_lang !== currentLang) {
+                                frappe.call({
+                                    method: "frappe.client.set_value",
+                                    args: { doctype: "User", name: frappe.session.user, fieldname: "language", value: new_lang },
+                                    callback: function () { window.location.reload(); }
+                                });
+                            }
+                        });
                     });
 
                     var profileParent = ul.querySelector('.dropdown-navbar-user');
