@@ -408,18 +408,22 @@
         if (!window.frappe || !frappe.boot || !frappe.boot.m3_theme_settings) return;
         var doc = frappe.boot.m3_theme_settings;
 
-        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar) {
+        if (doc.external_link_url && doc.external_link_label) {
             var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right');
             if (ul) {
-                ul.querySelectorAll('.m3-custom-navbar-item').forEach(el => el.remove());
-                doc.custom_navbar.forEach(function (item) {
-                    var li = document.createElement('li');
-                    li.className = 'm3-custom-navbar-item nav-item';
-                    var iconHtml = item.icon ? `<span class="material-symbols-rounded" style="font-size: 20px; vertical-align: middle;">${item.icon}</span>` : '';
-                    li.innerHTML = `<a class="nav-link" href="${item.url}" title="${item.label}" style="display:flex; align-items:center; gap:8px;">${iconHtml} <span class="d-none d-md-inline" style="font-weight: 500;">${item.label}</span></a>`;
-                    // Insert before the last element (which usually is the user profile dropdown)
+                ul.querySelectorAll('.m3-external-link').forEach(el => el.remove());
+                var li = document.createElement('li');
+                li.className = 'm3-external-link nav-item';
+                li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:8px;"><span class="" style="font-weight: 500; font-size: 13px;">${doc.external_link_label}</span></a>`;
+
+                // insert before notifications if it exists, else before profile
+                var bell = ul.querySelector('.dropdown-notifications') || ul.querySelector('[data-route="notifications"]');
+                var bellParent = bell ? bell.closest('li') : null;
+                if (bellParent) {
+                    ul.insertBefore(li, bellParent);
+                } else {
                     ul.insertBefore(li, ul.lastElementChild);
-                });
+                }
             }
         }
 
@@ -557,8 +561,20 @@
         }
 
         // Toggles - Navbar
-        if (doc.navbar_type === 'Custom Navbar') {
-            dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar, .navbar .notification-list, .navbar .dropdown-message, .notifications-icon, .navbar .dropdown-help, .navbar .app-switcher-menu { display: none !important; }\n`;
+        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar) {
+            doc.custom_navbar.forEach(function (row) {
+                if (row.hidden) {
+                    if (row.element === 'search bar') {
+                        dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
+                    } else if (row.element === 'notifications') {
+                        dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
+                    } else if (row.element === 'help') {
+                        dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
+                    } else if (row.element === 'breadcrumbs') {
+                        dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu { display: none !important; }\n`;
+                    }
+                }
+            });
         }
 
         // Toggles - Profile Menu

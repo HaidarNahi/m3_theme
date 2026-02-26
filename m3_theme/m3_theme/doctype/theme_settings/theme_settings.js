@@ -51,6 +51,18 @@ frappe.ui.form.on("Theme Settings", {
 
         // ── Color palette live preview swatches ──
         renderColorPreview(frm);
+
+        if (frm.doc.navbar_type === 'Custom Navbar') {
+            if (!frm.doc.custom_navbar || frm.doc.custom_navbar.length === 0) {
+                const default_elements = ["breadcrumbs", "search bar", "notifications", "help"];
+                default_elements.forEach(el => {
+                    let row = frm.add_child("custom_navbar");
+                    row.element = el;
+                    row.hidden = 0;
+                });
+                frm.refresh_field("custom_navbar");
+            }
+        }
     },
 
     after_save(frm) {
@@ -67,6 +79,20 @@ frappe.ui.form.on("Theme Settings", {
     error_color: (frm) => renderColorPreview(frm),
     on_primary_color: (frm) => renderColorPreview(frm),
     font_family: (frm) => renderFontPreview(frm),
+
+    navbar_type: function (frm) {
+        if (frm.doc.navbar_type === 'Custom Navbar') {
+            if (!frm.doc.custom_navbar || frm.doc.custom_navbar.length === 0) {
+                const default_elements = ["breadcrumbs", "search bar", "notifications", "help"];
+                default_elements.forEach(el => {
+                    let row = frm.add_child("custom_navbar");
+                    row.element = el;
+                    row.hidden = 0;
+                });
+                frm.refresh_field("custom_navbar");
+            }
+        }
+    }
 });
 
 // ─────────────────────────────────────────────

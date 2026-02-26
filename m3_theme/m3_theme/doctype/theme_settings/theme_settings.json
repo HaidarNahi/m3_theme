@@ -21,8 +21,8 @@
   "primary_color",
   "cb_primary",
   "secondary_color",
+  "workspace_bg_color",
   "surface_color",
-  "background_color",
   "cb_colors2",
   "error_color",
   "on_primary_color",
@@ -35,41 +35,35 @@
   "sidebar_position",
   "sidebar_type",
   "cb_sidebar",
-  "sidebar_items_section",
-  "sidebar_hidden_modules",
+  "sidebar_builder_section",
+  "custom_sidebar",
   "navbar_tab",
   "navbar_section",
   "navbar_type",
-  "navbar_builder_section",
-  "custom_navbar",
   "custom_logo",
   "custom_logo_height",
   "cb_logo",
-  "navbar_custom_html",
+  "external_link_label",
+  "external_link_url",
+  "navbar_builder_section",
+  "custom_navbar",
   "profile_tab",
   "profile_section",
   "profile_menu_type",
-  "profile_custom_links",
+  "profile_links_section",
+  "profile_links",
   "login_tab",
   "login_section",
   "login_logo",
   "login_background_image",
+  "login_overlay_opacity",
   "cb_login",
   "login_page_title",
   "login_page_subtitle",
-  "login_brand_color",
   "cb_login2",
   "show_social_login",
   "show_email_password_login",
   "login_footer_text",
-  "website_tab",
-  "website_section",
-  "website_logo",
-  "website_favicon",
-  "cb_website",
-  "website_font_family",
-  "website_primary_color",
-  "website_navbar_color",
   "advanced_tab",
   "advanced_section",
   "inject_custom_css",
@@ -88,7 +82,7 @@
   {
    "fieldname": "colors_section",
    "fieldtype": "Section Break",
-   "label": "\ud83c\udfa8 Colors"
+   "label": "Colors"
   },
   {
    "default": "System (Auto)",
@@ -144,7 +138,7 @@
   {
    "fieldname": "typography_section",
    "fieldtype": "Section Break",
-   "label": "\u270f\ufe0f Typography"
+   "label": "Typography"
   },
   {
    "default": "Readex Pro",
@@ -172,7 +166,7 @@
   {
    "fieldname": "sidebar_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udcd0 Sidebar Behavior"
+   "label": "Sidebar Behavior"
   },
   {
    "default": "Left",
@@ -195,7 +189,7 @@
   {
    "fieldname": "sidebar_builder_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udee0\ufe0f Custom Sidebar Builder",
+   "label": "Custom Sidebar Builder",
    "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'"
   },
   {
@@ -213,7 +207,7 @@
   {
    "fieldname": "navbar_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udd0d Navbar Elements"
+   "label": "Navbar Elements"
   },
   {
    "fieldname": "navbar_type",
@@ -221,19 +215,6 @@
    "label": "Navbar Content",
    "options": "Default Navbar\nCustom Navbar",
    "default": "Default Navbar"
-  },
-  {
-   "fieldname": "navbar_builder_section",
-   "fieldtype": "Section Break",
-   "label": "\ud83d\udee0\ufe0f Custom Navbar Builder",
-   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
-  },
-  {
-   "fieldname": "custom_navbar",
-   "fieldtype": "Table",
-   "label": "Custom Navbar Items",
-   "options": "M3 Navbar Item",
-   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
   },
   {
    "fieldname": "custom_logo",
@@ -252,6 +233,31 @@
    "fieldtype": "Column Break"
   },
   {
+   "fieldname": "external_link_label",
+   "fieldtype": "Data",
+   "label": "External Link Label",
+   "description": "e.g., Google"
+  },
+  {
+   "fieldname": "external_link_url",
+   "fieldtype": "Data",
+   "label": "External Link URL",
+   "description": "e.g., https://google.com"
+  },
+  {
+   "fieldname": "navbar_builder_section",
+   "fieldtype": "Section Break",
+   "label": "Custom Navbar Builder",
+   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+  },
+  {
+   "fieldname": "custom_navbar",
+   "fieldtype": "Table",
+   "label": "Custom Navbar Items",
+   "options": "M3 Navbar Item",
+   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+  },
+  {
    "fieldname": "profile_tab",
    "fieldtype": "Tab Break",
    "label": "Profile Menu"
@@ -259,7 +265,7 @@
   {
    "fieldname": "profile_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udc64 Profile Dropdown Items"
+   "label": "Profile Dropdown Items"
   },
   {
    "fieldname": "profile_menu_type",
@@ -271,7 +277,7 @@
   {
    "fieldname": "profile_links_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udd17 Custom Profile Links",
+   "label": "Custom Profile Links",
    "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
   },
   {
@@ -289,7 +295,7 @@
   {
    "fieldname": "login_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udd10 Login Page Branding"
+   "label": "Login Page Branding"
   },
   {
    "fieldname": "login_logo",
@@ -355,7 +361,7 @@
   {
    "fieldname": "advanced_section",
    "fieldtype": "Section Break",
-   "label": "\ud83d\udee0\ufe0f Custom CSS / JS"
+   "label": "Custom CSS / JS"
   },
   {
    "default": "0",

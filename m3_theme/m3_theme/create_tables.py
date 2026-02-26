@@ -46,25 +46,19 @@ def execute():
             "istable": 1,
             "fields": [
                 {
-                    "fieldname": "label",
+                    "fieldname": "element",
                     "fieldtype": "Data",
-                    "label": "Link Text",
+                    "label": "Element",
                     "in_list_view": 1,
+                    "read_only": 1,
                     "reqd": 1
                 },
                 {
-                    "fieldname": "icon",
-                    "fieldtype": "Data",
-                    "label": "Material Icon Name",
+                    "fieldname": "hidden",
+                    "fieldtype": "Check",
+                    "label": "Hidden",
                     "in_list_view": 1,
-                    "description": "e.g., 'search', 'notifications'"
-                },
-                {
-                    "fieldname": "url",
-                    "fieldtype": "Data",
-                    "label": "Route / Action",
-                    "in_list_view": 1,
-                    "reqd": 1
+                    "default": 0
                 }
             ]
         })

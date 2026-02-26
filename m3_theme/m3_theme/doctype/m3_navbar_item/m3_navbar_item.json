@@ -6,31 +6,24 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "label",
-  "icon",
-  "url"
+  "element",
+  "hidden"
  ],
  "fields": [
   {
-   "fieldname": "label",
+   "fieldname": "element",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Link Text",
+   "label": "Element",
+   "read_only": 1,
    "reqd": 1
   },
   {
-   "description": "e.g., 'search', 'notifications'",
-   "fieldname": "icon",
-   "fieldtype": "Data",
+   "fieldname": "hidden",
+   "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Material Icon Name"
-  },
-  {
-   "fieldname": "url",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Route / Action",
-   "reqd": 1
+   "label": "Hidden",
+   "default": 0
   }
  ],
  "grid_page_length": 50,
