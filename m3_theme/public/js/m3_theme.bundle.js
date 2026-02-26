@@ -409,12 +409,12 @@
         var doc = frappe.boot.m3_theme_settings;
 
         if (doc.external_link_url && doc.external_link_label) {
-            var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right');
+            var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right') || document.querySelector('.dropdown-navbar-user') ? document.querySelector('.dropdown-navbar-user').closest('ul') : null;
             if (ul) {
                 ul.querySelectorAll('.m3-external-link').forEach(el => el.remove());
                 var li = document.createElement('li');
                 li.className = 'm3-external-link nav-item';
-                li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:8px;"><span class="" style="font-weight: 500; font-size: 13px;">${doc.external_link_label}</span></a>`;
+                li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
 
                 var helpParent = ul.querySelector('.dropdown-help');
                 var profileParent = ul.querySelector('.dropdown-navbar-user');
@@ -427,6 +427,52 @@
                     ul.insertBefore(li, ul.lastElementChild);
                 }
             }
+        }
+    }
+
+    // Safely hide DOM elements by exact text or fallback classes
+    function hideSpecificElements(doc) {
+        if (!doc) return;
+
+        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar_data) {
+            try {
+                var navData = JSON.parse(doc.custom_navbar_data);
+                navData.forEach(function (row) {
+                    if (row.hidden) {
+                        if (row.element === 'search bar') {
+                            document.querySelectorAll('.navbar .search-bar, .navbar-form.search-bar').forEach(e => e.style.setProperty('display', 'none', 'important'));
+                        } else if (row.element === 'notifications') {
+                            document.querySelectorAll('.navbar .notification-list, .navbar .dropdown-notifications, .notifications-icon, [data-route="notifications"], .dropdown-message').forEach(e => e.style.setProperty('display', 'none', 'important'));
+                        } else if (row.element === 'help') {
+                            document.querySelectorAll('.navbar .dropdown-help').forEach(e => e.style.setProperty('display', 'none', 'important'));
+                        } else if (row.element === 'breadcrumbs') {
+                            document.querySelectorAll('#navbar-breadcrumbs, .navbar-breadcrumbs, .breadcrumb-container, .page-breadcrumbs, .app-switcher-menu').forEach(e => e.style.setProperty('display', 'none', 'important'));
+                        }
+                    }
+                });
+            } catch (e) { }
+        }
+
+        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.custom_profile_data) {
+            try {
+                var profData = JSON.parse(doc.custom_profile_data);
+                var menu = document.querySelector('.dropdown-navbar-user .dropdown-menu');
+                if (menu) {
+                    var items = Array.from(menu.querySelectorAll('li, a, button'));
+                    profData.forEach(function (row) {
+                        if (row.hidden) {
+                            items.forEach(el => {
+                                if (el.textContent && el.textContent.trim() === row.element) {
+                                    el.style.setProperty('display', 'none', 'important');
+                                    // Make sure we also hide the parent 'li' if it's nested
+                                    var li = el.closest('li');
+                                    if (li) li.style.setProperty('display', 'none', 'important');
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (e) { }
         }
     }
 
@@ -459,6 +505,7 @@
                 checkCurrentSidebar();
                 syncLikedByMeButton();
                 injectCustomNavbarAndProfile();
+                hideSpecificElements(frappe.boot.m3_theme_settings);
             }, 50); // Speed up alignment tick on observe
         }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
     }
@@ -495,28 +542,32 @@
                 "--m3-surface": "#FDFBFF", "--m3-surface-rgb": "253, 251, 255",
                 "--m3-surface-container": "#F1F4FA", "--m3-surface-container-high": "#EBEFF5",
                 "--m3-background": "#FDFBFF", "--m3-background-rgb": "253, 251, 255",
-                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A"
+                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A",
+                "--m3-on-surface": "#1A1C1E", "--m3-on-surface-variant": "#43474E"
             },
             "Emerald (Light)": {
                 "--m3-primary": "#006C4C", "--m3-primary-rgb": "0, 108, 76",
                 "--m3-surface": "#FBFDF9", "--m3-surface-rgb": "251, 253, 249",
                 "--m3-surface-container": "#F0F5EE", "--m3-surface-container-high": "#EAEFE8",
                 "--m3-background": "#FBFDF9", "--m3-background-rgb": "251, 253, 249",
-                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A"
+                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A",
+                "--m3-on-surface": "#191C1A", "--m3-on-surface-variant": "#404943"
             },
             "Amethyst (Dark)": {
                 "--m3-primary": "#D0BCFF", "--m3-primary-rgb": "208, 188, 255",
                 "--m3-surface": "#1C1B1F", "--m3-surface-rgb": "28, 27, 31",
                 "--m3-surface-container": "#211F26", "--m3-surface-container-high": "#2B2930",
                 "--m3-background": "#1C1B1F", "--m3-background-rgb": "28, 27, 31",
-                "--m3-on-primary": "#381E72", "--m3-error": "#F2B8B5"
+                "--m3-on-primary": "#381E72", "--m3-error": "#F2B8B5",
+                "--m3-on-surface": "#E6E1E5", "--m3-on-surface-variant": "#CAC4D0"
             },
             "Obsidian (Dark)": {
                 "--m3-primary": "#A8C7FA", "--m3-primary-rgb": "168, 199, 250",
                 "--m3-surface": "#111114", "--m3-surface-rgb": "17, 17, 20",
                 "--m3-surface-container": "#1E1E20", "--m3-surface-container-high": "#282A2C",
                 "--m3-background": "#111114", "--m3-background-rgb": "17, 17, 20",
-                "--m3-on-primary": "#062E6F", "--m3-error": "#F2B8B5"
+                "--m3-on-primary": "#062E6F", "--m3-error": "#F2B8B5",
+                "--m3-on-surface": "#E3E2E6", "--m3-on-surface-variant": "#C4C6D0"
             }
         };
 
@@ -527,7 +578,7 @@
             });
         }
 
-        // Typography
+        // Typography (With Google Fonts injection)
         var fontMap = {
             "Readex Pro": "'Readex Pro', sans-serif",
             "Inter": "'Inter', sans-serif",
@@ -540,11 +591,33 @@
             "IBM Plex Sans": "'IBM Plex Sans', sans-serif",
             "System Default": "system-ui, -apple-system, sans-serif",
         };
+        var gFontQueries = {
+            "Readex Pro": "Readex+Pro:wght@300;400;500;600;700",
+            "Inter": "Inter:wght@300;400;500;600;700",
+            "Roboto": "Roboto:wght@300;400;500;700",
+            "Noto Sans": "Noto+Sans:wght@300;400;500;600;700",
+            "Poppins": "Poppins:wght@300;400;500;600;700",
+            "Outfit": "Outfit:wght@300;400;500;600;700",
+            "DM Sans": "DM+Sans:wght@300;400;500;700",
+            "Plus Jakarta Sans": "Plus+Jakarta+Sans:wght@300;400;500;600;700",
+            "IBM Plex Sans": "IBM+Plex+Sans:wght@300;400;500;600;700"
+        };
+
+        if (doc.font_family && gFontQueries[doc.font_family]) {
+            let fontUrl = `https://fonts.googleapis.com/css2?family=${gFontQueries[doc.font_family]}&display=swap`;
+            if (!document.getElementById('m3-google-fonts')) {
+                var flink = document.createElement('link');
+                flink.id = 'm3-google-fonts';
+                flink.rel = 'stylesheet';
+                flink.href = fontUrl;
+                document.head.appendChild(flink);
+            } else {
+                document.getElementById('m3-google-fonts').href = fontUrl;
+            }
+        }
+
         if (doc.font_family && fontMap[doc.font_family]) {
             root.style.setProperty("--font-family", fontMap[doc.font_family]);
-        }
-        if (doc.base_font_size) {
-            root.style.setProperty("font-size", doc.base_font_size + "px");
         }
 
         // Layout
@@ -555,57 +628,32 @@
             dynamicCSS += `*:not(.icon, .fa, .fab, .fas, .far, .octicon, .material-symbols-rounded, .material-icons, .m3-processed) { font-family: ${fontMap[doc.font_family]} !important; }\n`;
         }
 
-        // Font Size (Entire System) - applies to * except headings maybe? 
-        // Or if they mean everything:
+        // Font Size Proportional Overrides
         if (doc.base_font_size) {
             root.style.setProperty("--base-font-size", doc.base_font_size + "px");
-            dynamicCSS += `body, html { font-size: var(--base-font-size) !important; }\n`;
-            // Many elements in Frappe use absolute sizes, so let's override base text sizing.
-            dynamicCSS += `p, span, div, a, li, td, th, label, input, button, textarea, select { font-size: inherit; }\n`;
-            // The user requested it to apply to the entire system, not base only.
+            // Automatically derive responsive frappe tailwind scales based on user's new base sizes
+            root.style.setProperty("--text-xs", "calc(var(--base-font-size) * 0.82)");
+            root.style.setProperty("--text-sm", "calc(var(--base-font-size) * 0.92)");
+            root.style.setProperty("--text-md", "calc(var(--base-font-size) * 1)");
+            root.style.setProperty("--text-lg", "calc(var(--base-font-size) * 1.15)");
+            root.style.setProperty("--text-xl", "calc(var(--base-font-size) * 1.5)");
+
+            dynamicCSS += `
+                html, body, p, span, div:not([class*="h1"]):not([class*="h2"]):not([class*="h3"]):not([class*="h4"]):not([class*="h5"]):not([class*="h6"]), a, li, td, th, label, input:not([type="checkbox"]):not([type="radio"]), button, textarea, select, .form-control, .btn, .nav-link, .dropdown-item {
+                    font-size: var(--base-font-size);
+                }
+                .text-muted { font-size: var(--text-sm) !important; }
+                h1, .h1 { font-size: 2.25rem !important; }
+                h2, .h2 { font-size: 1.875rem !important; }
+                h3, .h3 { font-size: 1.5rem !important; }
+                h4, .h4 { font-size: 1.25rem !important; }
+                h5, .h5 { font-size: 1.125rem !important; }
+                h6, .h6 { font-size: 1rem !important; }
+            `;
         }
 
-        // Toggles - Navbar
-        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar_data) {
-            try {
-                var navData = JSON.parse(doc.custom_navbar_data);
-                navData.forEach(function (row) {
-                    if (row.hidden) {
-                        if (row.element === 'search bar') {
-                            dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
-                        } else if (row.element === 'notifications') {
-                            dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
-                        } else if (row.element === 'help') {
-                            dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
-                        } else if (row.element === 'breadcrumbs') {
-                            dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu { display: none !important; }\n`;
-                        }
-                    }
-                });
-            } catch (e) { }
-        }
-
-        // Toggles - Profile Menu
-        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.custom_profile_data) {
-            try {
-                var profData = JSON.parse(doc.custom_profile_data);
-                profData.forEach(function (row) {
-                    if (row.hidden) {
-                        if (row.element === 'My Profile') {
-                            dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"], .dropdown-navbar-user a[href="/app/user"] { display: none !important; }\n`;
-                        } else if (row.element === 'Session Defaults') {
-                            dynamicCSS += `.dropdown-navbar-user button[onclick*="session_default"] { display: none !important; }\n`;
-                        } else if (row.element === 'View Website') {
-                            dynamicCSS += `.dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
-                        } else if (row.element === 'Apps') {
-                            dynamicCSS += `.dropdown-navbar-user a[href="/app"] { display: none !important; }\n`;
-                        } else if (row.element === 'Toggle Full Width') {
-                            dynamicCSS += `.dropdown-navbar-user button[onclick*="toggle_full_width"] { display: none !important; }\n`;
-                        }
-                    }
-                });
-            } catch (e) { }
-        }
+        // Synchronously run element text matcher
+        hideSpecificElements(doc);
 
         // Custom Logo Replacement
         if (doc.custom_logo) {
