@@ -416,27 +416,16 @@
                 li.className = 'm3-external-link nav-item';
                 li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" target="_blank" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:8px;"><span class="" style="font-weight: 500; font-size: 13px;">${doc.external_link_label}</span></a>`;
 
-                // insert before notifications if it exists, else before profile
-                var bell = ul.querySelector('.dropdown-notifications') || ul.querySelector('[data-route="notifications"]');
-                var bellParent = bell ? bell.closest('li') : null;
-                if (bellParent) {
-                    ul.insertBefore(li, bellParent);
+                var helpParent = ul.querySelector('.dropdown-help');
+                var profileParent = ul.querySelector('.dropdown-navbar-user');
+
+                if (helpParent) {
+                    ul.insertBefore(li, helpParent);
+                } else if (profileParent) {
+                    ul.insertBefore(li, profileParent);
                 } else {
                     ul.insertBefore(li, ul.lastElementChild);
                 }
-            }
-        }
-
-        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.profile_links) {
-            var menu = document.querySelector('.dropdown-navbar-user .dropdown-menu');
-            if (menu && !menu.dataset.m3CustomInjected) {
-                menu.querySelectorAll('.m3-custom-profile-item').forEach(el => el.remove());
-                var itemsHtml = doc.profile_links.map(function (item) {
-                    var iconHtml = item.icon ? `<span class="material-symbols-rounded" style="font-size: 18px; margin-right: 8px;">${item.icon}</span>` : '';
-                    return `<li><a class="dropdown-item m3-custom-profile-item" href="${item.url}" style="display:flex; align-items:center;">${iconHtml} ${item.label}</a></li>`;
-                }).join('');
-                menu.insertAdjacentHTML('afterbegin', itemsHtml);
-                menu.dataset.m3CustomInjected = "1";
             }
         }
     }
@@ -486,41 +475,57 @@
         var doc = frappe.boot.m3_theme_settings;
         var root = document.documentElement;
 
-        // Colors
-        function hexToRgbStr(hex) {
-            if (!hex || hex.length < 7) return null;
-            var c = hex.substring(1).split('');
-            if (c.length == 3) { c = [c[0], c[0], c[1], c[1], c[2], c[2]]; }
-            c = '0x' + c.join('');
-            return [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(', ');
+        // Color Scheme Application
+        if (doc.color_scheme === 'Dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else if (doc.color_scheme === 'Light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
         }
 
-        if (doc.primary_color) {
-            root.style.setProperty("--m3-primary", doc.primary_color);
-            var rgb = hexToRgbStr(doc.primary_color);
-            if (rgb) root.style.setProperty("--m3-primary-rgb", rgb);
+        // Color Palettes
+        var palettes = {
+            "Ocean Blue (Light)": {
+                "--m3-primary": "#0061A4", "--m3-primary-rgb": "0, 97, 164",
+                "--m3-surface": "#FDFBFF", "--m3-surface-rgb": "253, 251, 255",
+                "--m3-surface-container": "#F1F4FA", "--m3-surface-container-high": "#EBEFF5",
+                "--m3-background": "#FDFBFF", "--m3-background-rgb": "253, 251, 255",
+                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A"
+            },
+            "Emerald (Light)": {
+                "--m3-primary": "#006C4C", "--m3-primary-rgb": "0, 108, 76",
+                "--m3-surface": "#FBFDF9", "--m3-surface-rgb": "251, 253, 249",
+                "--m3-surface-container": "#F0F5EE", "--m3-surface-container-high": "#EAEFE8",
+                "--m3-background": "#FBFDF9", "--m3-background-rgb": "251, 253, 249",
+                "--m3-on-primary": "#FFFFFF", "--m3-error": "#BA1A1A"
+            },
+            "Amethyst (Dark)": {
+                "--m3-primary": "#D0BCFF", "--m3-primary-rgb": "208, 188, 255",
+                "--m3-surface": "#1C1B1F", "--m3-surface-rgb": "28, 27, 31",
+                "--m3-surface-container": "#211F26", "--m3-surface-container-high": "#2B2930",
+                "--m3-background": "#1C1B1F", "--m3-background-rgb": "28, 27, 31",
+                "--m3-on-primary": "#381E72", "--m3-error": "#F2B8B5"
+            },
+            "Obsidian (Dark)": {
+                "--m3-primary": "#A8C7FA", "--m3-primary-rgb": "168, 199, 250",
+                "--m3-surface": "#111114", "--m3-surface-rgb": "17, 17, 20",
+                "--m3-surface-container": "#1E1E20", "--m3-surface-container-high": "#282A2C",
+                "--m3-background": "#111114", "--m3-background-rgb": "17, 17, 20",
+                "--m3-on-primary": "#062E6F", "--m3-error": "#F2B8B5"
+            }
+        };
+
+        if (doc.color_palette && palettes[doc.color_palette]) {
+            var p = palettes[doc.color_palette];
+            Object.keys(p).forEach(k => {
+                root.style.setProperty(k, p[k]);
+            });
         }
-        if (doc.secondary_color) {
-            root.style.setProperty("--m3-secondary", doc.secondary_color);
-            var rgb = hexToRgbStr(doc.secondary_color);
-            if (rgb) root.style.setProperty("--m3-secondary-rgb", rgb);
-        }
-        if (doc.surface_color) {
-            root.style.setProperty("--m3-surface", doc.surface_color);
-            var rgb = hexToRgbStr(doc.surface_color);
-            if (rgb) root.style.setProperty("--m3-surface-rgb", rgb);
-        }
-        if (doc.background_color) {
-            root.style.setProperty("--m3-background", doc.background_color);
-            var rgb = hexToRgbStr(doc.background_color);
-            if (rgb) root.style.setProperty("--m3-background-rgb", rgb);
-        }
-        if (doc.error_color) {
-            root.style.setProperty("--m3-error", doc.error_color);
-            var rgb = hexToRgbStr(doc.error_color);
-            if (rgb) root.style.setProperty("--m3-error-rgb", rgb);
-        }
-        if (doc.on_primary_color) root.style.setProperty("--m3-on-primary", doc.on_primary_color);
 
         // Typography
         var fontMap = {
@@ -561,40 +566,45 @@
         }
 
         // Toggles - Navbar
-        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar) {
-            doc.custom_navbar.forEach(function (row) {
-                if (row.hidden) {
-                    if (row.element === 'search bar') {
-                        dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
-                    } else if (row.element === 'notifications') {
-                        dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
-                    } else if (row.element === 'help') {
-                        dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
-                    } else if (row.element === 'breadcrumbs') {
-                        dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu { display: none !important; }\n`;
+        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar_data) {
+            try {
+                var navData = JSON.parse(doc.custom_navbar_data);
+                navData.forEach(function (row) {
+                    if (row.hidden) {
+                        if (row.element === 'search bar') {
+                            dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
+                        } else if (row.element === 'notifications') {
+                            dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
+                        } else if (row.element === 'help') {
+                            dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
+                        } else if (row.element === 'breadcrumbs') {
+                            dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu { display: none !important; }\n`;
+                        }
                     }
-                }
-            });
+                });
+            } catch (e) { }
         }
 
         // Toggles - Profile Menu
-        if (doc.profile_menu_type === 'Custom Profile Menu') {
-            dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"], .dropdown-navbar-user a[href="/app/user"], .dropdown-navbar-user button[onclick*="session_default"], .dropdown-navbar-user button[onclick*="show_shortcuts"], .dropdown-navbar-user a[href="/app"], .dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
-        }
-
-        // Toggles - Sidebar Position
-        if (doc.sidebar_position === 'Right') {
-            dynamicCSS += `.m3-fixed-sidebar { left: auto !important; right: 0 !important; border-right: none !important; border-left: 1px solid var(--border-color) !important; }\n`;
-            dynamicCSS += `body.m3-desk .layout-main { margin-left: auto !important; margin-right: var(--sidebar-width) !important; }\n`;
-        }
-
-        if (doc.workspace_bg_color) {
-            dynamicCSS += `body.m3-desk, #page-desktop { background: ${doc.workspace_bg_color} !important; }\n`;
-        }
-
-        // Sidebar Position Enforcements (if Right, toggle button is also on Right)
-        if (doc.sidebar_position === 'Right') {
-            dynamicCSS += `.m3-sidebar-header { flex-direction: row-reverse; }\n`;
+        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.custom_profile_data) {
+            try {
+                var profData = JSON.parse(doc.custom_profile_data);
+                profData.forEach(function (row) {
+                    if (row.hidden) {
+                        if (row.element === 'My Profile') {
+                            dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"], .dropdown-navbar-user a[href="/app/user"] { display: none !important; }\n`;
+                        } else if (row.element === 'Session Defaults') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="session_default"] { display: none !important; }\n`;
+                        } else if (row.element === 'View Website') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
+                        } else if (row.element === 'Apps') {
+                            dynamicCSS += `.dropdown-navbar-user a[href="/app"] { display: none !important; }\n`;
+                        } else if (row.element === 'Toggle Full Width') {
+                            dynamicCSS += `.dropdown-navbar-user button[onclick*="toggle_full_width"] { display: none !important; }\n`;
+                        }
+                    }
+                });
+            } catch (e) { }
         }
 
         // Custom Logo Replacement

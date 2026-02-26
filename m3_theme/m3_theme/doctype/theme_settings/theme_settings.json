@@ -18,21 +18,13 @@
   "appearance_tab",
   "colors_section",
   "color_scheme",
-  "primary_color",
-  "cb_primary",
-  "secondary_color",
-  "workspace_bg_color",
-  "surface_color",
-  "cb_colors2",
-  "error_color",
-  "on_primary_color",
+  "color_palette",
   "typography_section",
   "font_family",
   "base_font_size",
   "cb_font",
   "sidebar_tab",
   "sidebar_section",
-  "sidebar_position",
   "sidebar_type",
   "cb_sidebar",
   "sidebar_builder_section",
@@ -46,12 +38,14 @@
   "external_link_label",
   "external_link_url",
   "navbar_builder_section",
-  "custom_navbar",
+  "custom_navbar_html",
+  "custom_navbar_data",
   "profile_tab",
   "profile_section",
   "profile_menu_type",
   "profile_links_section",
-  "profile_links",
+  "custom_profile_html",
+  "custom_profile_data",
   "login_tab",
   "login_section",
   "login_logo",
@@ -93,47 +87,12 @@
    "options": "Light\nDark\nSystem (Auto)"
   },
   {
-   "fieldname": "primary_color",
-   "fieldtype": "Color",
-   "label": "Primary Color",
-   "description": "Main brand/action color used for buttons, links, and highlights"
-  },
-  {
-   "fieldname": "cb_primary",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "secondary_color",
-   "fieldtype": "Color",
-   "label": "Secondary Color",
-   "description": "Used for secondary actions and accents"
-  },
-  {
-   "fieldname": "workspace_bg_color",
-   "fieldtype": "Color",
-   "label": "Workspace / Canvas Block Background Color"
-  },
-  {
-   "fieldname": "surface_color",
-   "fieldtype": "Color",
-   "label": "Surface / Card Color",
-   "description": "Background of cards, dialogs, and containers"
-  },
-  {
-   "fieldname": "cb_colors2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "error_color",
-   "fieldtype": "Color",
-   "label": "Error / Danger Color",
-   "description": "Used for delete, warnings, and validation errors"
-  },
-  {
-   "fieldname": "on_primary_color",
-   "fieldtype": "Color",
-   "label": "Text on Primary Color",
-   "description": "Text color placed on top of the primary color"
+   "fieldname": "color_palette",
+   "fieldtype": "Select",
+   "label": "Color Palette",
+   "options": "Default\nOcean Blue (Light)\nEmerald (Light)\nAmethyst (Dark)\nObsidian (Dark)",
+   "default": "Default",
+   "description": "Select an M3 Material color palette for the system."
   },
   {
    "fieldname": "typography_section",
@@ -167,13 +126,6 @@
    "fieldname": "sidebar_section",
    "fieldtype": "Section Break",
    "label": "Sidebar Behavior"
-  },
-  {
-   "default": "Left",
-   "fieldname": "sidebar_position",
-   "fieldtype": "Select",
-   "label": "Sidebar Position",
-   "options": "Left\nRight"
   },
   {
    "fieldname": "sidebar_type",
@@ -242,7 +194,8 @@
    "fieldname": "external_link_url",
    "fieldtype": "Data",
    "label": "External Link URL",
-   "description": "e.g., https://google.com"
+   "description": "e.g., https://google.com",
+   "options": "URL"
   },
   {
    "fieldname": "navbar_builder_section",
@@ -251,11 +204,16 @@
    "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
   },
   {
-   "fieldname": "custom_navbar",
-   "fieldtype": "Table",
-   "label": "Custom Navbar Items",
-   "options": "M3 Navbar Item",
+   "fieldname": "custom_navbar_html",
+   "fieldtype": "HTML",
+   "label": "Custom Navbar Builder",
    "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+  },
+  {
+   "fieldname": "custom_navbar_data",
+   "fieldtype": "Code",
+   "label": "Custom Navbar Data",
+   "hidden": 1
   },
   {
    "fieldname": "profile_tab",
@@ -281,11 +239,16 @@
    "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
   },
   {
-   "fieldname": "profile_links",
-   "fieldtype": "Table",
-   "label": "Profile Links",
-   "options": "M3 Profile Link",
+   "fieldname": "custom_profile_html",
+   "fieldtype": "HTML",
+   "label": "Custom Profile Menu Builder",
    "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
+  },
+  {
+   "fieldname": "custom_profile_data",
+   "fieldtype": "Code",
+   "label": "Custom Profile Data",
+   "hidden": 1
   },
   {
    "fieldname": "login_tab",

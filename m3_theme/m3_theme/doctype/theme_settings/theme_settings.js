@@ -3,13 +3,11 @@
 
 frappe.ui.form.on("Theme Settings", {
     refresh(frm) {
-        // ── Preview button: apply settings to current session immediately ──
         frm.add_custom_button(__("⚡ Preview Changes"), function () {
             applyThemeSettings(frm.doc);
             frappe.show_alert({ message: "Theme preview applied to this session", indicator: "green" });
         }, __("Theme"));
 
-        // ── Reset to defaults button ──
         frm.add_custom_button(__("↺ Reset to Defaults"), function () {
             frappe.confirm(
                 "This will reset all theme settings to their defaults. Are you sure?",
@@ -21,12 +19,7 @@ frappe.ui.form.on("Theme Settings", {
                             name: "Theme Settings",
                             fieldname: {
                                 color_scheme: "System (Auto)",
-                                primary_color: "",
-                                secondary_color: "",
-                                surface_color: "",
-                                background_color: "",
-                                error_color: "",
-                                on_primary_color: "",
+                                color_palette: "Default",
                                 font_family: "Readex Pro",
                                 base_font_size: 14,
                                 sidebar_type: "Default Sidebar",
@@ -35,34 +28,22 @@ frappe.ui.form.on("Theme Settings", {
                                 show_social_login: 1,
                                 show_email_password_login: 1,
                                 login_overlay_opacity: 0.5,
-                                workspace_bg_color: "",
                                 inject_custom_css: 0,
                                 inject_custom_js: 0,
-                            },
+                                custom_navbar_data: "",
+                                custom_profile_data: ""
+                            }
                         },
                         callback: function () {
                             frm.reload_doc();
                             frappe.show_alert({ message: "Settings reset to defaults", indicator: "blue" });
-                        },
+                        }
                     });
                 }
             );
         }, __("Theme"));
 
-        // ── Color palette live preview swatches ──
-        renderColorPreview(frm);
-
-        if (frm.doc.navbar_type === 'Custom Navbar') {
-            if (!frm.doc.custom_navbar || frm.doc.custom_navbar.length === 0) {
-                const default_elements = ["breadcrumbs", "search bar", "notifications", "help"];
-                default_elements.forEach(el => {
-                    let row = frm.add_child("custom_navbar");
-                    row.element = el;
-                    row.hidden = 0;
-                });
-                frm.refresh_field("custom_navbar");
-            }
-        }
+        renderCustomTables(frm);
     },
 
     after_save(frm) {
@@ -71,64 +52,102 @@ frappe.ui.form.on("Theme Settings", {
         setTimeout(() => window.location.reload(), 1500);
     },
 
-    // Re-render preview on any color change
-    primary_color: (frm) => renderColorPreview(frm),
-    secondary_color: (frm) => renderColorPreview(frm),
-    surface_color: (frm) => renderColorPreview(frm),
-    background_color: (frm) => renderColorPreview(frm),
-    error_color: (frm) => renderColorPreview(frm),
-    on_primary_color: (frm) => renderColorPreview(frm),
     font_family: (frm) => renderFontPreview(frm),
-
-    navbar_type: function (frm) {
-        if (frm.doc.navbar_type === 'Custom Navbar') {
-            if (!frm.doc.custom_navbar || frm.doc.custom_navbar.length === 0) {
-                const default_elements = ["breadcrumbs", "search bar", "notifications", "help"];
-                default_elements.forEach(el => {
-                    let row = frm.add_child("custom_navbar");
-                    row.element = el;
-                    row.hidden = 0;
-                });
-                frm.refresh_field("custom_navbar");
-            }
-        }
-    }
+    navbar_type: (frm) => renderCustomTables(frm),
+    profile_menu_type: (frm) => renderCustomTables(frm),
+    color_scheme: (frm) => applyThemeSettings(frm.doc),
 });
 
-// ─────────────────────────────────────────────
-//  LIVE COLOR PREVIEW
-// ─────────────────────────────────────────────
-function renderColorPreview(frm) {
-    const colors = [
-        { label: "Primary", val: frm.doc.primary_color },
-        { label: "Secondary", val: frm.doc.secondary_color },
-        { label: "Surface", val: frm.doc.surface_color },
-        { label: "Background", val: frm.doc.background_color },
-        { label: "Error", val: frm.doc.error_color },
-        { label: "On Primary", val: frm.doc.on_primary_color },
-    ].filter((c) => c.val);
+function renderCustomTables(frm) {
+    if (frm.doc.navbar_type === 'Custom Navbar') {
+        const default_nav_elements = ["breadcrumbs", "search bar", "notifications", "help"];
+        let nav_data = frm.doc.custom_navbar_data ? JSON.parse(frm.doc.custom_navbar_data) : default_nav_elements.map(e => ({ element: e, hidden: 0 }));
 
-    if (!colors.length) return;
+        default_nav_elements.forEach(e => {
+            if (!nav_data.find(d => d.element === e)) nav_data.push({ element: e, hidden: 0 });
+        });
+        // cleanup obsolete
+        nav_data = nav_data.filter(d => default_nav_elements.includes(d.element));
 
-    const swatches = colors
-        .map(
-            (c) => `
-		<div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;margin-right:12px">
-			<div style="width:40px;height:40px;border-radius:50%;background:${c.val};border:2px solid rgba(0,0,0,0.08);box-shadow:0 2px 4px rgba(0,0,0,0.12)"></div>
-			<span style="font-size:10px;color:#666">${c.label}</span>
-		</div>`
-        )
-        .join("");
+        let nav_html = `
+            <table class="table table-bordered m3-custom-table" style="background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <thead style="background: var(--surface-container-high);">
+                    <tr><th style="padding: 12px; font-weight: 500; font-size:13px;">Element</th><th style="padding: 12px; font-weight: 500; font-size:13px; width: 100px; text-align: center;">Hidden</th></tr>
+                </thead>
+                <tbody>
+                    ${nav_data.map((row, idx) => `
+                        <tr>
+                            <td style="padding: 12px; vertical-align: middle; font-size:13px; font-family:var(--font-family);">${row.element}</td>
+                            <td style="padding: 12px; text-align: center; vertical-align: middle;">
+                                <input type="checkbox" data-idx="${idx}" class="nav-hidden-chk" ${row.hidden ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="text-muted" style="font-size: 11px; margin-top: 4px;">Check the box to natively hide the element from the top navbar.</div>
+        `;
 
-    frm.get_field("color_scheme").$wrapper.find(".color-preview-strip").remove();
-    frm.get_field("color_scheme").$wrapper.append(
-        `<div class="color-preview-strip" style="margin-top:12px;padding:12px;background:#f8f8f8;border-radius:8px;display:flex;flex-wrap:wrap;align-items:center">${swatches}</div>`
-    );
+        frm.get_field("custom_navbar_html").$wrapper.html(nav_html);
+
+        frm.get_field("custom_navbar_html").$wrapper.find('.nav-hidden-chk').on('change', function () {
+            let idx = $(this).data('idx');
+            nav_data[idx].hidden = this.checked ? 1 : 0;
+            frm.set_value("custom_navbar_data", JSON.stringify(nav_data));
+        });
+
+        if (!frm.doc.custom_navbar_data) {
+            frm.set_value("custom_navbar_data", JSON.stringify(nav_data));
+        }
+    } else {
+        frm.get_field("custom_navbar_html").$wrapper.empty();
+    }
+
+    if (frm.doc.profile_menu_type === 'Custom Profile Menu') {
+        const default_prof_elements = ["My Profile", "Session Defaults", "View Website", "Apps", "Toggle Full Width"];
+        let prof_data = frm.doc.custom_profile_data ? JSON.parse(frm.doc.custom_profile_data) : default_prof_elements.map(e => ({ element: e, hidden: 0 }));
+
+        default_prof_elements.forEach(e => {
+            if (!prof_data.find(d => d.element === e)) prof_data.push({ element: e, hidden: 0 });
+        });
+        // cleanup obsolete
+        prof_data = prof_data.filter(d => default_prof_elements.includes(d.element));
+
+        let prof_html = `
+            <table class="table table-bordered m3-custom-table" style="background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <thead style="background: var(--surface-container-high);">
+                    <tr><th style="padding: 12px; font-weight: 500; font-size:13px;">Dropdown Item</th><th style="padding: 12px; font-weight: 500; font-size:13px; width: 100px; text-align: center;">Hidden</th></tr>
+                </thead>
+                <tbody>
+                    ${prof_data.map((row, idx) => `
+                        <tr>
+                            <td style="padding: 12px; vertical-align: middle; font-size:13px; font-family:var(--font-family);">${row.element}</td>
+                            <td style="padding: 12px; text-align: center; vertical-align: middle;">
+                                <input type="checkbox" data-idx="${idx}" class="prof-hidden-chk" ${row.hidden ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+             <div class="text-muted" style="font-size: 11px; margin-top: 4px;">Check the box to natively hide the element from your profile menu.</div>
+        `;
+
+        frm.get_field("custom_profile_html").$wrapper.html(prof_html);
+
+        frm.get_field("custom_profile_html").$wrapper.find('.prof-hidden-chk').on('change', function () {
+            let idx = $(this).data('idx');
+            prof_data[idx].hidden = this.checked ? 1 : 0;
+            frm.set_value("custom_profile_data", JSON.stringify(prof_data));
+        });
+
+        if (!frm.doc.custom_profile_data) {
+            frm.set_value("custom_profile_data", JSON.stringify(prof_data));
+        }
+    } else {
+        frm.get_field("custom_profile_html").$wrapper.empty();
+    }
 }
 
-// ─────────────────────────────────────────────
-//  FONT PREVIEW
-// ─────────────────────────────────────────────
 function renderFontPreview(frm) {
     const font = frm.doc.font_family;
     if (!font || font === "System Default") return;
@@ -143,96 +162,16 @@ function renderFontPreview(frm) {
     frm.get_field("font_family").$wrapper.append(`<div class="font-preview">${previewHtml}</div>`);
 }
 
-// ─────────────────────────────────────────────
-//  APPLY SETTINGS TO CURRENT SESSION (preview)
-// ─────────────────────────────────────────────
 function applyThemeSettings(doc) {
-    const root = document.documentElement;
-
-    function hexToRgbStr(hex) {
-        if (!hex || hex.length < 7) return null;
-        var c = hex.substring(1).split('');
-        if (c.length == 3) { c = [c[0], c[0], c[1], c[1], c[2], c[2]]; }
-        c = '0x' + c.join('');
-        return [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(', ');
+    if (doc.color_scheme === 'Dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else if (doc.color_scheme === 'Light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
     }
-
-    // Colors
-    if (doc.primary_color) {
-        root.style.setProperty("--m3-primary", doc.primary_color);
-        var rgb = hexToRgbStr(doc.primary_color);
-        if (rgb) root.style.setProperty("--m3-primary-rgb", rgb);
-    }
-    if (doc.secondary_color) {
-        root.style.setProperty("--m3-secondary", doc.secondary_color);
-        var rgb = hexToRgbStr(doc.secondary_color);
-        if (rgb) root.style.setProperty("--m3-secondary-rgb", rgb);
-    }
-    if (doc.surface_color) {
-        root.style.setProperty("--m3-surface", doc.surface_color);
-        var rgb = hexToRgbStr(doc.surface_color);
-        if (rgb) root.style.setProperty("--m3-surface-rgb", rgb);
-    }
-    if (doc.background_color) {
-        root.style.setProperty("--m3-background", doc.background_color);
-        var rgb = hexToRgbStr(doc.background_color);
-        if (rgb) root.style.setProperty("--m3-background-rgb", rgb);
-    }
-    if (doc.error_color) {
-        root.style.setProperty("--m3-error", doc.error_color);
-        var rgb = hexToRgbStr(doc.error_color);
-        if (rgb) root.style.setProperty("--m3-error-rgb", rgb);
-    }
-    if (doc.on_primary_color) root.style.setProperty("--m3-on-primary", doc.on_primary_color);
-
-    // Typography
-    const fontMap = {
-        "Readex Pro": "'Readex Pro', sans-serif",
-        Inter: "'Inter', sans-serif",
-        Roboto: "'Roboto', sans-serif",
-        "Noto Sans": "'Noto Sans', sans-serif",
-        Poppins: "'Poppins', sans-serif",
-        Outfit: "'Outfit', sans-serif",
-        "DM Sans": "'DM Sans', sans-serif",
-        "Plus Jakarta Sans": "'Plus Jakarta Sans', sans-serif",
-        "IBM Plex Sans": "'IBM Plex Sans', sans-serif",
-        "System Default": "system-ui, -apple-system, sans-serif",
-    };
-    if (doc.font_family && fontMap[doc.font_family]) {
-        root.style.setProperty("--font-family", fontMap[doc.font_family]);
-    }
-    if (doc.base_font_size) {
-        root.style.setProperty("font-size", doc.base_font_size + "px");
-    }
-
-    let dynamicCSS = "";
-
-    if (doc.workspace_bg_color) {
-        dynamicCSS += `body.m3-desk, #page-desktop { background: ${doc.workspace_bg_color} !important; }\n`;
-    }
-
-    // Custom Logo Replacement
-    if (doc.custom_logo) {
-        dynamicCSS += `
-            .navbar-brand img, .app-logo { display: none !important; }
-            .navbar-brand { 
-                background-image: url('${doc.custom_logo}'); 
-                background-size: contain; 
-                background-repeat: no-repeat; 
-                background-position: center left; 
-                height: ${doc.custom_logo_height || 32}px !important;
-                min-width: 120px;
-                display: inline-block !important;
-            }
-        `;
-    }
-
-    // Mount dynamic styles safely
-    var dynStyle = document.getElementById('m3-theme-dynamic-css');
-    if (!dynStyle) {
-        dynStyle = document.createElement('style');
-        dynStyle.id = 'm3-theme-dynamic-css';
-        document.head.appendChild(dynStyle);
-    }
-    dynStyle.innerHTML = dynamicCSS;
 }
