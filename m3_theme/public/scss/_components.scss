@@ -196,16 +196,22 @@ h6 {
 .frappe-control[data-fieldname="language_switcher"],
 .frappe-control[data-fieldname="custom_sidebar"] {
 
-    .grid-container {
+    .form-grid {
         background: var(--surface) !important;
         border: 1px solid var(--border-color) !important;
-        border-radius: 8px !important; // M3 Table Radius
+        border-radius: 12px !important; // M3 Table Radius
         overflow: hidden !important;
         box-shadow: none !important;
     }
 
+    .grid-container {
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
     .grid-heading-row {
-        background: var(--surface-container-high) !important;
+        background: var(--surface-container-low) !important;
         border-bottom: 1px solid var(--border-color) !important;
         font-weight: 500 !important;
         color: var(--text-color) !important;
@@ -242,16 +248,39 @@ h6 {
     }
 
     .grid-empty {
-        background: var(--surface-container) !important;
+        background: transparent !important;
         color: var(--text-muted) !important;
+        padding: 24px !important;
+    }
+
+    .grid-footer {
+        background: transparent !important;
+        border: none !important;
+        border-top: 1px solid var(--border-color) !important;
+        padding: 12px 16px !important;
+    }
+
+    .grid-append-row,
+    .grid-add-multiple-rows {
+        margin: 0 !important;
     }
 
     .grid-add-row,
     .grid-add-multiple-rows {
-        margin-top: 8px !important;
         border-radius: 100px !important;
         background: var(--surface-container-high) !important;
         border: none !important;
         color: var(--text-color) !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+    }
+
+    .grid-remove-rows {
+        border-radius: 100px !important;
+        background: var(--danger) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
     }
 }
