@@ -1,23 +1,143 @@
-// Material 3 Light Mode Tokens
-$m3-primary: rgb(101, 85, 143);
-$m3-on-primary: rgb(255, 0, 0);
-$m3-primary-container: rgb(118, 36, 250);
-$m3-on-primary-container: rgb(33, 16, 76);
+// ═══════════════════════════════════════════════════════════════
+//  Material Design 3 — Dynamic Light/Dark Theme System
+// ═══════════════════════════════════════════════════════════════
 
-$m3-surface: rgb(254, 247, 255);
-$m3-surface-container: rgb(243, 237, 247);
-$m3-on-surface: rgb(29, 27, 32);
-$m3-outline: rgb(121, 116, 126);
+:root, [data-theme="light"] {
+    // ── Primary ──
+    --m3-primary: #6750A4;
+    --m3-primary-rgb: 103, 80, 164;
+    --m3-on-primary: #FFFFFF;
+    --m3-primary-container: #EADDFF;
+    --m3-on-primary-container: #21005D; // Best contrast guess
 
-// Mapping M3 to Frappe's Global CSS Variables
-:root {
-    --primary: #{$m3-primary};
-    --bg-color: #{$m3-surface};
-    --card-bg: #{$m3-surface-container};
-    --border-color: #{$m3-outline};
-    --text-color: #{$m3-on-surface};
+    // ── Secondary ──
+    --m3-secondary: #625B71;
+    --m3-on-secondary: #FFFFFF;
+    --m3-secondary-container: #E8DEF8; // Guessed container
+    --m3-on-secondary-container: #1D192B; // Guessed on-container
 
-    // DataValue specific overrides found in your extracted CSS
-    --blue_color_style: #{$m3-primary};
-    --blue_color_style_light: #{$m3-primary-container};
+    // ── Surface & Background ──
+    --m3-background: #FFFBFE;
+    --m3-surface: #FFFBFE;
+    --m3-surface-variant: #E7E0EB;
+    --m3-on-surface: #1C1B1F;
+    --m3-on-surface-rgb: 28, 27, 31;
+    --m3-on-surface-variant: #49454E; // Slightly lighter than on-surface
+    
+    // Graduated Surface Containers (M3)
+    --m3-surface-container-highest: #E6E0E9;
+    --m3-surface-container-high: #ECE6F0;
+    --m3-surface-container: #F3EDF7;
+    --m3-surface-container-low: #F7F2FA;
+    --m3-surface-container-lowest: #FFFFFF;
+
+    // ── Outline ──
+    --m3-outline: #79747E;
+    --m3-outline-rgb: 121, 116, 126;
+    --m3-outline-variant: #CAC4D0;
+
+    // ── Error ──
+    --m3-error: #B3261E;
+    --m3-on-error: #FFFFFF;
+    --m3-error-container: #F9DEDC;
+    --m3-on-error-container: #410E0B;
+}
+
+[data-theme="dark"] {
+    // ── Primary ──
+    --m3-primary: #D0BCFF;
+    --m3-primary-rgb: 208, 188, 255;
+    --m3-on-primary: #381E72;
+    --m3-primary-container: #4F378B;
+    --m3-on-primary-container: #EADDFF;
+
+    // ── Secondary ──
+    --m3-secondary: #CCC2DC;
+    --m3-on-secondary: #332D41;
+    --m3-secondary-container: #4A4458;
+    --m3-on-secondary-container: #E8DEF8;
+
+    // ── Surface & Background ──
+    --m3-background: #1C1B1F;
+    --m3-surface: #1C1B1F;
+    --m3-surface-variant: #49454F;
+    --m3-on-surface: #E6E1E5;
+    --m3-on-surface-rgb: 230, 225, 229;
+    --m3-on-surface-variant: #CAC4D0;
+    
+    // Graduated Surface Containers (M3)
+    --m3-surface-container-highest: #36343B;
+    --m3-surface-container-high: #2B2930;
+    --m3-surface-container: #211F26;
+    --m3-surface-container-low: #1C1B1F;
+    --m3-surface-container-lowest: #0F0D13;
+
+    // ── Outline ──
+    --m3-outline: #938F99;
+    --m3-outline-rgb: 147, 143, 153;
+    --m3-outline-variant: #49454F;
+
+    // ── Error ──
+    --m3-error: #F2B8B5;
+    --m3-on-error: #601410;
+    --m3-error-container: #8C1D18;
+    --m3-on-error-container: #F9DEDC;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Map M3 Variables to Frappe/SASS Ecosystem
+// ═══════════════════════════════════════════════════════════════
+
+// For SCSS files still relying on standard $variables as aliases to vars:
+$m3-surface: var(--m3-surface);
+$m3-surface-container: var(--m3-surface-container);
+$m3-outline-variant: var(--m3-outline-variant);
+$m3-on-surface: var(--m3-on-surface);
+$m3-on-surface-rgb: var(--m3-on-surface-rgb);
+$m3-primary: var(--m3-primary);
+$m3-primary-rgb: var(--m3-primary-rgb);
+$m3-outline: var(--m3-outline);
+$m3-outline-rgb: var(--m3-outline-rgb);
+
+:root, [data-theme="light"], [data-theme="dark"] {
+    // ── Core ──
+    --primary: var(--m3-primary);
+    --bg-color: var(--m3-background);
+    --card-bg: var(--m3-surface-container);
+    --border-color: var(--m3-outline-variant);
+    --text-color: var(--m3-on-surface);
+    --text-muted: var(--m3-on-surface-variant);
+    --text-light: var(--m3-outline);
+
+    // ── Surface hierarchy ──
+    --surface: var(--m3-surface);
+    --surface-container: var(--m3-surface-container);
+    --surface-container-low: var(--m3-surface-container-low);
+    --surface-container-high: var(--m3-surface-container-high);
+
+    // ── Primary shades ──
+    --primary-container: var(--m3-primary-container);
+    --on-primary: var(--m3-on-primary);
+    --on-primary-container: var(--m3-on-primary-container);
+
+    // ── Error ──
+    --error: var(--m3-error);
+    --error-container: var(--m3-error-container);
+
+    // ── Outline ──
+    --outline: var(--m3-outline);
+    --outline-variant: var(--m3-outline-variant);
+
+    // ── DataValue/ERPNext specific overrides ──
+    --blue_color_style: var(--m3-primary);
+    --blue_color_style_light: var(--m3-primary-container);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Typography
+// ═══════════════════════════════════════════════════════════════
+$font-family: 'Readex Pro', sans-serif;
+
+body {
+    font-family: $font-family !important;
 }

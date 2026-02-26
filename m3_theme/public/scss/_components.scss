@@ -1,0 +1,193 @@
+// ═══════════════════════════════════════════════════════
+//  Material Design 3 Components (Cards, Buttons, Inputs, Dialogs)
+// ═══════════════════════════════════════════════════════
+
+// ── 1. Shapes & Elevating with Color instead of Shadows ──
+// Remove aggressive box-shadows, use M3 surface colors
+.frappe-card,
+.widget,
+.form-section,
+.dashboard-widget-box {
+    box-shadow: none !important;
+    background: var(--surface-container) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important; // M3 Medium Shape
+}
+
+.modal-content {
+    border-radius: 28px !important; // M3 Extra Large Shape for Dialogs
+    background: var(--bg-color) !important;
+    border: none !important;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12) !important; // Softer M3 Elevation 3
+    padding: 12px !important; // Extra breathing room
+}
+
+// ── 2. Button Hierarchy (Pills & Tonal Overrides) ──
+$btn-radius: 100px; // Fully rounded pills for most buttons
+
+.btn {
+    border-radius: $btn-radius !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.1px !important;
+    padding: 8px 24px !important;
+    min-height: 40px !important;
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    gap: 8px; // For icon + text spacing
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+    box-shadow: none !important;
+
+    // M3 State Layer simulation (hover)
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: currentColor;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+
+    &:hover::after {
+        opacity: 0.08; // State layer opacity
+    }
+
+    &:active::after {
+        opacity: 0.12; // Press state
+    }
+}
+
+// Drop button height down slightly for very tight spaces (e.g. table actions)
+.btn-sm,
+.btn-xs {
+    min-height: 32px !important;
+    padding: 0 16px !important;
+    font-size: 14px !important;
+    line-height: inherit !important;
+}
+
+// ── a. Filled Button (Primary)
+.btn-primary {
+    background-color: var(--primary) !important;
+    color: var(--on-primary) !important;
+    border: none !important;
+}
+
+// ── b. Tonal / Outlined Button (Secondary/Default)
+.btn-default,
+.btn-secondary {
+    background-color: var(--surface-container-high) !important; // Tonal style
+    color: var(--text-color) !important;
+    border: 1px solid transparent !important;
+
+    // If you prefer Outlined style for default actions:
+    // background-color: transparent !important;
+    // border: 1px solid var(--outline) !important;
+}
+
+// ── 3. Form Inputs (M3 Outlined Text Fields) ──
+.form-control,
+.awesomplete>input {
+    border-radius: 4px !important; // M3 small shape
+    border: 1px solid var(--outline-variant) !important;
+    background-color: transparent !important;
+    color: var(--text-color) !important;
+    padding: 12px 16px !important;
+    min-height: 48px !important; // Taller hit targets
+    box-shadow: none !important;
+    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+
+    &:focus,
+    &:focus-within {
+        border-width: 2px !important;
+        border-color: var(--primary) !important;
+        padding: 11px 15px !important; // Offset the +1px border to prevent layout shift
+        outline: none !important;
+    }
+
+    &[readonly],
+    &[disabled] {
+        background-color: var(--surface-container-low) !important;
+        border-color: var(--outline-variant) !important;
+        color: var(--text-muted) !important;
+    }
+}
+
+// Controls container needs proper margin spacing
+.frappe-control {
+    margin-bottom: 20px !important;
+}
+
+// Support for labels
+.control-label,
+.help-box {
+    color: var(--text-muted) !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.4px !important;
+    margin-bottom: 4px !important;
+}
+
+// Custom select dropdown arrow positioning
+select.form-control {
+    padding-right: 36px !important;
+}
+
+// Drop active line animation on Frappe's old material logic (if active)
+.frappe-control .control-input .m0 {
+    display: none !important;
+}
+
+// ── 4. Typography Adjustments ──
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-color) !important;
+    font-weight: 500 !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+// Frappe grid list headers
+.list-row-head {
+    background-color: var(--surface) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    font-weight: 500 !important;
+    color: var(--text-color) !important;
+}
+
+// List row items
+.list-row {
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+
+    &:hover {
+        background: var(--surface-container-lowest) !important; // Slight hover elevation
+    }
+}
+
+// ── 5. Compact Quick Filters (High Density) ──
+.filter-section {
+    .form-group {
+        margin-bottom: 4px !important;
+    }
+
+    .form-control,
+    .awesomplete>input {
+        min-height: 32px !important;
+        height: 32px !important;
+        padding: 4px 12px !important;
+        font-size: 13px !important;
+    }
+}

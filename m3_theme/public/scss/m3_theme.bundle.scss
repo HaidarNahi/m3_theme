@@ -1,10 +1,11 @@
 // This is the file Frappe compiles
 @import "variables";
 @import "layout";
+@import "components";
 
 // Global smoothing tweaks
 body {
-    font-family: 'Roboto Flex', sans-serif !important;
+    font-family: $font-family !important;
     background-color: var(--bg-color) !important;
     -webkit-font-smoothing: antialiased;
 }

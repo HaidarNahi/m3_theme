@@ -1,0 +1,572 @@
+{
+ "actions": [],
+ "allow_copy": 0,
+ "allow_events_in_timeline": 0,
+ "allow_guest_to_view": 0,
+ "allow_import": 0,
+ "allow_rename": 0,
+ "autoname": "",
+ "beta": 0,
+ "creation": "2026-02-25 11:50:00.000000",
+ "custom": 0,
+ "docstatus": 0,
+ "doctype": "DocType",
+ "document_type": "",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "appearance_tab",
+  "colors_section",
+  "color_scheme",
+  "primary_color",
+  "cb_primary",
+  "secondary_color",
+  "surface_color",
+  "background_color",
+  "cb_colors2",
+  "error_color",
+  "on_primary_color",
+  "typography_section",
+  "font_family",
+  "base_font_size",
+  "cb_font",
+  "heading_font_family",
+  "font_weight_body",
+  "layout_section",
+  "border_radius",
+  "navbar_height",
+  "cb_layout",
+  "sidebar_width",
+  "sidebar_rail_width",
+  "sidebar_tab",
+  "sidebar_section",
+  "sidebar_mode",
+  "sidebar_position",
+  "cb_sidebar",
+  "sidebar_show_module_icons",
+  "sidebar_show_module_names",
+  "sidebar_show_favorites",
+  "sidebar_items_section",
+  "sidebar_hidden_modules",
+  "navbar_tab",
+  "navbar_section",
+  "show_search_bar",
+  "show_notification_bell",
+  "cb_navbar",
+  "show_help_menu",
+  "show_app_switcher",
+  "custom_logo",
+  "custom_logo_height",
+  "cb_logo",
+  "navbar_custom_html",
+  "profile_tab",
+  "profile_section",
+  "show_my_profile_link",
+  "show_my_settings_link",
+  "cb_profile",
+  "show_session_defaults_link",
+  "show_keyboard_shortcuts_link",
+  "show_switch_to_desk_link",
+  "show_switch_to_website_link",
+  "cb_profile2",
+  "profile_custom_links",
+  "login_tab",
+  "login_section",
+  "login_logo",
+  "login_background_image",
+  "cb_login",
+  "login_page_title",
+  "login_page_subtitle",
+  "login_brand_color",
+  "cb_login2",
+  "show_social_login",
+  "show_email_password_login",
+  "login_footer_text",
+  "website_tab",
+  "website_section",
+  "website_logo",
+  "website_favicon",
+  "cb_website",
+  "website_font_family",
+  "website_primary_color",
+  "website_navbar_color",
+  "advanced_tab",
+  "advanced_section",
+  "inject_custom_css",
+  "custom_css",
+  "cb_advanced",
+  "inject_custom_js",
+  "custom_js",
+  "developer_mode_notice"
+ ],
+ "fields": [
+  {
+   "fieldname": "appearance_tab",
+   "fieldtype": "Tab Break",
+   "label": "Appearance"
+  },
+  {
+   "fieldname": "colors_section",
+   "fieldtype": "Section Break",
+   "label": "🎨 Colors"
+  },
+  {
+   "default": "System (Auto)",
+   "fieldname": "color_scheme",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Color Scheme",
+   "options": "Light\nDark\nSystem (Auto)"
+  },
+  {
+   "fieldname": "primary_color",
+   "fieldtype": "Color",
+   "label": "Primary Color",
+   "description": "Main brand/action color used for buttons, links, and highlights"
+  },
+  {
+   "fieldname": "cb_primary",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "secondary_color",
+   "fieldtype": "Color",
+   "label": "Secondary Color",
+   "description": "Used for secondary actions and accents"
+  },
+  {
+   "fieldname": "workspace_bg_color",
+   "fieldtype": "Color",
+   "label": "Workspace / Canvas Block Background Color"
+  },
+  {
+   "fieldname": "surface_color",
+   "fieldtype": "Color",
+   "label": "Surface / Card Color",
+   "description": "Background of cards, dialogs, and containers"
+  },
+  {
+   "fieldname": "cb_colors2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "error_color",
+   "fieldtype": "Color",
+   "label": "Error / Danger Color",
+   "description": "Used for delete, warnings, and validation errors"
+  },
+  {
+   "fieldname": "on_primary_color",
+   "fieldtype": "Color",
+   "label": "Text on Primary Color",
+   "description": "Text color placed on top of the primary color"
+  },
+  {
+   "fieldname": "typography_section",
+   "fieldtype": "Section Break",
+   "label": "✏️ Typography"
+  },
+  {
+   "default": "Readex Pro",
+   "fieldname": "font_family",
+   "fieldtype": "Select",
+   "label": "Body Font Family",
+   "options": "Readex Pro\nInter\nRoboto\nNoto Sans\nPoppins\nOutfit\nDM Sans\nPlusJakarta Sans\nIBM Plex Sans\nSystem Default"
+  },
+  {
+   "default": "14",
+   "fieldname": "base_font_size",
+   "fieldtype": "Int",
+   "label": "Base Font Size (px)",
+   "description": "Default: 14px"
+  },
+  {
+   "fieldname": "cb_font",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Same as Body",
+   "fieldname": "heading_font_family",
+   "fieldtype": "Select",
+   "label": "Heading Font Family",
+   "options": "Same as Body\nReadex Pro\nInter\nRoboto\nNoto Sans\nPoppins\nOutfit\nDM Sans\nPlusJakarta Sans\nIBM Plex Sans"
+  },
+  {
+   "default": "400",
+   "fieldname": "font_weight_body",
+   "fieldtype": "Select",
+   "label": "Body Font Weight",
+   "options": "300\n400\n500"
+  },
+  {
+   "fieldname": "layout_section",
+   "fieldtype": "Section Break",
+   "label": "📐 Layout & Spacing"
+  },
+  {
+   "default": "12",
+   "fieldname": "border_radius",
+   "fieldtype": "Int",
+   "label": "Border Radius (px)",
+   "description": "Corner roundness for cards and buttons. Default: 12"
+  },
+  {
+   "default": "0",
+   "fieldname": "compact_density",
+   "fieldtype": "Check",
+   "label": "Enable Compact Density (Shrink padding/margins by 30%)"
+  },
+  {
+   "default": "48",
+   "fieldname": "navbar_height",
+   "fieldtype": "Int",
+   "label": "Navbar Height (px)",
+   "description": "Default: 48px"
+  },
+  {
+   "fieldname": "cb_layout",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "260",
+   "fieldname": "sidebar_width",
+   "fieldtype": "Int",
+   "label": "Sidebar Drawer Width (px)",
+   "description": "Width when sidebar is fully expanded. Default: 260"
+  },
+  {
+   "default": "72",
+   "fieldname": "sidebar_rail_width",
+   "fieldtype": "Int",
+   "label": "Sidebar Rail Width (px)",
+   "description": "Width when sidebar is collapsed to icon-only mode. Default: 72"
+  },
+  {
+   "fieldname": "sidebar_tab",
+   "fieldtype": "Tab Break",
+   "label": "Sidebar"
+  },
+  {
+   "fieldname": "sidebar_section",
+   "fieldtype": "Section Break",
+   "label": "📐 Sidebar Behavior"
+  },
+  {
+   "default": "Drawer",
+   "fieldname": "sidebar_mode",
+   "fieldtype": "Select",
+   "label": "Default Sidebar Mode",
+   "options": "Drawer\nRail\nHidden"
+  },
+  {
+   "default": "Left",
+   "fieldname": "sidebar_position",
+   "fieldtype": "Select",
+   "label": "Sidebar Position",
+   "options": "Left\nRight"
+  },
+  {
+   "fieldname": "cb_sidebar",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "sidebar_show_module_icons",
+   "fieldtype": "Check",
+   "label": "Show Module Icons"
+  },
+  {
+   "default": "1",
+   "fieldname": "sidebar_show_module_names",
+   "fieldtype": "Check",
+   "label": "Show Module Names (in Drawer mode)"
+  },
+  {
+   "default": "1",
+   "fieldname": "sidebar_show_favorites",
+   "fieldtype": "Check",
+   "label": "Show Favorites in Sidebar"
+  },
+  {
+   "fieldname": "sidebar_builder_section",
+   "fieldtype": "Section Break",
+   "label": "🛠️ Custom Sidebar Builder"
+  },
+  {
+   "fieldname": "custom_sidebar",
+   "fieldtype": "Table",
+   "label": "Custom Sidebar Items",
+   "options": "M3 Sidebar Item"
+  },
+  {
+   "fieldname": "navbar_tab",
+   "fieldtype": "Tab Break",
+   "label": "Navbar"
+  },
+  {
+   "fieldname": "navbar_section",
+   "fieldtype": "Section Break",
+   "label": "🔍 Navbar Elements"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_search_bar",
+   "fieldtype": "Check",
+   "label": "Show Search Bar"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_notification_bell",
+   "fieldtype": "Check",
+   "label": "Show Notification Bell"
+  },
+  {
+   "fieldname": "cb_navbar",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_help_menu",
+   "fieldtype": "Check",
+   "label": "Show Help Menu"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_app_switcher",
+   "fieldtype": "Check",
+   "label": "Show App Switcher"
+  },
+  {
+   "fieldname": "custom_logo",
+   "fieldtype": "Attach Image",
+   "label": "Custom Navbar Logo",
+   "description": "Replaces the default app logo in the navbar. Recommended: 32×32px SVG or PNG"
+  },
+  {
+   "default": "32",
+   "fieldname": "custom_logo_height",
+   "fieldtype": "Int",
+   "label": "Logo Display Height (px)"
+  },
+  {
+   "fieldname": "cb_logo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "profile_tab",
+   "fieldtype": "Tab Break",
+   "label": "Profile Menu"
+  },
+  {
+   "fieldname": "profile_section",
+   "fieldtype": "Section Break",
+   "label": "👤 Profile Dropdown Items"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_my_profile_link",
+   "fieldtype": "Check",
+   "label": "Show “My Profile”"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_my_settings_link",
+   "fieldtype": "Check",
+   "label": "Show “My Settings”"
+  },
+  {
+   "fieldname": "cb_profile",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_session_defaults_link",
+   "fieldtype": "Check",
+   "label": "Show “Session Defaults”"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_keyboard_shortcuts_link",
+   "fieldtype": "Check",
+   "label": "Show “Keyboard Shortcuts”"
+  },
+  {
+   "fieldname": "cb_profile2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_switch_to_desk_link",
+   "fieldtype": "Check",
+   "label": "Show “Switch to Desk”"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_switch_to_website_link",
+   "fieldtype": "Check",
+   "label": "Show “Switch to Website”"
+  },
+  {
+   "fieldname": "profile_links_section",
+   "fieldtype": "Section Break",
+   "label": "🔗 Custom Profile Links"
+  },
+  {
+   "fieldname": "profile_links",
+   "fieldtype": "Table",
+   "label": "Profile Links",
+   "options": "M3 Profile Link"
+  },
+  {
+   "fieldname": "login_tab",
+   "fieldtype": "Tab Break",
+   "label": "Login Page"
+  },
+  {
+   "fieldname": "login_section",
+   "fieldtype": "Section Break",
+   "label": "🔐 Login Page Branding"
+  },
+  {
+   "fieldname": "login_logo",
+   "fieldtype": "Attach Image",
+   "label": "Login Page Logo",
+   "description": "Logo displayed above the login form"
+  },
+  {
+   "fieldname": "login_background_image",
+   "fieldtype": "Attach Image",
+   "label": "Login Background Image",
+   "description": "Full-page background for the login screen"
+  },
+  {
+   "default": "0.5",
+   "fieldname": "login_overlay_opacity",
+   "fieldtype": "Float",
+   "label": "Login Default Overlay Darkness (0.0 to 1.0)"
+  },
+  {
+   "fieldname": "cb_login",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "login_page_title",
+   "fieldtype": "Data",
+   "label": "Login Page Title",
+   "description": "Shown above the login form (e.g. company name)"
+  },
+  {
+   "fieldname": "login_page_subtitle",
+   "fieldtype": "Data",
+   "label": "Login Page Subtitle",
+   "description": "Tagline or welcome message"
+  },
+  {
+   "fieldname": "cb_login2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_social_login",
+   "fieldtype": "Check",
+   "label": "Show Social Login Buttons (Google, etc.)"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_email_password_login",
+   "fieldtype": "Check",
+   "label": "Show Email/Password Login"
+  },
+  {
+   "fieldname": "login_footer_text",
+   "fieldtype": "Data",
+   "label": "Login Footer Text",
+   "description": "e.g. © 2026 Company Name. All rights reserved."
+  },
+  {
+   "fieldname": "advanced_tab",
+   "fieldtype": "Tab Break",
+   "label": "Advanced"
+  },
+  {
+   "fieldname": "advanced_section",
+   "fieldtype": "Section Break",
+   "label": "🛠️ Custom CSS / JS"
+  },
+  {
+   "default": "0",
+   "fieldname": "inject_custom_css",
+   "fieldtype": "Check",
+   "label": "Enable Custom CSS Injection"
+  },
+  {
+   "fieldname": "custom_css",
+   "fieldtype": "Code",
+   "label": "Custom CSS",
+   "options": "CSS",
+   "depends_on": "eval:doc.inject_custom_css == 1"
+  },
+  {
+   "fieldname": "cb_advanced",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "inject_custom_js",
+   "fieldtype": "Check",
+   "label": "Enable Custom JS Injection"
+  },
+  {
+   "fieldname": "custom_js",
+   "fieldtype": "Code",
+   "label": "Custom JavaScript",
+   "options": "JavaScript",
+   "depends_on": "eval:doc.inject_custom_js == 1"
+  },
+  {
+   "fieldname": "developer_mode_notice",
+   "fieldtype": "HTML",
+   "label": "Developer Notice",
+   "options": "<div class='alert alert-warning'><b>⚠️ Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
+  }
+ ],
+ "icon": "palette",
+ "idx": 0,
+ "image_field": "",
+ "in_create": 0,
+ "is_single": 1,
+ "is_submittable": 0,
+ "is_virtual": 0,
+ "issingle": 1,
+ "istable": 0,
+ "max_attachments": 10,
+ "modified": "2026-02-25 11:50:00.000000",
+ "modified_by": "Administrator",
+ "module": "M3 Theme",
+ "name": "Theme Settings",
+ "naming_rule": "Autoname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 0,
+   "role": "System Manager",
+   "select": 0,
+   "share": 1,
+   "submit": 0,
+   "write": 1
+  }
+ ],
+ "quick_entry": 0,
+ "read_only": 0,
+ "search_fields": "",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "track_seen": 0
+}

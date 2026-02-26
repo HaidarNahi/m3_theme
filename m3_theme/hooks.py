@@ -26,7 +26,8 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 app_include_css = [
-    "https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+    "https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
     "m3_theme.bundle.css"
 ]
 app_include_js = "m3_theme.bundle.js"
@@ -244,3 +245,5 @@ web_include_js = "m3_theme.bundle.js"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+
+extend_bootinfo = ["m3_theme.boot.boot_session"]

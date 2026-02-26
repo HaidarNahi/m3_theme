@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-24 14:45:28.267371",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "select_yfle",
+  "column_break_iufe",
+  "datetime_akio",
+  "section_break_vkqu",
+  "text_editor_nlzp",
+  "tab_2_tab",
+  "autocomplete_ucij"
+ ],
+ "fields": [
+  {
+   "fieldname": "select_yfle",
+   "fieldtype": "Select",
+   "label": "select list"
+  },
+  {
+   "fieldname": "column_break_iufe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "datetime_akio",
+   "fieldtype": "Datetime",
+   "label": "datetime"
+  },
+  {
+   "fieldname": "section_break_vkqu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "text_editor_nlzp",
+   "fieldtype": "Text Editor",
+   "label": "text editor"
+  },
+  {
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tab 2"
+  },
+  {
+   "fieldname": "autocomplete_ucij",
+   "fieldtype": "Autocomplete",
+   "label": "autocomplete"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-24 14:47:14.658931",
+ "modified_by": "Administrator",
+ "module": "M3 Theme",
+ "name": "testing the theme",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

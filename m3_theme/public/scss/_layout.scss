@@ -1,32 +1,890 @@
-// Target the DataValue sidebar classes you found
-.side-menu {
-    background: var(--bg-color);
+// ═══════════════════════════════════════════════════════
+//  M3 Layout — Fixed sidebar + native page-head
+//  Sidebar: position:fixed (always visible, never removed by Frappe)
+//  Content: pushed right via padding-left (no overlay)
+//  Page-head: Frappe's own element, shown & styled (has all controls)
+// ═══════════════════════════════════════════════════════
 
-    .side-menu-icons {
-        width: 80px;
-        background: var(--card-bg); // Surface Container
+$nav-drawer-width: 260px;
+$nav-rail-width: 80px;
+$navbar-height: 64px;
+$m3-duration: 300ms;
+$m3-easing: cubic-bezier(0.2, 0, 0, 1);
+$indicator-radius: 28px;
 
-        ul li a {
-            border-radius: 16px; // M3 Standard rounding
-            transition: all 0.2s cubic-bezier(0.05, 0.7, 0.1, 1);
+// ── Set navbar height CSS variable for Frappe's sticky page-head ──
+:root {
+    --navbar-height: #{$navbar-height} !important;
+}
 
-            &:hover {
-                background: var(--blue_color_style_light);
-            }
+// ═══════════════════════════════
+//  LAYOUT RESETS
+// ═══════════════════════════════
 
-            &.active {
-                background: var(--primary);
-                color: white;
+.page-body.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.layout-main.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    display: flex !important;
+
+    // Force the main content to the left
+    .layout-main-section-wrapper {
+        order: 1 !important;
+    }
+
+    // Force the form/list sidebar to the right
+    .layout-side-section {
+        order: 2 !important;
+    }
+}
+
+// Hide Frappe's original sidebar (we have our own fixed one)
+// ONLY hide it if it contains the old desk sidebar, to preserve List/Form sidebars!
+.layout-side-section {
+    &:has(.desk-sidebar) {
+        display: none !important;
+    }
+}
+
+.desk-sidebar {
+    display: none !important;
+}
+
+// ── M3 Internal Sidebar Toggle Pill ──
+.m3-pill-sidebar-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: #{$m3-on-surface} !important;
+    font-family: $font-family !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+    margin-left: 12px !important;
+    box-shadow: none !important;
+
+    // Force it to the absolute right inside the .page-actions flex container
+    order: 999 !important;
+
+    .material-symbols-rounded {
+        font-size: 20px !important;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    &:hover {
+        background: rgba(var(--m3-on-surface-rgb), 0.08) !important;
+    }
+
+    &.active {
+        background: rgba(var(--m3-primary-rgb), 0.12) !important;
+        color: #{$m3-primary} !important;
+
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            color: #{$m3-primary} !important;
+        }
+    }
+}
+
+// ── Inside styling for Form/List Sidebar ──
+.m3-internal-sidebar {
+    padding: 16px !important;
+    background: var(--surface) !important;
+    border-radius: 12px !important;
+    // Do not set border here, let Frappe defaults combine or explicitly style
+}
+
+// ═══════════════════════════════
+//  PUSH CONTENT RIGHT — desk only
+//  padding-left on the page container so content
+//  sits beside the sidebar, not behind it
+body.m3-desk .page-container {
+    padding-left: $nav-drawer-width !important;
+    transition: padding-left $m3-duration $m3-easing !important;
+
+    @media (max-width: 991px) {
+        padding-left: $nav-rail-width !important;
+    }
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+}
+
+body.m3-desk.sidebar-collapsed .page-container {
+    padding-left: $nav-rail-width !important;
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+}
+
+.layout-main-section {
+    margin-top: 24px !important;
+    padding: 16px 24px !important;
+}
+
+// ═══════════════════════════════
+//  PAGE TRANSITIONS
+// ═══════════════════════════════
+
+@keyframes m3PageFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.page {
+    // Slower, simple fade for better UX on slow loading pages
+    animation: m3PageFadeIn 100ms ease-in-out forwards !important;
+}
+
+// ═══════════════════════════════
+//  FIXED SIDEBAR & BACKDROP
+// ═══════════════════════════════
+
+// Only inject sidebar-related layout on the Frappe desk (not on website pages)
+body.m3-desk {
+    #m3-mobile-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1025; // Below sidebar (1030) but above everything else
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        transition: opacity $m3-duration $m3-easing;
+
+        body.mobile-sidebar-open & {
+            @media (max-width: 767px) {
+                display: block;
+                opacity: 1;
             }
         }
     }
 }
 
-// Rounding all ERPNext Cards/Widgets to match M3
+#m3-fixed-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $nav-drawer-width;
+    background: #{$m3-surface-container} !important;
+    border-right: 1px solid #{$m3-outline-variant};
+    box-sizing: border-box;
+    padding: 0 12px 12px 12px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1030;
+    transition: width $m3-duration $m3-easing,
+        padding $m3-duration $m3-easing;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(var(--m3-outline-rgb), 0.3);
+        border-radius: 4px;
+    }
+
+    @media (max-width: 991px) {
+        width: $nav-rail-width;
+        padding: 0 4px 12px 4px;
+    }
+
+    @media (max-width: 767px) {
+        width: $nav-drawer-width;
+        padding: 0 12px 12px 12px;
+        transform: translateX(-100%);
+        backdrop-filter: none;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.2); // Modal elevation
+    }
+
+    body.sidebar-collapsed & {
+        width: $nav-rail-width;
+        padding: 0 4px 12px 4px;
+    }
+
+    body.mobile-sidebar-open & {
+        @media (max-width: 767px) {
+            transform: translateX(0);
+        }
+    }
+
+    .m3-sidebar-header {
+        height: $navbar-height;
+        min-height: $navbar-height;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: #{$m3-surface-container};
+        z-index: 2;
+        padding-left: 8px; // 12px parent padding + 8px header padding = 20px offset. 40px radius = perfectly matches the 28px combined offset of item icons.
+
+        body.sidebar-collapsed &,
+        body.mobile-sidebar-open & {
+            justify-content: center;
+            padding-left: 0;
+        }
+
+        @media (max-width: 991px) {
+            justify-content: center;
+            padding-left: 0;
+        }
+
+        @media (max-width: 767px) {
+            // On true mobile, we use full drawer width so restore padding layout
+            justify-content: flex-start;
+            padding-left: 8px;
+        }
+
+        .m3-sidebar-toggle-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 20px !important;
+            border: none !important;
+            background: none !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            margin-left: 0 !important;
+
+            &:hover {
+                background: rgba(var(--m3-primary-rgb), 0.08) !important;
+            }
+
+            .material-symbols-rounded {
+                font-size: 24px;
+                color: #{$m3-on-surface};
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════
+//  PAGE HEAD — M3 styled
+//  Frappe's native element: has title, toggle, actions
+// ═══════════════════════════════
+
+.page-head {
+    background: #{$m3-surface} !important;
+    border-bottom: 1px solid #{$m3-outline-variant} !important;
+    box-shadow: none !important;
+    position: sticky !important;
+    z-index: 100 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    // ── Make .container full-width (override Bootstrap max-width) ──
+    // NOTE: Do NOT add sidebar-offset padding here.
+    //       The .page-container wrapping element already has padding-left
+    //       = $nav-drawer-width, so .page-head is already offset correctly.
+    //       Adding padding again causes a double-offset (520px instead of 260px).
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    // ── Make the inner row a true full-width flex ──
+    // Frappe renders .row.page-head-content.justify-between inside .container.
+    // Bootstrap columns (col-md-4) will restrict width. Override to full flex.
+    .row.page-head-content,
+    .page-head-content {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    // ── ITEM 3: Page title stays at left edge of content ──
+    .page-title,
+    .page-head-content>.page-title {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        flex-shrink: 1 !important;
+        flex-grow: 0 !important;
+        min-width: 0 !important;
+        // Override Bootstrap col-md-4 width
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    // ── ISSUE 2 & 3: Fix .page-actions layout ──
+    // DOM structure: .page-actions.col.flex.justify-content-end
+    //   └─ .custom-actions.hidden-xs.hidden-md  (List View / View / Actions / Duplicate)
+    //   └─ .standard-actions.flex               (Refresh / Save / Add Item / ...)
+    //
+    // The Bootstrap `col` class sets flex: 1 1 0 which is correct (takes remaining width).
+    // BUT Frappe adds `flex-direction: column` behaviour through `col` utility class,
+    // stacking children vertically. Also `.hidden-md` hides custom-actions on desktop.
+    // Fix: force flex-direction: row on .page-actions and show .custom-actions always.
+    .page-actions {
+        display: flex !important;
+        flex-direction: row !important; // ← was being stacked column via .col class
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        margin-left: auto !important; // ← pins entire block to right
+        margin-right: 0 !important;
+        flex-shrink: 0 !important;
+        flex-wrap: nowrap !important;
+        width: auto !important; // override Bootstrap col width
+        max-width: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        // ── Show custom-actions (List View, View, Actions, Duplicate) ──
+        // Frappe adds hidden-xs hidden-md which hides this on medium screens.
+        // We must forcibly show it on desktop.
+        .custom-actions {
+            display: flex !important; // ← override hidden-md display:none
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 4px !important;
+            margin-right: 4px !important; // small gap before standard-actions
+        }
+
+        // ── Standard actions inline with custom-actions ──
+        .standard-actions {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        // Uniform button sizing — applies to all buttons inside .page-actions
+        .btn {
+            height: 36px !important;
+            min-height: 36px !important;
+            padding: 0 16px !important;
+            border-radius: 18px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 14px !important;
+            white-space: nowrap !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .btn-primary {
+            min-width: 80px !important;
+
+            span {
+                display: inline-flex !important;
+                white-space: nowrap !important;
+                align-items: center !important;
+            }
+        }
+
+        // Pillar-B toggle pill: minimal right margin
+        >.btn:last-of-type,
+        >.m3-pill-sidebar-toggle,
+        .standard-actions>.btn:last-of-type,
+        .standard-actions>.m3-pill-sidebar-toggle {
+            margin-right: 4px !important;
+        }
+
+        // ── ITEM 5: Hide phantom empty buttons ──
+        .btn:empty,
+        .page-icon-group .btn:empty,
+        .btn[class*='btn-default']:empty,
+        .btn[class*='btn-secondary']:empty {
+            display: none !important;
+        }
+    }
+
+    // ── ITEM 5 (extended): phantom buttons outside .page-actions ──
+    .page-icon-group .btn:empty {
+        display: none !important;
+    }
+
+    .sidebar-toggle-btn {
+        display: none !important;
+
+        // On strict mobile (<767px) restore native hamburger to open our modal sidebar
+        @media (max-width: 767px) {
+            display: inline-flex !important;
+            margin-right: 12px !important;
+            background: none !important;
+            border: none !important;
+            align-items: center;
+            justify-content: center;
+            color: #{$m3-on-surface};
+
+            svg {
+                display: none !important;
+            }
+
+            .material-symbols-rounded {
+                font-size: 24px !important;
+            }
+        }
+    }
+
+    .title-text {
+        font-family: $font-family !important;
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        color: #{$m3-on-surface} !important;
+    }
+}
+
+// ═══════════════════════════════
+//  SIDEBAR ITEMS
+// ═══════════════════════════════
+
+#m3-fixed-sidebar .sidebar-item-container {
+    margin: 4px 0 12px 0 !important;
+    padding-bottom: 4px !important;
+}
+
+#m3-fixed-sidebar .desk-sidebar-item {
+    border-radius: $indicator-radius !important;
+    margin: 0 !important;
+    position: relative;
+
+    a.item-anchor {
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 16px !important;
+        height: 40px !important;
+        gap: 12px !important;
+        text-decoration: none !important;
+        border-radius: $indicator-radius !important;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: padding $m3-duration $m3-easing, gap $m3-duration $m3-easing;
+
+        body.sidebar-collapsed & {
+            justify-content: center !important;
+            padding: 0 !important;
+            gap: 0 !important;
+        }
+    }
+
+    .sidebar-item-icon {
+        min-width: 24px !important;
+        width: 24px !important;
+        height: 24px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+
+        .material-symbols-rounded {
+            font-size: 24px;
+            color: #{$m3-on-surface};
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        svg {
+            display: none !important;
+        }
+    }
+
+    .sidebar-item-label {
+        font-family: $font-family !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #{$m3-on-surface} !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: opacity $m3-duration $m3-easing,
+            max-width $m3-duration $m3-easing,
+            margin $m3-duration $m3-easing !important;
+        max-width: 200px;
+
+        body.sidebar-collapsed & {
+            opacity: 0 !important;
+            max-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+    &:hover {
+        background: rgba(var(--m3-primary-rgb), 0.08) !important;
+    }
+
+    &.selected {
+        background: rgba(var(--m3-primary-rgb), 0.12) !important;
+
+        .sidebar-item-label {
+            color: #{$m3-primary} !important;
+            font-weight: 600 !important;
+        }
+
+        .sidebar-item-icon .material-symbols-rounded {
+            color: #{$m3-primary};
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    }
+
+    .sidebar-item-control {
+        transition: opacity $m3-duration $m3-easing !important;
+
+        body.sidebar-collapsed & {
+            opacity: 0 !important;
+            width: 0 !important;
+            overflow: hidden;
+            pointer-events: none;
+        }
+    }
+}
+
+// ═══════════════════════════════
+//  COLLAPSED TOOLTIPS
+// ═══════════════════════════════
+
+body.sidebar-collapsed {
+    #m3-fixed-sidebar .desk-sidebar-item {
+        position: relative;
+
+        &:hover::after {
+            content: attr(data-label);
+            position: absolute;
+            left: calc(100% + 8px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: #{$m3-on-surface};
+            color: #{$m3-surface};
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: $font-family;
+            white-space: nowrap;
+            z-index: 9999;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(var(--m3-on-surface-rgb), 0.15);
+            animation: m3-tooltip-in 150ms $m3-easing;
+        }
+    }
+}
+
+@keyframes m3-tooltip-in {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+// ═══════════════════════════════
+//  CARDS & WIDGETS
+// ═══════════════════════════════
+
 .widget,
 .frappe-card,
 .shortcut-widget-box {
     border-radius: 12px !important;
     border: 1px solid var(--border-color) !important;
     box-shadow: none !important;
+    padding: 16px 20px !important;
+}
+
+.widget .widget-body,
+.widget .widget-head {
+    padding: 4px 0 !important;
+}
+
+.shortcut-widget-box {
+    padding: 10px 16px !important;
+}
+
+// ═══════════════════════════════
+//  NAVBAR
+// ═══════════════════════════════
+
+// ── NAVBAR: Brand/breadcrumbs sync with left sidebar ──
+// The whole .navbar is offset left via padding-left = sidebar width.
+// Transition fires when body.m3-desk.sidebar-collapsed is applied by JS.
+body.m3-desk .navbar {
+    height: $navbar-height !important;
+    min-height: $navbar-height !important;
+    padding: 0 0 0 $nav-drawer-width !important;
+    background: #{$m3-surface} !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1020 !important;
+    transition: padding-left $m3-duration $m3-easing !important;
+
+    @media (max-width: 991px) {
+        padding-left: $nav-rail-width !important;
+    }
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+
+    // Inner container stretches edge-to-edge within the offset area
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 16px !important;
+        // relative so the absolutely-centred search bar is relative to this
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        flex-shrink: 0;
+        margin-right: 0 !important; // no extra gap
+    }
+
+    .navbar-collapse {
+        height: 100%;
+        display: flex !important;
+        align-items: center !important;
+        // Push right-side items (bell, help, avatar) to the far right
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
+    }
+
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+}
+
+// ── FIX: sidebar-collapsed must be a SIBLING class on body, not nested ──
+// body.sidebar-collapsed & {} inside the above block would generate:
+//   body.sidebar-collapsed body.m3-desk .navbar  → INVALID (body inside body)
+// So we write it as a separate top-level rule:
+body.m3-desk.sidebar-collapsed .navbar {
+    padding-left: $nav-rail-width !important;
+}
+
+// ═══════════════════════════════
+//  SEARCH BAR — ITEM 2: Locked center position
+//  Absolutely centred inside .navbar .container so it is completely
+//  immune to the right-side items (bell/avatar) or Pillar B toggling.
+// ═══════════════════════════════
+
+.navbar .search-bar {
+    // ── Fixed 360px pill, horizontally centred in the content column ──
+    width: 360px !important;
+    max-width: 360px !important;
+    min-width: 360px !important;
+    height: 44px !important;
+    border-radius: 22px !important;
+    background: #{$m3-surface-container} !important;
+    border: none !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+
+    // Absolutely centre inside .navbar .container (which is position:relative).
+    // This means neither the brand on the left nor the nav-icons on the right
+    // can ever nudge it — it is always dead-centre of the available navbar width.
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+
+    transition: background $m3-duration $m3-easing,
+        box-shadow $m3-duration $m3-easing !important;
+
+    // On strict mobile, flow normally — viewport is too narrow for absolute centering
+    @media (max-width: 767px) {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: unset !important;
+        flex-grow: 1;
+        margin: 0 8px;
+    }
+
+    &:focus-within {
+        background: var(--m3-surface-container-high) !important;
+        box-shadow: 0 1px 3px rgba(var(--m3-on-surface-rgb), 0.12) !important;
+    }
+
+    #navbar-search,
+    input.form-control {
+        height: 44px !important;
+        font-size: 14px !important;
+        font-family: $font-family !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 16px 0 36px !important;
+        color: #{$m3-on-surface} !important;
+
+        &::placeholder {
+            color: #{$m3-outline} !important;
+            font-size: 14px;
+        }
+    }
+
+    .search-icon,
+    .input-group-prepend {
+        display: flex;
+        align-items: center;
+        color: #{$m3-outline};
+    }
+}
+
+// ═══════════════════════════════
+//  SYSTEM ICON REPLACEMENTS
+// ═══════════════════════════════
+.m3-system-icon {
+    font-family: 'Material Symbols Rounded' !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    color: inherit;
+
+    // Default fallback size
+    font-size: 16px !important;
+    width: auto;
+    height: auto;
+
+    // Frappe class sizings
+    &.icon-xs {
+        font-size: 12px !important;
+        width: 12px;
+        height: 12px;
+    }
+
+    &.icon-sm {
+        font-size: 14px !important;
+        width: 14px;
+        height: 14px;
+    }
+
+    &.icon-md {
+        font-size: 18px !important;
+        width: 18px;
+        height: 18px;
+    }
+
+    &.icon-lg {
+        font-size: 24px !important;
+        width: 24px;
+        height: 24px;
+    }
+
+    &.icon-xl {
+        font-size: 32px !important;
+        width: 32px;
+        height: 32px;
+    }
+
+    // Tweak to ensure it looks okay in buttons
+    .btn & {
+        margin-right: 4px;
+    }
+
+    // Prevent margin if icon is the only child
+    .btn.btn-icon & {
+        margin-right: 0 !important;
+    }
+}
+
+// ═══════════════════════════════
+//  LIKE / FAVORITE BUTTON STATES
+//  Material Symbols FILL axis:
+//    FILL 0 = outlined ♡  (not liked)
+//    FILL 1 = filled   ♥  (liked)
+//  Frappe toggles .liked / .not-liked on .like-action
+// ═══════════════════════════════
+
+// ── Not liked: explicit outline (already the default, but be safe) ──
+.like-action.not-liked .m3-system-icon,
+.like-action:not(.liked) .m3-system-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: var(--m3-outline) !important; // muted grey when not liked
+    transition: font-variation-settings 200ms ease,
+        color 200ms ease;
+}
+
+// ── Liked / Favorited: filled heart + M3 "error" red ──
+.like-action.liked .m3-system-icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: var(--m3-error) !important; // M3 error red = ♥ liked
+    transition: font-variation-settings 200ms ease,
+        color 200ms ease;
+}
+
+// ── Hover: show a subtle filled preview before clicking ──
+.like-action.not-liked:hover .m3-system-icon,
+.like-action:not(.liked):hover .m3-system-icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: color-mix(in srgb, var(--m3-error) 60%, transparent) !important;
+}
+
+// ── List header "Liked by me" filter button ──
+// Different from per-row buttons: Frappe toggles .active (not .liked) on .list-liked-by-me
+// OFF (no filter): outlined heart ♡
+.list-liked-by-me:not(.active) .m3-system-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: var(--m3-outline) !important;
+    transition: font-variation-settings 200ms ease, color 200ms ease;
+    cursor: pointer;
+}
+
+// ON (filter active): filled heart ♥ + primary color to show it's a live filter
+.list-liked-by-me.active .m3-system-icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: var(--m3-error) !important;
+    transition: font-variation-settings 200ms ease, color 200ms ease;
+}
+
+// Hover (when not active): preview filled
+.list-liked-by-me:not(.active):hover .m3-system-icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+    color: color-mix(in srgb, var(--m3-error) 60%, transparent) !important;
 }
