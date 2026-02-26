@@ -416,7 +416,13 @@
                     ul.querySelectorAll('.m3-external-link').forEach(el => el.remove());
                     var li = document.createElement('li');
                     li.className = 'm3-external-link nav-item';
-                    li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" onclick="window.open(this.href, '_blank'); return false;" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
+                    li.innerHTML = `<a class="nav-link" href="${doc.external_link_url}" title="${doc.external_link_label}" style="display:flex; align-items:center; gap:4px; font-weight: 500; font-size: 13px;">${doc.external_link_label}</a>`;
+
+                    li.querySelector('a').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.open(doc.external_link_url, '_blank', 'noopener,noreferrer');
+                    });
 
                     var helpParent = ul.querySelector('.dropdown-help');
                     var profileParent = ul.querySelector('.dropdown-navbar-user');
