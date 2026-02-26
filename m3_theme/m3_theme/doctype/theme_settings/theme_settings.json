@@ -1,17 +1,8 @@
 {
  "actions": [],
- "allow_copy": 0,
- "allow_events_in_timeline": 0,
- "allow_guest_to_view": 0,
- "allow_import": 0,
- "allow_rename": 0,
- "autoname": "",
- "beta": 0,
- "creation": "2026-02-25 11:50:00.000000",
- "custom": 0,
- "docstatus": 0,
+ "autoname": "hash",
+ "creation": "2026-02-25 11:50:00",
  "doctype": "DocType",
- "document_type": "",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
@@ -31,15 +22,15 @@
   "custom_sidebar",
   "navbar_tab",
   "navbar_section",
-  "navbar_type",
   "custom_logo",
   "custom_logo_height",
   "cb_logo",
   "external_link_label",
   "external_link_url",
-  "navbar_builder_section",
   "language_switcher_section",
   "language_switcher",
+  "navbar_content_visibility",
+  "navbar_type",
   "custom_navbar_html",
   "custom_navbar_data",
   "profile_tab",
@@ -89,12 +80,12 @@
    "options": "Light\nDark\nSystem (Auto)"
   },
   {
+   "default": "Default",
+   "description": "Select an M3 Material color palette for the system.",
    "fieldname": "color_palette",
    "fieldtype": "Select",
    "label": "Color Palette",
-   "options": "Default\nOcean Blue (Light)\nEmerald (Light)\nAmethyst (Dark)\nObsidian (Dark)",
-   "default": "Default",
-   "description": "Select an M3 Material color palette for the system."
+   "options": "Default\nOcean Blue (Light)\nEmerald (Light)\nAmethyst (Dark)\nObsidian (Dark)"
   },
   {
    "fieldname": "typography_section",
@@ -110,10 +101,10 @@
   },
   {
    "default": "14",
+   "description": "Default: 14px",
    "fieldname": "base_font_size",
    "fieldtype": "Int",
-   "label": "Font Size (px)",
-   "description": "Default: 14px"
+   "label": "Font Size (px)"
   },
   {
    "fieldname": "cb_font",
@@ -130,38 +121,33 @@
    "label": "Sidebar Behavior"
   },
   {
+   "default": "Default Sidebar",
    "fieldname": "sidebar_type",
    "fieldtype": "Select",
    "label": "Sidebar Content",
-   "options": "Default Sidebar\nCustom Sidebar",
-   "default": "Default Sidebar"
+   "options": "Default Sidebar\nCustom Sidebar"
   },
   {
    "fieldname": "cb_sidebar",
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'",
    "fieldname": "sidebar_builder_section",
    "fieldtype": "Section Break",
-   "label": "Custom Sidebar Builder",
-   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'"
+   "label": "Custom Sidebar Builder"
   },
   {
+   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'",
    "fieldname": "custom_sidebar",
    "fieldtype": "Table",
    "label": "Custom Sidebar Items",
-   "options": "M3 Sidebar Item",
-   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'"
+   "options": "M3 Sidebar Item"
   },
   {
    "fieldname": "navbar_tab",
    "fieldtype": "Tab Break",
    "label": "Navbar"
-  },
-  {
-   "fieldname": "navbar_logo_section",
-   "fieldtype": "Section Break",
-   "label": "Navbar Branding & Links"
   },
   {
    "fieldname": "custom_logo",
@@ -195,32 +181,31 @@
   {
    "fieldname": "language_switcher",
    "fieldtype": "Table",
-   "options": "M3 Language Switcher Item",
-   "label": "Language Switcher Options"
+   "label": "Language Switcher Options",
+   "options": "M3 Language Switcher Item"
   },
   {
    "fieldname": "navbar_section",
-   "fieldtype": "Section Break",
-   "label": "Navbar Content Visibility"
+   "fieldtype": "Section Break"
   },
   {
+   "default": "Default Navbar",
    "fieldname": "navbar_type",
    "fieldtype": "Select",
    "label": "Navbar Content",
-   "options": "Default Navbar\nCustom Navbar",
-   "default": "Default Navbar"
+   "options": "Default Navbar\nCustom Navbar"
   },
   {
+   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'",
    "fieldname": "custom_navbar_html",
    "fieldtype": "HTML",
-   "label": "Custom Navbar Builder",
-   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+   "label": "Custom Navbar Builder"
   },
   {
    "fieldname": "custom_navbar_data",
    "fieldtype": "Code",
-   "label": "Custom Navbar Data",
-   "hidden": 1
+   "hidden": 1,
+   "label": "Custom Navbar Data"
   },
   {
    "fieldname": "profile_tab",
@@ -233,29 +218,29 @@
    "label": "Profile Dropdown Items"
   },
   {
+   "default": "Default Profile Menu",
    "fieldname": "profile_menu_type",
    "fieldtype": "Select",
    "label": "Profile Menu Items",
-   "options": "Default Profile Menu\nCustom Profile Menu",
-   "default": "Default Profile Menu"
+   "options": "Default Profile Menu\nCustom Profile Menu"
   },
   {
+   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'",
    "fieldname": "profile_links_section",
    "fieldtype": "Section Break",
-   "label": "Custom Profile Links",
-   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
+   "label": "Custom Profile Links"
   },
   {
+   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'",
    "fieldname": "custom_profile_html",
    "fieldtype": "HTML",
-   "label": "Custom Profile Menu Builder",
-   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
+   "label": "Custom Profile Menu Builder"
   },
   {
    "fieldname": "custom_profile_data",
    "fieldtype": "Code",
-   "label": "Custom Profile Data",
-   "hidden": 1
+   "hidden": 1,
+   "label": "Custom Profile Data"
   },
   {
    "fieldname": "login_tab",
@@ -268,16 +253,16 @@
    "label": "Login Page Branding"
   },
   {
+   "description": "Logo displayed above the login form",
    "fieldname": "login_logo",
    "fieldtype": "Attach Image",
-   "label": "Login Page Logo",
-   "description": "Logo displayed above the login form"
+   "label": "Login Page Logo"
   },
   {
+   "description": "Full-page background for the login screen",
    "fieldname": "login_background_image",
    "fieldtype": "Attach Image",
-   "label": "Login Background Image",
-   "description": "Full-page background for the login screen"
+   "label": "Login Background Image"
   },
   {
    "default": "0.5",
@@ -290,16 +275,16 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "Shown above the login form (e.g. company name)",
    "fieldname": "login_page_title",
    "fieldtype": "Data",
-   "label": "Login Page Title",
-   "description": "Shown above the login form (e.g. company name)"
+   "label": "Login Page Title"
   },
   {
+   "description": "Tagline or welcome message",
    "fieldname": "login_page_subtitle",
    "fieldtype": "Data",
-   "label": "Login Page Subtitle",
-   "description": "Tagline or welcome message"
+   "label": "Login Page Subtitle"
   },
   {
    "fieldname": "cb_login2",
@@ -318,10 +303,10 @@
    "label": "Show Email/Password Login"
   },
   {
+   "description": "e.g. \u00a9 2026 Company Name. All rights reserved.",
    "fieldname": "login_footer_text",
    "fieldtype": "Data",
-   "label": "Login Footer Text",
-   "description": "e.g. \u00a9 2026 Company Name. All rights reserved."
+   "label": "Login Footer Text"
   },
   {
    "fieldname": "advanced_tab",
@@ -340,11 +325,11 @@
    "label": "Enable Custom CSS Injection"
   },
   {
+   "depends_on": "eval:doc.inject_custom_css == 1",
    "fieldname": "custom_css",
    "fieldtype": "Code",
    "label": "Custom CSS",
-   "options": "CSS",
-   "depends_on": "eval:doc.inject_custom_css == 1"
+   "options": "CSS"
   },
   {
    "fieldname": "cb_advanced",
@@ -357,56 +342,48 @@
    "label": "Enable Custom JS Injection"
   },
   {
+   "depends_on": "eval:doc.inject_custom_js == 1",
    "fieldname": "custom_js",
    "fieldtype": "Code",
    "label": "Custom JavaScript",
-   "options": "JavaScript",
-   "depends_on": "eval:doc.inject_custom_js == 1"
+   "options": "JavaScript"
   },
   {
    "fieldname": "developer_mode_notice",
    "fieldtype": "HTML",
    "label": "Developer Notice",
-   "options": "<div class='alert alert-warning'><b>\u26a0\ufe0f Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
+   "options": "<div class=\"alert alert-warning\"><b>\u26a0\ufe0f Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
+  },
+  {
+   "fieldname": "navbar_content_visibility",
+   "fieldtype": "Section Break",
+   "label": "Navbar Content Visibility"
   }
  ],
  "icon": "palette",
- "idx": 0,
- "image_field": "",
- "in_create": 0,
- "is_single": 1,
- "is_submittable": 0,
- "is_virtual": 0,
  "issingle": 1,
- "istable": 0,
+ "links": [],
  "max_attachments": 10,
- "modified": "2026-02-25 11:50:00.000000",
+ "modified": "2026-02-26 15:48:32.885068",
  "modified_by": "Administrator",
  "module": "M3 Theme",
  "name": "Theme Settings",
- "naming_rule": "Autoname",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
    "create": 1,
-   "delete": 0,
    "email": 1,
-   "export": 0,
    "print": 1,
    "read": 1,
-   "report": 0,
    "role": "System Manager",
-   "select": 0,
    "share": 1,
-   "submit": 0,
    "write": 1
   }
  ],
- "quick_entry": 0,
- "read_only": 0,
- "search_fields": "",
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "track_seen": 0
+ "states": [],
+ "track_changes": 1
 }

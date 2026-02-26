@@ -191,3 +191,67 @@ h6 {
         font-size: 13px !important;
     }
 }
+
+// ── 6. Material 3 Styling for Language Switcher Frappe Table ──
+.frappe-control[data-fieldname="language_switcher"],
+.frappe-control[data-fieldname="custom_sidebar"] {
+
+    .grid-container {
+        background: var(--surface) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important; // M3 Table Radius
+        overflow: hidden !important;
+        box-shadow: none !important;
+    }
+
+    .grid-heading-row {
+        background: var(--surface-container-high) !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        font-weight: 500 !important;
+        color: var(--text-color) !important;
+        font-size: 13px !important;
+        padding: 4px 0 !important;
+    }
+
+    .grid-row {
+        background: transparent !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        transition: background 0.2s ease !important;
+
+        &:hover {
+            background: var(--surface-container-lowest) !important;
+        }
+    }
+
+    .grid-body .grid-row:last-child {
+        border-bottom: none !important;
+    }
+
+    .grid-row-check {
+        accent-color: var(--primary) !important;
+        width: 16px !important;
+        height: 16px !important;
+        cursor: pointer !important;
+    }
+
+    .btn-open-row {
+        background: var(--surface-container-highest) !important;
+        color: var(--text-color) !important;
+        border-radius: 100px !important;
+        box-shadow: none !important;
+    }
+
+    .grid-empty {
+        background: var(--surface-container) !important;
+        color: var(--text-muted) !important;
+    }
+
+    .grid-add-row,
+    .grid-add-multiple-rows {
+        margin-top: 8px !important;
+        border-radius: 100px !important;
+        background: var(--surface-container-high) !important;
+        border: none !important;
+        color: var(--text-color) !important;
+    }
+}
