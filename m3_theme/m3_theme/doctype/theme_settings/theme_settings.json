@@ -159,25 +159,16 @@
    "label": "Navbar"
   },
   {
-   "fieldname": "navbar_section",
+   "fieldname": "navbar_logo_section",
    "fieldtype": "Section Break",
-   "label": "Navbar Elements"
-  },
-  {
-   "fieldname": "navbar_type",
-   "fieldtype": "Select",
-   "label": "Navbar Content",
-   "options": "Default Navbar\nCustom Navbar",
-   "default": "Default Navbar"
+   "label": "Navbar Branding & Links"
   },
   {
    "fieldname": "custom_logo",
    "fieldtype": "Attach Image",
-   "label": "Custom Navbar Logo",
-   "description": "Replaces the default app logo in the navbar. Recommended: 32\u00d732px SVG or PNG"
+   "label": "Custom Navbar Logo"
   },
   {
-   "default": "32",
    "fieldname": "custom_logo_height",
    "fieldtype": "Int",
    "label": "Logo Display Height (px)"
@@ -189,21 +180,12 @@
   {
    "fieldname": "external_link_label",
    "fieldtype": "Data",
-   "label": "External Link Label",
-   "description": "e.g., Google"
+   "label": "External Link Label"
   },
   {
    "fieldname": "external_link_url",
    "fieldtype": "Data",
-   "label": "External Link URL",
-   "description": "e.g., https://google.com",
-   "options": "URL"
-  },
-  {
-   "fieldname": "navbar_builder_section",
-   "fieldtype": "Section Break",
-   "label": "Custom Navbar Builder",
-   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
+   "label": "External Link URL"
   },
   {
    "fieldname": "language_switcher_section",
@@ -213,8 +195,20 @@
   {
    "fieldname": "language_switcher",
    "fieldtype": "Table",
-   "label": "Language Switcher Options",
-   "options": "M3 Language Switcher Item"
+   "options": "M3 Language Switcher Item",
+   "label": "Language Switcher Options"
+  },
+  {
+   "fieldname": "navbar_section",
+   "fieldtype": "Section Break",
+   "label": "Navbar Content Visibility"
+  },
+  {
+   "fieldname": "navbar_type",
+   "fieldtype": "Select",
+   "label": "Navbar Content",
+   "options": "Default Navbar\nCustom Navbar",
+   "default": "Default Navbar"
   },
   {
    "fieldname": "custom_navbar_html",

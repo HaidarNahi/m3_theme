@@ -60,7 +60,7 @@ frappe.ui.form.on("Theme Settings", {
 
 function renderCustomTables(frm) {
     if (frm.doc.navbar_type === 'Custom Navbar') {
-        const default_nav_elements = ["breadcrumbs", "search bar", "notifications", "help"];
+        const default_nav_elements = ["breadcrumbs", "search bar", "notifications", "help", "language switcher", "external link"];
         let nav_data = frm.doc.custom_navbar_data ? JSON.parse(frm.doc.custom_navbar_data) : default_nav_elements.map(e => ({ element: e, hidden: 0 }));
 
         default_nav_elements.forEach(e => {

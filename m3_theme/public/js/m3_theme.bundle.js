@@ -694,6 +694,10 @@
                             dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
                         } else if (row.element === 'breadcrumbs') {
                             dynamicCSS += `.navbar-breadcrumbs, .navbar .app-switcher-menu, #navbar-breadcrumbs, .breadcrumb-container, .page-breadcrumbs { display: none !important; }\n`;
+                        } else if (row.element === 'language switcher') {
+                            dynamicCSS += `.m3-lang-switcher, .dropdown-language { display: none !important; }\n`;
+                        } else if (row.element === 'external link') {
+                            dynamicCSS += `.m3-external-link { display: none !important; }\n`;
                         }
                     }
                 });
