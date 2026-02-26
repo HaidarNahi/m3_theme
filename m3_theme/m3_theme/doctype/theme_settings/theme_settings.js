@@ -29,30 +29,12 @@ frappe.ui.form.on("Theme Settings", {
                                 on_primary_color: "",
                                 font_family: "Readex Pro",
                                 base_font_size: 14,
-                                heading_font_family: "Same as Body",
-                                font_weight_body: "400",
-                                border_radius: 12,
-                                navbar_height: 48,
-                                sidebar_width: 260,
-                                sidebar_rail_width: 72,
-                                sidebar_mode: "Drawer",
-                                sidebar_show_module_icons: 1,
-                                sidebar_show_module_names: 1,
-                                sidebar_show_favorites: 1,
-                                show_search_bar: 1,
-                                show_notification_bell: 1,
-                                show_help_menu: 1,
-                                show_app_switcher: 1,
-                                show_my_profile_link: 1,
-                                show_my_settings_link: 1,
-                                show_session_defaults_link: 1,
-                                show_keyboard_shortcuts_link: 1,
-                                show_switch_to_desk_link: 1,
-                                show_switch_to_website_link: 1,
+                                sidebar_type: "Default Sidebar",
+                                navbar_type: "Default Navbar",
+                                profile_menu_type: "Default Profile Menu",
                                 show_social_login: 1,
                                 show_email_password_login: 1,
                                 login_overlay_opacity: 0.5,
-                                compact_density: 0,
                                 workspace_bg_color: "",
                                 inject_custom_css: 0,
                                 inject_custom_js: 0,
@@ -85,7 +67,6 @@ frappe.ui.form.on("Theme Settings", {
     error_color: (frm) => renderColorPreview(frm),
     on_primary_color: (frm) => renderColorPreview(frm),
     font_family: (frm) => renderFontPreview(frm),
-    heading_font_family: (frm) => renderFontPreview(frm),
 });
 
 // ─────────────────────────────────────────────
@@ -198,69 +179,10 @@ function applyThemeSettings(doc) {
         root.style.setProperty("font-size", doc.base_font_size + "px");
     }
 
-    // Layout
-    if (doc.border_radius) root.style.setProperty("--border-radius-md", doc.border_radius + "px");
-    if (doc.navbar_height) root.style.setProperty("--navbar-height", doc.navbar_height + "px");
-    if (doc.sidebar_width) root.style.setProperty("--sidebar-width", doc.sidebar_width + "px");
-    if (doc.sidebar_rail_width) root.style.setProperty("--sidebar-rail-width", doc.sidebar_rail_width + "px");
-
     let dynamicCSS = "";
-
-    // Headings & Fonts
-    if (doc.heading_font_family && doc.heading_font_family !== "Same as Body" && fontMap[doc.heading_font_family]) {
-        dynamicCSS += `h1, h2, h3, h4, h5, h6, .text-heading, .card-title { font-family: ${fontMap[doc.heading_font_family]} !important; }\n`;
-    }
-    if (doc.font_weight_body) {
-        root.style.setProperty("font-weight", doc.font_weight_body);
-    }
-
-    // Toggles - Navbar
-    if (!doc.show_search_bar) dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
-    if (!doc.show_notification_bell) dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
-    if (!doc.show_help_menu) dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
-    if (!doc.show_app_switcher) dynamicCSS += `.navbar .app-switcher-menu, .navbar-brand { display: none !important; }\n`;
-
-    // Toggles - Profile Menu
-    if (!doc.show_my_profile_link) dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"] { display: none !important; }\n`;
-    if (!doc.show_my_settings_link) dynamicCSS += `.dropdown-navbar-user a[href="/app/user"] { display: none !important; }\n`;
-    if (!doc.show_session_defaults_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="session_default"] { display: none !important; }\n`;
-    if (!doc.show_keyboard_shortcuts_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="show_shortcuts"] { display: none !important; }\n`;
-    if (!doc.show_switch_to_desk_link) dynamicCSS += `.dropdown-navbar-user a[href="/app"] { display: none !important; }\n`;
-    if (!doc.show_switch_to_website_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
-
-    // Toggles - Sidebar
-    if (!doc.sidebar_show_module_icons) dynamicCSS += `.desk-sidebar .item-icon { display: none !important; } .standard-sidebar-item .item-anchor { padding-left: 12px !important; margin-left: 0 !important; }\n`;
-    if (!doc.sidebar_show_module_names) dynamicCSS += `body:not(.sidebar-collapsed) .standard-sidebar-item .item-label { display: none !important; }\n`;
-    if (!doc.sidebar_show_favorites) dynamicCSS += `.standard-sidebar-section [item-name="Favorites"] { display: none !important; }\n`;
-
-    if (doc.compact_density) {
-        dynamicCSS += `
-            :root { 
-                --padding-md: 8px !important; 
-                --padding-lg: 12px !important; 
-                --margin-md: 8px !important;
-            }
-            .layout-main-section { padding: 8px 12px !important; margin-top: 12px !important; }
-            .card { margin-bottom: 12px !important; }
-            .form-control { height: 32px !important; padding-top: 4px !important; padding-bottom: 4px !important; }
-        `;
-    }
 
     if (doc.workspace_bg_color) {
         dynamicCSS += `body.m3-desk, #page-desktop { background: ${doc.workspace_bg_color} !important; }\n`;
-    }
-
-
-
-    // Sidebar Mode Enforcements
-    if (doc.sidebar_mode === "Rail") {
-        localStorage.setItem('m3_sidebar_collapsed', '1');
-        dynamicCSS += `.m3-sidebar-toggle-btn { display: none !important; }\n`;
-        document.body.classList.add('sidebar-collapsed');
-    } else if (doc.sidebar_mode === "Drawer") {
-        document.body.classList.remove('sidebar-collapsed');
-    } else if (doc.sidebar_mode === "Hidden") {
-        dynamicCSS += `.m3-fixed-sidebar, .m3-sidebar-toggle-btn { display: none !important; }\n.layout-main, body.m3-desk .page-container { margin-left: 0 !important; width: 100% !important; max-width: 100% !important; }\n`;
     }
 
     // Custom Logo Replacement

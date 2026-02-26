@@ -36,6 +36,41 @@ def execute():
         doc.insert(ignore_permissions=True)
         print("M3 Profile Link created.")
 
+    print("Creating Navbar Item Doctype...")
+    if not frappe.db.exists("DocType", "M3 Navbar Item"):
+        doc3 = frappe.get_doc({
+            "doctype": "DocType",
+            "name": "M3 Navbar Item",
+            "module": "M3 Theme",
+            "custom": 0,
+            "istable": 1,
+            "fields": [
+                {
+                    "fieldname": "label",
+                    "fieldtype": "Data",
+                    "label": "Link Text",
+                    "in_list_view": 1,
+                    "reqd": 1
+                },
+                {
+                    "fieldname": "icon",
+                    "fieldtype": "Data",
+                    "label": "Material Icon Name",
+                    "in_list_view": 1,
+                    "description": "e.g., 'search', 'notifications'"
+                },
+                {
+                    "fieldname": "url",
+                    "fieldtype": "Data",
+                    "label": "Route / Action",
+                    "in_list_view": 1,
+                    "reqd": 1
+                }
+            ]
+        })
+        doc3.insert(ignore_permissions=True)
+        print("M3 Navbar Item created.")
+
     print("Creating Sidebar Item Doctype...")
     if not frappe.db.exists("DocType", "M3 Sidebar Item"):
         doc2 = frappe.get_doc({

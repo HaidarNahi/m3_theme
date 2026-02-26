@@ -30,45 +30,25 @@
   "font_family",
   "base_font_size",
   "cb_font",
-  "heading_font_family",
-  "font_weight_body",
-  "layout_section",
-  "border_radius",
-  "navbar_height",
-  "cb_layout",
-  "sidebar_width",
-  "sidebar_rail_width",
   "sidebar_tab",
   "sidebar_section",
-  "sidebar_mode",
   "sidebar_position",
+  "sidebar_type",
   "cb_sidebar",
-  "sidebar_show_module_icons",
-  "sidebar_show_module_names",
-  "sidebar_show_favorites",
   "sidebar_items_section",
   "sidebar_hidden_modules",
   "navbar_tab",
   "navbar_section",
-  "show_search_bar",
-  "show_notification_bell",
-  "cb_navbar",
-  "show_help_menu",
-  "show_app_switcher",
+  "navbar_type",
+  "navbar_builder_section",
+  "custom_navbar",
   "custom_logo",
   "custom_logo_height",
   "cb_logo",
   "navbar_custom_html",
   "profile_tab",
   "profile_section",
-  "show_my_profile_link",
-  "show_my_settings_link",
-  "cb_profile",
-  "show_session_defaults_link",
-  "show_keyboard_shortcuts_link",
-  "show_switch_to_desk_link",
-  "show_switch_to_website_link",
-  "cb_profile2",
+  "profile_menu_type",
   "profile_custom_links",
   "login_tab",
   "login_section",
@@ -108,7 +88,7 @@
   {
    "fieldname": "colors_section",
    "fieldtype": "Section Break",
-   "label": "🎨 Colors"
+   "label": "\ud83c\udfa8 Colors"
   },
   {
    "default": "System (Auto)",
@@ -164,82 +144,25 @@
   {
    "fieldname": "typography_section",
    "fieldtype": "Section Break",
-   "label": "✏️ Typography"
+   "label": "\u270f\ufe0f Typography"
   },
   {
    "default": "Readex Pro",
    "fieldname": "font_family",
    "fieldtype": "Select",
-   "label": "Body Font Family",
+   "label": "Font Family",
    "options": "Readex Pro\nInter\nRoboto\nNoto Sans\nPoppins\nOutfit\nDM Sans\nPlusJakarta Sans\nIBM Plex Sans\nSystem Default"
   },
   {
    "default": "14",
    "fieldname": "base_font_size",
    "fieldtype": "Int",
-   "label": "Base Font Size (px)",
+   "label": "Font Size (px)",
    "description": "Default: 14px"
   },
   {
    "fieldname": "cb_font",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "Same as Body",
-   "fieldname": "heading_font_family",
-   "fieldtype": "Select",
-   "label": "Heading Font Family",
-   "options": "Same as Body\nReadex Pro\nInter\nRoboto\nNoto Sans\nPoppins\nOutfit\nDM Sans\nPlusJakarta Sans\nIBM Plex Sans"
-  },
-  {
-   "default": "400",
-   "fieldname": "font_weight_body",
-   "fieldtype": "Select",
-   "label": "Body Font Weight",
-   "options": "300\n400\n500"
-  },
-  {
-   "fieldname": "layout_section",
-   "fieldtype": "Section Break",
-   "label": "📐 Layout & Spacing"
-  },
-  {
-   "default": "12",
-   "fieldname": "border_radius",
-   "fieldtype": "Int",
-   "label": "Border Radius (px)",
-   "description": "Corner roundness for cards and buttons. Default: 12"
-  },
-  {
-   "default": "0",
-   "fieldname": "compact_density",
-   "fieldtype": "Check",
-   "label": "Enable Compact Density (Shrink padding/margins by 30%)"
-  },
-  {
-   "default": "48",
-   "fieldname": "navbar_height",
-   "fieldtype": "Int",
-   "label": "Navbar Height (px)",
-   "description": "Default: 48px"
-  },
-  {
-   "fieldname": "cb_layout",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "260",
-   "fieldname": "sidebar_width",
-   "fieldtype": "Int",
-   "label": "Sidebar Drawer Width (px)",
-   "description": "Width when sidebar is fully expanded. Default: 260"
-  },
-  {
-   "default": "72",
-   "fieldname": "sidebar_rail_width",
-   "fieldtype": "Int",
-   "label": "Sidebar Rail Width (px)",
-   "description": "Width when sidebar is collapsed to icon-only mode. Default: 72"
   },
   {
    "fieldname": "sidebar_tab",
@@ -249,14 +172,7 @@
   {
    "fieldname": "sidebar_section",
    "fieldtype": "Section Break",
-   "label": "📐 Sidebar Behavior"
-  },
-  {
-   "default": "Drawer",
-   "fieldname": "sidebar_mode",
-   "fieldtype": "Select",
-   "label": "Default Sidebar Mode",
-   "options": "Drawer\nRail\nHidden"
+   "label": "\ud83d\udcd0 Sidebar Behavior"
   },
   {
    "default": "Left",
@@ -266,37 +182,28 @@
    "options": "Left\nRight"
   },
   {
+   "fieldname": "sidebar_type",
+   "fieldtype": "Select",
+   "label": "Sidebar Content",
+   "options": "Default Sidebar\nCustom Sidebar",
+   "default": "Default Sidebar"
+  },
+  {
    "fieldname": "cb_sidebar",
    "fieldtype": "Column Break"
   },
   {
-   "default": "1",
-   "fieldname": "sidebar_show_module_icons",
-   "fieldtype": "Check",
-   "label": "Show Module Icons"
-  },
-  {
-   "default": "1",
-   "fieldname": "sidebar_show_module_names",
-   "fieldtype": "Check",
-   "label": "Show Module Names (in Drawer mode)"
-  },
-  {
-   "default": "1",
-   "fieldname": "sidebar_show_favorites",
-   "fieldtype": "Check",
-   "label": "Show Favorites in Sidebar"
-  },
-  {
    "fieldname": "sidebar_builder_section",
    "fieldtype": "Section Break",
-   "label": "🛠️ Custom Sidebar Builder"
+   "label": "\ud83d\udee0\ufe0f Custom Sidebar Builder",
+   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'"
   },
   {
    "fieldname": "custom_sidebar",
    "fieldtype": "Table",
    "label": "Custom Sidebar Items",
-   "options": "M3 Sidebar Item"
+   "options": "M3 Sidebar Item",
+   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'"
   },
   {
    "fieldname": "navbar_tab",
@@ -306,41 +213,33 @@
   {
    "fieldname": "navbar_section",
    "fieldtype": "Section Break",
-   "label": "🔍 Navbar Elements"
+   "label": "\ud83d\udd0d Navbar Elements"
   },
   {
-   "default": "1",
-   "fieldname": "show_search_bar",
-   "fieldtype": "Check",
-   "label": "Show Search Bar"
+   "fieldname": "navbar_type",
+   "fieldtype": "Select",
+   "label": "Navbar Content",
+   "options": "Default Navbar\nCustom Navbar",
+   "default": "Default Navbar"
   },
   {
-   "default": "1",
-   "fieldname": "show_notification_bell",
-   "fieldtype": "Check",
-   "label": "Show Notification Bell"
+   "fieldname": "navbar_builder_section",
+   "fieldtype": "Section Break",
+   "label": "\ud83d\udee0\ufe0f Custom Navbar Builder",
+   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
   },
   {
-   "fieldname": "cb_navbar",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_help_menu",
-   "fieldtype": "Check",
-   "label": "Show Help Menu"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_app_switcher",
-   "fieldtype": "Check",
-   "label": "Show App Switcher"
+   "fieldname": "custom_navbar",
+   "fieldtype": "Table",
+   "label": "Custom Navbar Items",
+   "options": "M3 Navbar Item",
+   "depends_on": "eval:doc.navbar_type == 'Custom Navbar'"
   },
   {
    "fieldname": "custom_logo",
    "fieldtype": "Attach Image",
    "label": "Custom Navbar Logo",
-   "description": "Replaces the default app logo in the navbar. Recommended: 32×32px SVG or PNG"
+   "description": "Replaces the default app logo in the navbar. Recommended: 32\u00d732px SVG or PNG"
   },
   {
    "default": "32",
@@ -360,62 +259,27 @@
   {
    "fieldname": "profile_section",
    "fieldtype": "Section Break",
-   "label": "👤 Profile Dropdown Items"
+   "label": "\ud83d\udc64 Profile Dropdown Items"
   },
   {
-   "default": "1",
-   "fieldname": "show_my_profile_link",
-   "fieldtype": "Check",
-   "label": "Show “My Profile”"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_my_settings_link",
-   "fieldtype": "Check",
-   "label": "Show “My Settings”"
-  },
-  {
-   "fieldname": "cb_profile",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_session_defaults_link",
-   "fieldtype": "Check",
-   "label": "Show “Session Defaults”"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_keyboard_shortcuts_link",
-   "fieldtype": "Check",
-   "label": "Show “Keyboard Shortcuts”"
-  },
-  {
-   "fieldname": "cb_profile2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_switch_to_desk_link",
-   "fieldtype": "Check",
-   "label": "Show “Switch to Desk”"
-  },
-  {
-   "default": "1",
-   "fieldname": "show_switch_to_website_link",
-   "fieldtype": "Check",
-   "label": "Show “Switch to Website”"
+   "fieldname": "profile_menu_type",
+   "fieldtype": "Select",
+   "label": "Profile Menu Items",
+   "options": "Default Profile Menu\nCustom Profile Menu",
+   "default": "Default Profile Menu"
   },
   {
    "fieldname": "profile_links_section",
    "fieldtype": "Section Break",
-   "label": "🔗 Custom Profile Links"
+   "label": "\ud83d\udd17 Custom Profile Links",
+   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
   },
   {
    "fieldname": "profile_links",
    "fieldtype": "Table",
    "label": "Profile Links",
-   "options": "M3 Profile Link"
+   "options": "M3 Profile Link",
+   "depends_on": "eval:doc.profile_menu_type == 'Custom Profile Menu'"
   },
   {
    "fieldname": "login_tab",
@@ -425,7 +289,7 @@
   {
    "fieldname": "login_section",
    "fieldtype": "Section Break",
-   "label": "🔐 Login Page Branding"
+   "label": "\ud83d\udd10 Login Page Branding"
   },
   {
    "fieldname": "login_logo",
@@ -481,7 +345,7 @@
    "fieldname": "login_footer_text",
    "fieldtype": "Data",
    "label": "Login Footer Text",
-   "description": "e.g. © 2026 Company Name. All rights reserved."
+   "description": "e.g. \u00a9 2026 Company Name. All rights reserved."
   },
   {
    "fieldname": "advanced_tab",
@@ -491,7 +355,7 @@
   {
    "fieldname": "advanced_section",
    "fieldtype": "Section Break",
-   "label": "🛠️ Custom CSS / JS"
+   "label": "\ud83d\udee0\ufe0f Custom CSS / JS"
   },
   {
    "default": "0",
@@ -527,7 +391,7 @@
    "fieldname": "developer_mode_notice",
    "fieldtype": "HTML",
    "label": "Developer Notice",
-   "options": "<div class='alert alert-warning'><b>⚠️ Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
+   "options": "<div class='alert alert-warning'><b>\u26a0\ufe0f Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
   }
  ],
  "icon": "palette",

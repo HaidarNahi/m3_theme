@@ -172,9 +172,13 @@
         }
     }
 
-    // ── Extract sidebar items from Frappe's desk-sidebar OR Custom Sidebar Config ──
+    // ── Extract sidebar items from Custom Sidebar Config OR Frappe desk-sidebar ──
     function extractItems() {
-        if (window.frappe && frappe.boot && frappe.boot.m3_theme_settings && frappe.boot.m3_theme_settings.custom_sidebar && frappe.boot.m3_theme_settings.custom_sidebar.length > 0) {
+        if (window.frappe && frappe.boot && frappe.boot.m3_theme_settings
+            && frappe.boot.m3_theme_settings.sidebar_type === 'Custom Sidebar'
+            && frappe.boot.m3_theme_settings.custom_sidebar
+            && frappe.boot.m3_theme_settings.custom_sidebar.length > 0) {
+
             var custItems = [];
             frappe.boot.m3_theme_settings.custom_sidebar.forEach(function (c) {
                 var href = c.link_type === 'URL' ? c.link_to : '/app/' + c.link_to.toLowerCase().replace(/ /g, '-');
@@ -397,6 +401,40 @@
         ensureFormSidebarToggle();
         checkCurrentSidebar();
         syncLikedByMeButton();
+        injectCustomNavbarAndProfile();
+    }
+
+    function injectCustomNavbarAndProfile() {
+        if (!window.frappe || !frappe.boot || !frappe.boot.m3_theme_settings) return;
+        var doc = frappe.boot.m3_theme_settings;
+
+        if (doc.navbar_type === 'Custom Navbar' && doc.custom_navbar) {
+            var ul = document.querySelector('.navbar .navbar-nav.navbar-right') || document.querySelector('.navbar .navbar-right');
+            if (ul) {
+                ul.querySelectorAll('.m3-custom-navbar-item').forEach(el => el.remove());
+                doc.custom_navbar.forEach(function (item) {
+                    var li = document.createElement('li');
+                    li.className = 'm3-custom-navbar-item nav-item';
+                    var iconHtml = item.icon ? `<span class="material-symbols-rounded" style="font-size: 20px; vertical-align: middle;">${item.icon}</span>` : '';
+                    li.innerHTML = `<a class="nav-link" href="${item.url}" title="${item.label}" style="display:flex; align-items:center; gap:8px;">${iconHtml} <span class="d-none d-md-inline" style="font-weight: 500;">${item.label}</span></a>`;
+                    // Insert before the last element (which usually is the user profile dropdown)
+                    ul.insertBefore(li, ul.lastElementChild);
+                });
+            }
+        }
+
+        if (doc.profile_menu_type === 'Custom Profile Menu' && doc.profile_links) {
+            var menu = document.querySelector('.dropdown-navbar-user .dropdown-menu');
+            if (menu && !menu.dataset.m3CustomInjected) {
+                menu.querySelectorAll('.m3-custom-profile-item').forEach(el => el.remove());
+                var itemsHtml = doc.profile_links.map(function (item) {
+                    var iconHtml = item.icon ? `<span class="material-symbols-rounded" style="font-size: 18px; margin-right: 8px;">${item.icon}</span>` : '';
+                    return `<li><a class="dropdown-item m3-custom-profile-item" href="${item.url}" style="display:flex; align-items:center;">${iconHtml} ${item.label}</a></li>`;
+                }).join('');
+                menu.insertAdjacentHTML('afterbegin', itemsHtml);
+                menu.dataset.m3CustomInjected = "1";
+            }
+        }
     }
 
     // ── Observer (catches new toggle buttons & fresh sidebar data) ──
@@ -427,6 +465,7 @@
                 ensureFormSidebarToggle();
                 checkCurrentSidebar();
                 syncLikedByMeButton();
+                injectCustomNavbarAndProfile();
             }, 50); // Speed up alignment tick on observe
         }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
     }
@@ -500,66 +539,46 @@
         }
 
         // Layout
-        if (doc.border_radius) root.style.setProperty("--border-radius-md", doc.border_radius + "px");
-        if (doc.navbar_height) root.style.setProperty("--navbar-height", doc.navbar_height + "px");
-        if (doc.sidebar_width) root.style.setProperty("--sidebar-width", doc.sidebar_width + "px");
-        if (doc.sidebar_rail_width) root.style.setProperty("--sidebar-rail-width", doc.sidebar_rail_width + "px");
-
         let dynamicCSS = "";
 
-        // Headings & Fonts
-        if (doc.heading_font_family && doc.heading_font_family !== "Same as Body" && fontMap[doc.heading_font_family]) {
-            dynamicCSS += `h1, h2, h3, h4, h5, h6, .text-heading, .card-title { font-family: ${fontMap[doc.heading_font_family]} !important; }\n`;
+        // Font Family (Entire System)
+        if (doc.font_family && fontMap[doc.font_family]) {
+            dynamicCSS += `*:not(.icon, .fa, .fab, .fas, .far, .octicon, .material-symbols-rounded, .material-icons, .m3-processed) { font-family: ${fontMap[doc.font_family]} !important; }\n`;
         }
-        if (doc.font_weight_body) {
-            root.style.setProperty("font-weight", doc.font_weight_body); // applied to body usually
+
+        // Font Size (Entire System) - applies to * except headings maybe? 
+        // Or if they mean everything:
+        if (doc.base_font_size) {
+            root.style.setProperty("--base-font-size", doc.base_font_size + "px");
+            dynamicCSS += `body, html { font-size: var(--base-font-size) !important; }\n`;
+            // Many elements in Frappe use absolute sizes, so let's override base text sizing.
+            dynamicCSS += `p, span, div, a, li, td, th, label, input, button, textarea, select { font-size: inherit; }\n`;
+            // The user requested it to apply to the entire system, not base only.
         }
 
         // Toggles - Navbar
-        if (!doc.show_search_bar) dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar { display: none !important; }\n`;
-        if (!doc.show_notification_bell) dynamicCSS += `.navbar .notification-list, .navbar .dropdown-message, .notifications-icon { display: none !important; }\n`;
-        if (!doc.show_help_menu) dynamicCSS += `.navbar .dropdown-help { display: none !important; }\n`;
-        if (!doc.show_app_switcher) dynamicCSS += `.navbar .app-switcher-menu, .navbar-brand { display: none !important; }\n`;
+        if (doc.navbar_type === 'Custom Navbar') {
+            dynamicCSS += `.navbar .search-bar, .navbar-form.search-bar, .navbar .notification-list, .navbar .dropdown-message, .notifications-icon, .navbar .dropdown-help, .navbar .app-switcher-menu { display: none !important; }\n`;
+        }
 
         // Toggles - Profile Menu
-        if (!doc.show_my_profile_link) dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"] { display: none !important; }\n`;
-        if (!doc.show_my_settings_link) dynamicCSS += `.dropdown-navbar-user a[href="/app/user"] { display: none !important; }\n`;
-        if (!doc.show_session_defaults_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="session_default"] { display: none !important; }\n`;
-        if (!doc.show_keyboard_shortcuts_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="show_shortcuts"] { display: none !important; }\n`;
-        if (!doc.show_switch_to_desk_link) dynamicCSS += `.dropdown-navbar-user a[href="/app"] { display: none !important; }\n`;
-        if (!doc.show_switch_to_website_link) dynamicCSS += `.dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
+        if (doc.profile_menu_type === 'Custom Profile Menu') {
+            dynamicCSS += `.dropdown-navbar-user a[href="/app/user-profile"], .dropdown-navbar-user a[href="/app/user"], .dropdown-navbar-user button[onclick*="session_default"], .dropdown-navbar-user button[onclick*="show_shortcuts"], .dropdown-navbar-user a[href="/app"], .dropdown-navbar-user button[onclick*="view_website"], .dropdown-navbar-user a[href="/"] { display: none !important; }\n`;
+        }
 
-        // Toggles - Sidebar
-        if (!doc.sidebar_show_module_icons) dynamicCSS += `body #m3-fixed-sidebar .desk-sidebar-item .sidebar-item-icon { display: none !important; } body #m3-fixed-sidebar .item-anchor { justify-content: flex-start !important; padding-left: 20px !important; }\n`;
-        if (!doc.sidebar_show_module_names) dynamicCSS += `body:not(.sidebar-collapsed) #m3-fixed-sidebar .sidebar-item-label { display: none !important; }\n`;
-        if (!doc.sidebar_show_favorites) dynamicCSS += `body #m3-fixed-sidebar [data-label="Favorites" i] { display: none !important; }\n`;
-
-        // Compact Density Enforcements
-        if (doc.compact_density) {
-            dynamicCSS += `
-                :root { 
-                    --padding-md: 8px !important; 
-                    --padding-lg: 12px !important; 
-                    --margin-md: 8px !important;
-                }
-                .layout-main-section { padding: 8px 12px !important; margin-top: 12px !important; }
-                .card { margin-bottom: 12px !important; }
-                .form-control { height: 32px !important; padding-top: 4px !important; padding-bottom: 4px !important; }
-            `;
+        // Toggles - Sidebar Position
+        if (doc.sidebar_position === 'Right') {
+            dynamicCSS += `.m3-fixed-sidebar { left: auto !important; right: 0 !important; border-right: none !important; border-left: 1px solid var(--border-color) !important; }\n`;
+            dynamicCSS += `body.m3-desk .layout-main { margin-left: auto !important; margin-right: var(--sidebar-width) !important; }\n`;
         }
 
         if (doc.workspace_bg_color) {
             dynamicCSS += `body.m3-desk, #page-desktop { background: ${doc.workspace_bg_color} !important; }\n`;
         }
 
-        // Sidebar Mode Enforcements
-        if (doc.sidebar_mode === "Rail") {
-            localStorage.setItem('m3_sidebar_collapsed', '1');
-            dynamicCSS += `.m3-sidebar-toggle-btn { display: none !important; }\n`; // hide completely if forced Rail
-        } else if (doc.sidebar_mode === "Drawer") {
-            // we let the user toggle freely, do nothing specific
-        } else if (doc.sidebar_mode === "Hidden") {
-            dynamicCSS += `.m3-fixed-sidebar, .m3-sidebar-toggle-btn { display: none !important; }\n.layout-main, body.m3-desk .page-container { margin-left: 0 !important; width: 100% !important; max-width: 100% !important; }\n`;
+        // Sidebar Position Enforcements (if Right, toggle button is also on Right)
+        if (doc.sidebar_position === 'Right') {
+            dynamicCSS += `.m3-sidebar-header { flex-direction: row-reverse; }\n`;
         }
 
         // Custom Logo Replacement
@@ -688,6 +707,7 @@
                 if (!isDeskPage()) { teardownSidebar(); return; }
                 replaceSystemIcons(); ensureSidebar(); patchToggles(); ensureFormSidebarToggle(); checkCurrentSidebar();
                 syncLikedByMeButton();
+                injectCustomNavbarAndProfile();
             }, 400);
         });
     }
@@ -701,6 +721,7 @@
             ensureFormSidebarToggle();
             checkCurrentSidebar();
             syncLikedByMeButton();
+            injectCustomNavbarAndProfile();
         }, 400);
     });
 })();
