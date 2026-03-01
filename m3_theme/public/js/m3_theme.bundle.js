@@ -172,12 +172,11 @@
         }
     }
 
-    // ── Extract sidebar items from Custom Sidebar Config OR Frappe desk-sidebar ──
+    // ── Extract sidebar items from Custom Sidebar Config OR Frappe boot workspaces ──
     function extractItems() {
-        if (window.frappe && frappe.boot && frappe.boot.m3_theme_settings
-            && frappe.boot.m3_theme_settings.sidebar_type === 'Custom Sidebar'
-            && frappe.boot.m3_theme_settings.custom_sidebar_data) {
+        if (!window.frappe || !frappe.boot) return null;
 
+        if (frappe.boot.m3_theme_settings && frappe.boot.m3_theme_settings.sidebar_type === 'Custom Sidebar' && frappe.boot.m3_theme_settings.custom_sidebar_data) {
             var custom_data = [];
             try { custom_data = JSON.parse(frappe.boot.m3_theme_settings.custom_sidebar_data); } catch (e) { }
 
@@ -199,15 +198,21 @@
                 return custItems;
             }
         }
-        var sb = document.querySelector('.desk-sidebar');
-        if (!sb) return null;
-        var items = [];
-        sb.querySelectorAll('.desk-sidebar-item').forEach(function (el) {
-            var a = el.querySelector('a.item-anchor');
-            var l = el.querySelector('.sidebar-item-label');
-            if (a && l) items.push({ label: l.textContent.trim(), href: a.getAttribute('href') || '#' });
-        });
-        return items.length ? items : null;
+
+        // If Default Sidebar, use Frappe's backend boot data directly to bypass DOM race conditions!
+        if (frappe.boot.allowed_workspaces && frappe.boot.allowed_workspaces.length > 0) {
+            var items = [];
+            frappe.boot.allowed_workspaces.forEach(function (ws) {
+                if (ws.is_hidden) return;
+                items.push({
+                    label: ws.title || ws.name,
+                    href: '/app/' + (ws.name || '').toLowerCase().replace(/ /g, '-')
+                });
+            });
+            return items.length ? items : null;
+        }
+
+        return null;
     }
 
     // ── Build sidebar HTML (with toggle button header) ──
