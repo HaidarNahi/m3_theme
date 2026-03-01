@@ -76,7 +76,7 @@ body:has(#page-login) {
             position: relative; // For absolute positioning of the icon
 
             // Hide native Frappe SVG icons in the inputs
-            svg.icon {
+            svg.field-icon {
                 display: none !important;
             }
 
