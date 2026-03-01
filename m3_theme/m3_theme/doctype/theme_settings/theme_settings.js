@@ -266,7 +266,7 @@ function renderCustomTables(frm) {
         nav_data = nav_data.filter(d => default_nav_elements.includes(d.element));
 
         let nav_html = `
-            < table class="table table-bordered m3-custom-table" style = "background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;" >
+            <table class="table table-bordered m3-custom-table" style="background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;">
                 <thead style="background: var(--surface-container-high);">
                     <tr><th style="padding: 12px; font-weight: 500; font-size:13px;">Element</th><th style="padding: 12px; font-weight: 500; font-size:13px; width: 100px; text-align: center;">Hidden</th></tr>
                 </thead>
@@ -280,7 +280,7 @@ function renderCustomTables(frm) {
                         </tr>
                     `).join('')}
                 </tbody>
-            </table >
+            </table>
         <div class="text-muted" style="font-size: 11px; margin-top: 4px;">Check the box to natively hide the element from the top navbar.</div>
     `;
 
@@ -310,7 +310,7 @@ function renderCustomTables(frm) {
         prof_data = prof_data.filter(d => default_prof_elements.includes(d.element));
 
         let prof_html = `
-        < table class="table table-bordered m3-custom-table" style = "background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;" >
+        <table class="table table-bordered m3-custom-table" style="background: var(--surface); border-radius: 8px; overflow: hidden; margin-top: 10px;">
                 <thead style="background: var(--surface-container-high);">
                     <tr><th style="padding: 12px; font-weight: 500; font-size:13px;">Dropdown Item</th><th style="padding: 12px; font-weight: 500; font-size:13px; width: 100px; text-align: center;">Hidden</th></tr>
                 </thead>
@@ -324,7 +324,7 @@ function renderCustomTables(frm) {
                         </tr>
                     `).join('')}
                 </tbody>
-            </table >
+            </table>
         <div class="text-muted" style="font-size: 11px; margin-top: 4px;">Check the box to natively hide the element from your profile menu.</div>
     `;
 
@@ -349,13 +349,13 @@ function renderFontPreview(frm) {
     if (!font || font === "System Default") return;
 
     const previewHtml = `
-        < div style = "margin-top:8px;padding:10px 14px;background:#f8f8f8;border-radius:8px;font-family:'${font}',sans-serif" >
+        <div style="margin-top:8px;padding:10px 14px;background:#f8f8f8;border-radius:8px;font-family:'${font}',sans-serif">
 			<span style="font-size:16px;font-weight:600">The quick brown fox jumps over the lazy dog</span><br>
 			<span style="font-size:13px;color:#666">0123456789 — آهلاً وسهلاً — ERPNext Theme</span>
 		</div>`;
 
     frm.get_field("font_family").$wrapper.find(".font-preview").remove();
-    frm.get_field("font_family").$wrapper.append(`< div class="font-preview" > ${previewHtml}</div > `);
+    frm.get_field("font_family").$wrapper.append(`<div class="font-preview">${previewHtml}</div>`);
 }
 
 function applyThemeSettings(doc) {

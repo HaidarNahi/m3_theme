@@ -248,6 +248,8 @@
                     // Type changed! Cache is invalid, clear it!
                     localStorage.removeItem('m3_sidebar_items');
                     localStorage.removeItem('m3_sidebar_type');
+                    var old_sidebar = document.getElementById('m3-fixed-sidebar');
+                    if (old_sidebar) old_sidebar.remove();
                 }
             } catch (e) { }
         }
