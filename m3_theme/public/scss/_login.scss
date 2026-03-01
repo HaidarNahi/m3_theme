@@ -226,7 +226,8 @@ body:has(#page-login) {
         }
     }
 
-    // Usually Frappe uses .text-muted for dividers like "or"
+    // "Forgot Password" Link and "or" Divider 
+    p.forgot-password-message a,
     .text-muted {
         color: var(--on-surface-variant) !important;
         font-weight: 500 !important;
