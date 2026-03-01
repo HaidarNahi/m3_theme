@@ -783,12 +783,18 @@
         if (window.location.pathname.startsWith('/login')) {
             if (doc.login_background_image) {
                 dynamicCSS += `body:has(#page-login) { background: url('${doc.login_background_image}') no-repeat center center fixed !important; background-size: cover !important; }\n`;
+                // Automatically make the title white text with text-shadow when a background image is present to contrast
+                dynamicCSS += `.page-card-head h1, .page-card-head h4, .page-card-head p { color: #ffffff !important; text-shadow: 0 4px 18px rgba(0,0,0,0.8) !important; }\n`;
             }
             if (doc.login_overlay_opacity) {
-                dynamicCSS += `body:has(#page-login)::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,${doc.login_overlay_opacity}); z-index: 0; pointer-events: none; }\n`;
+                // z-index: 1 pushes it right behind the wrapper (z-index: 10)
+                dynamicCSS += `body:has(#page-login)::after { content: ""; position: fixed; inset: 0; background: rgba(0,0,0,${doc.login_overlay_opacity}); z-index: 1; pointer-events: none; }\n`;
+                dynamicCSS += `.for-login { position: relative; z-index: 10; box-shadow: none !important; background: transparent !important; }\n`;
             }
             if (doc.login_logo) {
-                dynamicCSS += `.login-content .app-logo { content: url('${doc.login_logo}') !important; width: auto !important; height: auto !important; max-height: 80px !important; margin: 0 auto; }\n`;
+                dynamicCSS += `body:has(#page-login) .page-card-head .app-logo { content: url('${doc.login_logo}') !important; width: auto !important; height: auto !important; max-height: 100px !important; margin: 0 auto; display: inline-block !important; }\n`;
+            } else if (doc.custom_logo) {
+                dynamicCSS += `body:has(#page-login) .page-card-head .app-logo { display: inline-block !important; }\n`;
             }
             if (!doc.show_social_login) dynamicCSS += `.social-logins { display: none !important; }\n`;
             if (!doc.show_email_password_login) dynamicCSS += `.form-login { display: none !important; }\n`;

@@ -13,25 +13,23 @@ body:has(#page-login) {
     padding: 24px;
     font-family: var(--font-family);
 
+    // Hide the native top web navbar so it doesn't overlap the login page layout
+    header,
+    nav.navbar,
+    .web-navbar,
+    [data-widget="web_navbar"] {
+        display: none !important;
+    }
+
     // If JS sets a custom background, we should ensure the card is still visible.
     // Frappe generates div.page-wrapper inside body.login-page
     .page-wrapper {
         position: relative;
-        z-index: 10;
+        z-index: 10; // Elevate securely over the darkness overlay
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-
-    // Hide Frappe Website Navbar / Header & Footer from login page
-    header,
-    .web-header,
-    .navbar,
-    .web-navbar,
-    .web-footer,
-    footer.web-footer {
-        display: none !important;
     }
 
     #page-login {
@@ -39,29 +37,22 @@ body:has(#page-login) {
         max-width: 440px;
         margin: auto;
         position: relative;
-        z-index: 10; // Elevate the entire login panel above the background overlay
-
-        >section {
-            background: var(--surface) !important;
-            border-radius: 28px !important; // M3 extra large shape
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
-            border: 1px solid var(--border-color) !important;
-            padding: 48px 40px !important;
-
-            @media (max-width: 480px) {
-                padding: 32px 24px !important;
-                border-radius: 24px !important;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-            }
-        }
+        z-index: 11;
     }
 
     .login-content.page-card {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
+        background: var(--surface) !important;
+        border-radius: 28px !important; // M3 extra large shape
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
+        border: 1px solid var(--border-color) !important;
+        padding: 48px 40px !important;
         margin-top: 0 !important;
+
+        @media (max-width: 480px) {
+            padding: 32px 24px !important;
+            border-radius: 24px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+        }
     }
 
     .page-card-head {
@@ -69,15 +60,18 @@ body:has(#page-login) {
         margin-bottom: 32px !important;
 
         .app-logo {
-            max-height: 80px !important;
+            max-height: 100px !important;
             margin-bottom: 24px !important;
+            display: inline-block !important;
+            position: relative;
+            z-index: 15 !important;
         }
 
         h1,
         h4 {
             font-size: 28px !important;
             font-weight: 600 !important;
-            color: var(--text-color, #1f2937) !important;
+            color: var(--on-surface) !important;
             margin: 0 0 8px 0 !important;
         }
 
@@ -92,12 +86,7 @@ body:has(#page-login) {
     .form-signin {
         .form-group {
             margin-bottom: 24px !important;
-
-            .email-field,
-            .password-field {
-                position: relative;
-                display: block; // Keep it block to contain absolute items properly
-            }
+            position: relative; // For absolute positioning of the icon
 
             // Hide native Frappe SVG icons in the inputs
             svg.field-icon {
@@ -124,7 +113,7 @@ body:has(#page-login) {
                 border: 2px solid transparent !important;
                 padding: 0 20px 0 52px !important; // Extra left padding for the icon
                 font-size: 16px !important;
-                color: var(--text-color, #1f2937) !important;
+                color: var(--on-surface) !important;
                 transition: all 0.2s ease;
 
                 &::placeholder {
@@ -139,18 +128,14 @@ body:has(#page-login) {
                 }
             }
 
-            // Fixed vertical alignment for "Show" password text
             .toggle-password {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                right: 20px;
-                margin: 0 !important;
-                z-index: 5;
-                font-size: 14px;
-                font-weight: 500;
-                color: var(--on-surface-variant);
-                cursor: pointer;
+                top: 50% !important;
+                margin-top: 0 !important;
+                transform: translateY(-50%) !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                color: var(--primary) !important;
+                font-weight: 500 !important;
             }
         }
 
