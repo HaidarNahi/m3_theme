@@ -24,25 +24,44 @@ body:has(#page-login) {
         align-items: center;
     }
 
+    // Hide Frappe Website Navbar / Header & Footer from login page
+    header,
+    .web-header,
+    .navbar,
+    .web-navbar,
+    .web-footer,
+    footer.web-footer {
+        display: none !important;
+    }
+
     #page-login {
         width: 100%;
         max-width: 440px;
         margin: auto;
+        position: relative;
+        z-index: 10; // Elevate the entire login panel above the background overlay
+
+        >section {
+            background: var(--surface) !important;
+            border-radius: 28px !important; // M3 extra large shape
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid var(--border-color) !important;
+            padding: 48px 40px !important;
+
+            @media (max-width: 480px) {
+                padding: 32px 24px !important;
+                border-radius: 24px !important;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+            }
+        }
     }
 
     .login-content.page-card {
-        background: var(--surface) !important;
-        border-radius: 28px !important; // M3 extra large shape
-        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
-        border: 1px solid var(--border-color) !important;
-        padding: 48px 40px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
         margin-top: 0 !important;
-
-        @media (max-width: 480px) {
-            padding: 32px 24px !important;
-            border-radius: 24px !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-        }
     }
 
     .page-card-head {
@@ -113,6 +132,20 @@ body:has(#page-login) {
                     box-shadow: none !important;
                     outline: none !important;
                 }
+            }
+
+            // Fixed vertical alignment for "Show" password text
+            .toggle-password {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 20px;
+                margin: 0 !important;
+                z-index: 5;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--on-surface-variant);
+                cursor: pointer;
             }
         }
 
