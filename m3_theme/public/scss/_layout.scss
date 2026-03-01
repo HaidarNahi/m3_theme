@@ -752,17 +752,29 @@ body.m3-desk.sidebar-collapsed .navbar {
     #navbar-search,
     input.form-control {
         height: 44px !important;
+        min-height: 44px !important; // Override global 56px from M3 components
         font-size: 14px !important;
         font-family: $font-family !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        padding: 0 16px 0 36px !important;
+        padding: 0 8px 0 36px !important;
         color: #{$m3-on-surface} !important;
+        display: flex !important;
+        align-items: center !important;
+        line-height: 44px !important;
 
         &::placeholder {
             color: #{$m3-outline} !important;
             font-size: 14px;
+        }
+
+        // Undo M3 focus ring — the parent .search-bar handles focus styling
+        &:focus {
+            border: none !important;
+            border-width: 0 !important;
+            padding: 0 8px 0 36px !important; // No offset needed, no border
+            outline: none !important;
         }
     }
 
@@ -770,7 +782,9 @@ body.m3-desk.sidebar-collapsed .navbar {
     .input-group-prepend {
         display: flex;
         align-items: center;
+        height: 100%;
         color: #{$m3-outline};
+        flex-shrink: 0;
     }
 }
 
