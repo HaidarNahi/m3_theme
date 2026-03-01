@@ -33,7 +33,11 @@ app_include_css = [
 app_include_js = "m3_theme.bundle.js"
 
 # include js, css files in header of web template
-web_include_css = "m3_theme.bundle.css"
+web_include_css = [
+    "https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200..700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+    "m3_theme.bundle.css"
+]
 web_include_js = "m3_theme.bundle.js"
 
 # include custom scss in every website theme (without file extension ".scss")
