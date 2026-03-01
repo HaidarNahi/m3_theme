@@ -47,6 +47,20 @@ frappe.ui.form.on("Theme Settings", {
         renderCustomSidebarBuilder(frm);
     },
 
+    validate(frm) {
+        if (frm.doc.sidebar_type === 'Custom Sidebar') {
+            let sidebar_data = frm.doc.custom_sidebar_data ? JSON.parse(frm.doc.custom_sidebar_data) : [];
+            if (sidebar_data.length === 0) {
+                frappe.msgprint({
+                    title: __('Attention Needed'),
+                    indicator: 'red',
+                    message: __('You cannot save an empty Custom Sidebar. Please add at least one element to the table, or change the Sidebar Type back to "Default Sidebar".')
+                });
+                frappe.validated = false;
+            }
+        }
+    },
+
     after_save(frm) {
         frappe.ui.toolbar.clear_cache();
         frappe.show_alert({ message: "Settings saved successfully! Reloading page...", indicator: "green" });

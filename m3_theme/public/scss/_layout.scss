@@ -44,16 +44,24 @@ $indicator-radius: 28px;
     }
 }
 
-// Hide Frappe's original sidebar (we have our own fixed one)
-// ONLY hide it if it contains the old desk sidebar, to preserve List/Form sidebars!
+// ── EXPERIMENTAL FIX: Hide Frappe's original sidebar but LEAVE IT VISIBLE TO jQUERY ──
+// By using absolute positioning and tiny dimensions, Frappe's backend routing 
+// still registers it as `.is(':visible')` and successfully mounts the workspace modules! 
+// This prevents the "blank sidebar" bug.
 .layout-side-section {
     &:has(.desk-sidebar) {
-        display: none !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        opacity: 0.01 !important;
     }
 }
 
 .desk-sidebar {
-    display: none !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 // ── M3 Internal Sidebar Toggle Pill ──
