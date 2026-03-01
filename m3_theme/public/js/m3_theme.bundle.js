@@ -840,6 +840,24 @@
                 if (linkEmailInput && !linkEmailInput.parentElement.querySelector('.m3-login-icon')) {
                     linkEmailInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">mail</span>');
                 }
+
+                // Convert text 'Show'/'Hide' to M3 visibility icons
+                var toggleBtn = document.querySelector('.toggle-password');
+                if (toggleBtn && (!toggleBtn.dataset.m3Processed)) {
+                    toggleBtn.dataset.m3Processed = "true";
+                    toggleBtn.innerText = "visibility_off"; // Set initial state
+                    toggleBtn.addEventListener('click', function () {
+                        // Frappe's native JS toggles the input type, we just need to keep the icon in sync
+                        setTimeout(() => {
+                            var ptInput = document.getElementById('login_password');
+                            if (ptInput.type === 'text') {
+                                toggleBtn.innerText = "visibility";
+                            } else {
+                                toggleBtn.innerText = "visibility_off";
+                            }
+                        }, 50);
+                    });
+                }
             }, 100);
         }
 

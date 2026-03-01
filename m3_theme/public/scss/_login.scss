@@ -82,7 +82,9 @@ body:has(#page-login) {
 
     // Form fields
     .form-signin {
-        .form-group {
+
+        .form-group,
+        .email-field {
             margin-bottom: 24px !important;
             position: relative; // For absolute positioning of the icon
 
@@ -132,8 +134,13 @@ body:has(#page-login) {
                 transform: translateY(-50%) !important;
                 background: transparent !important;
                 box-shadow: none !important;
-                color: var(--primary) !important;
-                font-weight: 500 !important;
+                color: var(--on-surface-variant) !important;
+
+                // M3 Icon Toggle Support
+                font-family: 'Material Symbols Rounded', sans-serif !important;
+                font-size: 22px !important;
+                font-variation-settings: 'FILL' 0, 'wght' 300 !important;
+                right: 16px !important; // Bring it inside the padding
             }
         }
 
