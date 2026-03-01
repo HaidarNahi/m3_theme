@@ -41,8 +41,9 @@ body:has(#page-login) {
 
         background: var(--surface) !important;
         border-radius: 28px !important; // M3 extra large shape
-        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
-        border: 1px solid var(--border-color) !important;
+        // True M3 Elevation: soft, wide drop-shadow instead of standard box borders
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 24px 64px rgba(0, 0, 0, 0.12) !important;
+        border: none !important;
         padding: 48px 40px !important;
 
         @media (max-width: 480px) {
@@ -107,7 +108,7 @@ body:has(#page-login) {
                 height: 56px !important;
                 border-radius: 16px !important; // M3 medium shape for inputs
                 background: var(--surface-container-highest) !important;
-                border: 2px solid transparent !important;
+                border: 1px solid var(--outline) !important;
                 padding: 0 20px 0 52px !important; // Extra left padding for the icon
                 font-size: 16px !important;
                 color: var(--on-surface) !important;
@@ -210,17 +211,26 @@ body:has(#page-login) {
     .page-card-actions {
         margin-top: 24px !important;
         text-align: center;
+        color: var(--on-surface-variant) !important;
+        font-weight: 500 !important;
 
         a {
             color: var(--primary) !important;
             font-size: 14px !important;
-            font-weight: 500 !important;
+            font-weight: 600 !important;
             text-decoration: none !important;
 
             &:hover {
                 text-decoration: underline !important;
             }
         }
+    }
+
+    // Usually Frappe uses .text-muted for dividers like "or"
+    .text-muted {
+        color: var(--on-surface-variant) !important;
+        font-weight: 500 !important;
+        opacity: 0.9 !important;
     }
 
     .social-logins {
