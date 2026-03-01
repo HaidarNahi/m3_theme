@@ -192,9 +192,8 @@ h6 {
     }
 }
 
-// ── 6. Material 3 Styling for Language Switcher Frappe Table ──
-.frappe-control[data-fieldname="language_switcher"],
-.frappe-control[data-fieldname="custom_sidebar"] {
+// ── 6. Material 3 Styling for Frappe Tables (Child Tables) ──
+.frappe-control[data-fieldtype="Table"] {
 
     .form-grid {
         background: var(--surface) !important;
