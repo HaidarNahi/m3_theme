@@ -311,37 +311,28 @@ textarea.form-control {
         opacity: var(--m3-state-pressed, 0.12);
     }
 
-    // Hide Frappe's default SVG and replace with Material Symbol via content
-    svg {
+    // The JS replaceSystemIcons already injects an .m3-system-icon span —
+    // hide only the original SVG, NOT the injected span
+    >svg {
         display: none !important;
     }
 
-    &::after {
-        font-family: 'Material Symbols Rounded' !important;
+    // Size the injected M3 icon span
+    .m3-system-icon {
         font-size: 18px !important;
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
-        line-height: 1;
-        display: block;
+        pointer-events: none;
     }
 }
 
-// Clear = close icon, tinted error-ish on hover
+// Clear — error tint on hover
 .link-field .btn-clear {
-    &::after {
-        content: 'close' !important;
-    }
-
     &:hover {
         color: var(--m3-error) !important;
     }
 }
 
-// Open = open_in_new icon, tinted primary on hover
+// Open — primary tint on hover
 .link-field .btn-open {
-    &::after {
-        content: 'open_in_new' !important;
-    }
-
     &:hover {
         color: var(--m3-primary) !important;
     }
