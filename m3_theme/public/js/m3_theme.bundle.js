@@ -783,8 +783,6 @@
         if (window.location.pathname.startsWith('/login')) {
             if (doc.login_background_image) {
                 dynamicCSS += `body:has(#page-login) { background: url('${doc.login_background_image}') no-repeat center center fixed !important; background-size: cover !important; }\n`;
-                // Automatically make the title white text with text-shadow when a background image is present to contrast
-                dynamicCSS += `.page-card-head h1, .page-card-head h4, .page-card-head p { color: #ffffff !important; text-shadow: 0 4px 18px rgba(0,0,0,0.8) !important; }\n`;
             }
             if (doc.login_overlay_opacity) {
                 // z-index: 1 pushes it right behind the wrapper (z-index: 10)
