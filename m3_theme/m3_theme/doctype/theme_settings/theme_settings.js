@@ -25,8 +25,6 @@ frappe.ui.form.on("Theme Settings", {
                                 sidebar_type: "Default Sidebar",
                                 navbar_type: "Default Navbar",
                                 profile_menu_type: "Default Profile Menu",
-                                show_social_login: 1,
-                                show_email_password_login: 1,
                                 login_overlay_opacity: 0.5,
                                 inject_custom_css: 0,
                                 inject_custom_js: 0,

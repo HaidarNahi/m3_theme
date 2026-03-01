@@ -794,23 +794,22 @@
             } else if (doc.custom_logo) {
                 dynamicCSS += `body:has(#page-login) .page-card-head .app-logo { display: inline-block !important; }\n`;
             }
-            if (!doc.show_social_login) dynamicCSS += `.social-logins { display: none !important; }\n`;
-            if (!doc.show_email_password_login) dynamicCSS += `.form-login { display: none !important; }\n`;
-
             // Adjust texts if configured
             setTimeout(() => {
+                // Inject login_page_title right below the logo inside .page-card-head
                 if (doc.login_page_title) {
-                    var h1 = document.querySelector('.login-content .page-head h1') || document.querySelector('.login-content h1:not(.app-logo)');
-                    if (h1) h1.innerText = doc.login_page_title;
-                }
-                if (doc.login_page_subtitle) {
-                    var p = document.querySelector('.login-content .page-head p');
-                    if (p) {
-                        p.innerText = doc.login_page_subtitle;
-                    } else if (doc.login_page_title) {
-                        // Create a subtitle if none existed under the new title (often there is an h1 but no p)
-                        var dest = document.querySelector('.login-content .page-head h1');
-                        if (dest) dest.insertAdjacentHTML('afterend', `<p class="mt-2 text-muted">${doc.login_page_subtitle}</p>`);
+                    var existingTitle = document.getElementById('m3-login-title');
+                    if (!existingTitle) {
+                        var cardHead = document.querySelector('.page-card-head');
+                        if (cardHead) {
+                            var titleEl = document.createElement('p');
+                            titleEl.id = 'm3-login-title';
+                            titleEl.innerText = doc.login_page_title;
+                            titleEl.style.cssText = 'margin: 16px 0 0 0; font-size: 20px; font-weight: 600; color: var(--on-surface); text-align: center; letter-spacing: -0.3px;';
+                            cardHead.appendChild(titleEl);
+                        }
+                    } else {
+                        existingTitle.innerText = doc.login_page_title;
                     }
                 }
                 if (doc.login_footer_text) {
