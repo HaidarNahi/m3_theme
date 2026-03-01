@@ -209,15 +209,16 @@ textarea.form-control {
     background-color: transparent !important;
     color: var(--m3-on-surface) !important;
 
-    // Spacing (matches M3 outlined field 16px horizontal, 8px vertical)
-    padding: 8px 16px !important;
-    min-height: 56px !important;
+    // Compact size: 40px height, Body Medium text
+    padding: 6px 12px !important;
+    min-height: 40px !important;
+    height: 40px !important;
     line-height: 1.5 !important;
 
-    // Typography — Body Large for input text
-    font-size: var(--m3-body-large) !important;
+    // Typography — Body Medium (smaller than M3 spec default for density)
+    font-size: var(--m3-body-medium) !important; // 14px
     font-weight: 400 !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: var(--m3-body-medium-tracking) !important;
 
     // Transitions
     transition: border-color var(--m3-duration-short) var(--m3-easing-standard),
@@ -227,13 +228,14 @@ textarea.form-control {
     &:focus-visible {
         border-width: 2px !important;
         border-color: var(--m3-primary) !important;
-        padding: 7px 15px !important; // Compensate +1px border
+        padding: 5px 11px !important; // Compensate +1px border to prevent layout shift
         outline: none !important;
         box-shadow: none !important;
     }
 
     &::placeholder {
         color: var(--m3-on-surface-variant) !important;
+        font-size: var(--m3-body-medium) !important;
         opacity: 0.7 !important;
     }
 
@@ -247,11 +249,104 @@ textarea.form-control {
     }
 }
 
-// Textarea specific
+// Textarea: restore natural height (not 40px)
 textarea.form-control {
-    min-height: 120px !important;
+    height: auto !important;
+    min-height: 100px !important;
     resize: vertical !important;
+    padding: 10px 12px !important;
 }
+
+// ── M3 Link Field Buttons (.btn-clear / .btn-open) ──────────────
+// M3 closest equivalent: Icon Button (text/transparent variant, 32px)
+.link-field .link-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    position: absolute !important;
+    right: 6px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+}
+
+.link-field .btn-clear,
+.link-field .btn-open {
+    // M3 Icon Button geometry
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: var(--m3-shape-full) !important; // Full circle
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--m3-on-surface-variant) !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: background var(--m3-duration-short) var(--m3-easing-standard),
+        color var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+    // State layer
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity var(--m3-duration-short) var(--m3-easing-standard);
+        pointer-events: none;
+    }
+
+    &:hover::before {
+        opacity: var(--m3-state-hover, 0.08);
+    }
+
+    &:active::before {
+        opacity: var(--m3-state-pressed, 0.12);
+    }
+
+    // Hide Frappe's default SVG and replace with Material Symbol via content
+    svg {
+        display: none !important;
+    }
+
+    &::after {
+        font-family: 'Material Symbols Rounded' !important;
+        font-size: 18px !important;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        line-height: 1;
+        display: block;
+    }
+}
+
+// Clear = close icon, tinted error-ish on hover
+.link-field .btn-clear {
+    &::after {
+        content: 'close' !important;
+    }
+
+    &:hover {
+        color: var(--m3-error) !important;
+    }
+}
+
+// Open = open_in_new icon, tinted primary on hover
+.link-field .btn-open {
+    &::after {
+        content: 'open_in_new' !important;
+    }
+
+    &:hover {
+        color: var(--m3-primary) !important;
+    }
+}
+
 
 // Select fields
 select.form-control {
