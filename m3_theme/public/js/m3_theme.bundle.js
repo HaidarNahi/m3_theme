@@ -812,7 +812,20 @@
                 }
                 if (doc.login_footer_text) {
                     var parent = document.querySelector('.login-content');
-                    if (parent) parent.insertAdjacentHTML('beforeend', `<div class="mt-4 text-center text-muted" style="font-size: 13px;">${doc.login_footer_text}</div>`);
+                    if (parent && !document.querySelector('.m3-login-footer')) {
+                        parent.insertAdjacentHTML('beforeend', `<div class="m3-login-footer mt-4 text-center text-muted" style="font-size: 13px;">${doc.login_footer_text}</div>`);
+                    }
+                }
+
+                // Inject M3 Icons into the login inputs if they don't exist yet
+                var emailInput = document.getElementById('login_email');
+                if (emailInput && !emailInput.parentElement.querySelector('.m3-login-icon')) {
+                    emailInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">mail</span>');
+                }
+
+                var pwInput = document.getElementById('login_password');
+                if (pwInput && !pwInput.parentElement.querySelector('.m3-login-icon')) {
+                    pwInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">lock</span>');
                 }
             }, 100);
         }

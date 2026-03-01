@@ -7,7 +7,8 @@ body:has(#page-login) {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: var(--surface);
+    // Default M3 Gradient Background (will be overridden by JS if an image is set)
+    background: radial-gradient(circle at center, var(--surface-container-low) 0%, var(--surface-container-high) 100%) !important;
     margin: 0;
     padding: 24px;
     font-family: var(--font-family);
@@ -72,13 +73,27 @@ body:has(#page-login) {
     .form-signin {
         .form-group {
             margin-bottom: 24px !important;
+            position: relative; // For absolute positioning of the icon
+
+            // M3 Icon Styling
+            .m3-login-icon {
+                position: absolute;
+                top: 50%;
+                left: 16px;
+                transform: translateY(-50%);
+                color: var(--on-surface-variant);
+                font-size: 22px;
+                pointer-events: none;
+                z-index: 5;
+                font-variation-settings: 'FILL' 0, 'wght' 300;
+            }
 
             input.form-control {
                 height: 56px !important;
                 border-radius: 16px !important; // M3 medium shape for inputs
                 background: var(--surface-container-highest) !important;
                 border: 2px solid transparent !important;
-                padding: 0 20px !important;
+                padding: 0 20px 0 52px !important; // Extra left padding for the icon
                 font-size: 16px !important;
                 color: var(--on-surface) !important;
                 transition: all 0.2s ease;
