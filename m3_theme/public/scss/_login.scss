@@ -75,6 +75,11 @@ body:has(#page-login) {
             margin-bottom: 24px !important;
             position: relative; // For absolute positioning of the icon
 
+            // Hide native Frappe SVG icons in the inputs
+            svg.icon {
+                display: none !important;
+            }
+
             // M3 Icon Styling
             .m3-login-icon {
                 position: absolute;
