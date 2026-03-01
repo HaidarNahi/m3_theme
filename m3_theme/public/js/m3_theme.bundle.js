@@ -786,7 +786,6 @@
             }
             if (doc.login_overlay_opacity) {
                 dynamicCSS += `body:has(#page-login)::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,${doc.login_overlay_opacity}); z-index: 0; pointer-events: none; }\n`;
-                dynamicCSS += `.for-login { position: relative; z-index: 10; box-shadow: none !important; background: transparent !important; }\n`;
             }
             if (doc.login_logo) {
                 dynamicCSS += `.login-content .app-logo { content: url('${doc.login_logo}') !important; width: auto !important; height: auto !important; max-height: 80px !important; margin: 0 auto; }\n`;

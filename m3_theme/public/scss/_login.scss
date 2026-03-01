@@ -77,7 +77,7 @@ body:has(#page-login) {
         h4 {
             font-size: 28px !important;
             font-weight: 600 !important;
-            color: var(--on-surface) !important;
+            color: var(--text-color, #1f2937) !important;
             margin: 0 0 8px 0 !important;
         }
 
@@ -92,7 +92,12 @@ body:has(#page-login) {
     .form-signin {
         .form-group {
             margin-bottom: 24px !important;
-            position: relative; // For absolute positioning of the icon
+
+            .email-field,
+            .password-field {
+                position: relative;
+                display: block; // Keep it block to contain absolute items properly
+            }
 
             // Hide native Frappe SVG icons in the inputs
             svg.field-icon {
@@ -119,7 +124,7 @@ body:has(#page-login) {
                 border: 2px solid transparent !important;
                 padding: 0 20px 0 52px !important; // Extra left padding for the icon
                 font-size: 16px !important;
-                color: var(--on-surface) !important;
+                color: var(--text-color, #1f2937) !important;
                 transition: all 0.2s ease;
 
                 &::placeholder {
