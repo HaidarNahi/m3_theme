@@ -763,6 +763,31 @@
             } catch (e) { }
         }
 
+        // ── Favicon Replacement ──
+        if (doc.favicon) {
+            var existingFavicon = document.querySelector('link[rel~="icon"]');
+            if (existingFavicon) {
+                existingFavicon.href = doc.favicon;
+            } else {
+                var favLink = document.createElement('link');
+                favLink.rel = 'icon';
+                favLink.href = doc.favicon;
+                document.head.appendChild(favLink);
+            }
+        }
+
+        // ── Loading Animation Replacement ──
+        if (doc.loading_gif) {
+            var replaceLoadingImg = function () {
+                document.querySelectorAll('img.loading-img, .preloader img, #pre-loader img, .boot-loader img').forEach(function (img) {
+                    if (img.src !== doc.loading_gif) img.src = doc.loading_gif;
+                });
+                // Also inject CSS to replace via background-image if used that way
+                dynamicCSS += `.loading-img, .preloader img, #pre-loader img { content: url('${doc.loading_gif}') !important; }\n`;
+            };
+            replaceLoadingImg();
+        }
+
         // Custom Logo Replacement
         if (doc.custom_logo) {
             dynamicCSS += `
@@ -868,25 +893,6 @@
             document.head.appendChild(dynStyle);
         }
         dynStyle.innerHTML = dynamicCSS;
-
-        // Custom CSS
-        if (doc.inject_custom_css && doc.custom_css) {
-            var styleEl = document.getElementById('m3-theme-custom-css');
-            if (!styleEl) {
-                styleEl = document.createElement('style');
-                styleEl.id = 'm3-theme-custom-css';
-                document.head.appendChild(styleEl);
-            }
-            styleEl.innerHTML = doc.custom_css;
-        }
-
-        // Custom JS (Load exactly once)
-        if (doc.inject_custom_js && doc.custom_js && !document.getElementById('m3-theme-custom-js')) {
-            var scriptEl = document.createElement('script');
-            scriptEl.id = 'm3-theme-custom-js';
-            scriptEl.innerHTML = doc.custom_js;
-            document.head.appendChild(scriptEl);
-        }
     }
 
     // Attempt to apply boot settings instantly (reduces flash)

@@ -14,6 +14,8 @@
         "font_family",
         "base_font_size",
         "cb_font",
+        "favicon",
+        "loading_gif",
         "sidebar_tab",
         "sidebar_section",
         "sidebar_type",
@@ -46,15 +48,7 @@
         "login_overlay_opacity",
         "cb_login",
         "login_page_title",
-        "login_footer_text",
-        "advanced_tab",
-        "advanced_section",
-        "inject_custom_css",
-        "custom_css",
-        "cb_advanced",
-        "inject_custom_js",
-        "custom_js",
-        "developer_mode_notice"
+        "login_footer_text"
     ],
     "fields": [
         {
@@ -105,6 +99,18 @@
         {
             "fieldname": "cb_font",
             "fieldtype": "Column Break"
+        },
+        {
+            "description": "Replaces the browser tab icon (favicon). Upload a .ico, .png, or .svg file.",
+            "fieldname": "favicon",
+            "fieldtype": "Attach Image",
+            "label": "Favicon"
+        },
+        {
+            "description": "Replaces the default Frappe loading spinner. Upload a .gif or .svg file.",
+            "fieldname": "loading_gif",
+            "fieldtype": "Attach Image",
+            "label": "Loading Animation"
         },
         {
             "fieldname": "sidebar_tab",
@@ -287,52 +293,6 @@
             "fieldname": "login_footer_text",
             "fieldtype": "Data",
             "label": "Login Footer Text"
-        },
-        {
-            "fieldname": "advanced_tab",
-            "fieldtype": "Tab Break",
-            "label": "Advanced"
-        },
-        {
-            "fieldname": "advanced_section",
-            "fieldtype": "Section Break",
-            "label": "Custom CSS / JS"
-        },
-        {
-            "default": "0",
-            "fieldname": "inject_custom_css",
-            "fieldtype": "Check",
-            "label": "Enable Custom CSS Injection"
-        },
-        {
-            "depends_on": "eval:doc.inject_custom_css == 1",
-            "fieldname": "custom_css",
-            "fieldtype": "Code",
-            "label": "Custom CSS",
-            "options": "CSS"
-        },
-        {
-            "fieldname": "cb_advanced",
-            "fieldtype": "Column Break"
-        },
-        {
-            "default": "0",
-            "fieldname": "inject_custom_js",
-            "fieldtype": "Check",
-            "label": "Enable Custom JS Injection"
-        },
-        {
-            "depends_on": "eval:doc.inject_custom_js == 1",
-            "fieldname": "custom_js",
-            "fieldtype": "Code",
-            "label": "Custom JavaScript",
-            "options": "JavaScript"
-        },
-        {
-            "fieldname": "developer_mode_notice",
-            "fieldtype": "HTML",
-            "label": "Developer Notice",
-            "options": "<div class=\"alert alert-warning\"><b>\u26a0\ufe0f Advanced:</b> Custom CSS/JS is injected into every page. Errors here can break the entire UI. Test carefully.</div>"
         },
         {
             "fieldname": "navbar_content_visibility",
