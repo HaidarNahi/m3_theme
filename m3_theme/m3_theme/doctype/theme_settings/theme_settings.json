@@ -140,13 +140,15 @@
   {
    "fieldname": "custom_sidebar_html",
    "fieldtype": "HTML",
-   "label": "Custom Sidebar Logic"
+   "label": "Custom Sidebar Logic",
+   "insert_after": "sidebar_builder_section"
   },
   {
    "fieldname": "custom_sidebar_data",
    "fieldtype": "Code",
    "label": "Custom Sidebar Data",
-   "hidden": 1
+   "hidden": 1,
+   "insert_after": "custom_sidebar_html"
   },
   {
    "fieldname": "navbar_tab",
@@ -368,7 +370,7 @@
  "issingle": 1,
  "links": [],
  "max_attachments": 10,
- "modified": "2026-02-26 15:48:32.885068",
+ "modified": "2026-03-01 10:07:09.404508",
  "modified_by": "Administrator",
  "module": "M3 Theme",
  "name": "Theme Settings",
