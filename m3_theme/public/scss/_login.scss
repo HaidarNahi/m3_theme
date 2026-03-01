@@ -75,8 +75,12 @@ body:has(#page-login) {
 
         h1,
         h4,
-        p {
+        p:not(#m3-login-title) {
             display: none !important;
+        }
+
+        #m3-login-title {
+            display: block !important;
         }
     }
 
