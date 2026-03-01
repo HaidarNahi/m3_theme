@@ -176,15 +176,28 @@
     function extractItems() {
         if (window.frappe && frappe.boot && frappe.boot.m3_theme_settings
             && frappe.boot.m3_theme_settings.sidebar_type === 'Custom Sidebar'
-            && frappe.boot.m3_theme_settings.custom_sidebar
-            && frappe.boot.m3_theme_settings.custom_sidebar.length > 0) {
+            && frappe.boot.m3_theme_settings.custom_sidebar_data) {
 
-            var custItems = [];
-            frappe.boot.m3_theme_settings.custom_sidebar.forEach(function (c) {
-                var href = c.link_type === 'URL' ? c.link_to : '/app/' + c.link_to.toLowerCase().replace(/ /g, '-');
-                custItems.push({ label: c.title, href: href, iconOverride: c.icon });
-            });
-            return custItems;
+            var custom_data = [];
+            try { custom_data = JSON.parse(frappe.boot.m3_theme_settings.custom_sidebar_data); } catch (e) { }
+
+            if (custom_data.length > 0) {
+                var custItems = [];
+                custom_data.forEach(function (c) {
+                    var href = '';
+                    if (c.link_type === 'URL') {
+                        href = c.link_to;
+                    } else if (c.link_type === 'Report') {
+                        href = '/app/query-report/' + encodeURIComponent(c.link_to);
+                    } else if (c.link_type === 'Dashboard') {
+                        href = '/app/dashboard-view/' + encodeURIComponent(c.link_to);
+                    } else {
+                        href = '/app/' + c.link_to.toLowerCase().replace(/ /g, '-');
+                    }
+                    custItems.push({ label: c.title, href: href, iconOverride: c.icon, iconFilled: c.icon_filled });
+                });
+                return custItems;
+            }
         }
         var sb = document.querySelector('.desk-sidebar');
         if (!sb) return null;
@@ -202,9 +215,10 @@
         var h = '<div class="m3-sidebar-header"><button class="m3-sidebar-toggle-btn"><span class="material-symbols-rounded">menu</span></button></div>';
         items.forEach(function (it) {
             var icon = it.iconOverride || ICON_MAP[it.label.toLowerCase()] || DEFAULT_ICON;
+            var fillCss = it.iconFilled ? ' font-variation-settings: \\"FILL\\" 1;' : '';
             // Place data-label securely on the container so our hide selectors can target it easily!
             h += '<div class="sidebar-item-container" data-label="' + it.label + '"><div class="desk-sidebar-item"><a class="item-anchor" href="' + it.href +
-                '"><div class="sidebar-item-icon"><span class="material-symbols-rounded">' +
+                '"><div class="sidebar-item-icon"><span class="material-symbols-rounded" style="' + fillCss + '">' +
                 icon + '</span></div><span class="sidebar-item-label">' +
                 it.label + '</span></a></div></div>';
         });

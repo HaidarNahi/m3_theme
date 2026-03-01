@@ -138,11 +138,15 @@
    "label": "Custom Sidebar Builder"
   },
   {
-   "depends_on": "eval:doc.sidebar_type == 'Custom Sidebar'",
-   "fieldname": "custom_sidebar",
-   "fieldtype": "Table",
-   "label": "Custom Sidebar Items",
-   "options": "M3 Sidebar Item"
+   "fieldname": "custom_sidebar_html",
+   "fieldtype": "HTML",
+   "label": "Custom Sidebar Logic"
+  },
+  {
+   "fieldname": "custom_sidebar_data",
+   "fieldtype": "Code",
+   "label": "Custom Sidebar Data",
+   "hidden": 1
   },
   {
    "fieldname": "navbar_tab",
