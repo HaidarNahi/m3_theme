@@ -2,7 +2,8 @@
 //  Material Design 3 — Dynamic Light/Dark Theme System
 // ═══════════════════════════════════════════════════════════════
 
-:root, [data-theme="light"] {
+:root,
+[data-theme="light"] {
     // ── Primary ──
     --m3-primary: #6750A4;
     --m3-primary-rgb: 103, 80, 164;
@@ -23,7 +24,7 @@
     --m3-on-surface: #1C1B1F;
     --m3-on-surface-rgb: 28, 27, 31;
     --m3-on-surface-variant: #49454E; // Slightly lighter than on-surface
-    
+
     // Graduated Surface Containers (M3)
     --m3-surface-container-highest: #E6E0E9;
     --m3-surface-container-high: #ECE6F0;
@@ -64,7 +65,7 @@
     --m3-on-surface: #E6E1E5;
     --m3-on-surface-rgb: 230, 225, 229;
     --m3-on-surface-variant: #CAC4D0;
-    
+
     // Graduated Surface Containers (M3)
     --m3-surface-container-highest: #36343B;
     --m3-surface-container-high: #2B2930;
@@ -99,7 +100,9 @@ $m3-primary-rgb: var(--m3-primary-rgb);
 $m3-outline: var(--m3-outline);
 $m3-outline-rgb: var(--m3-outline-rgb);
 
-:root, [data-theme="light"], [data-theme="dark"] {
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
     // ── Core ──
     --primary: var(--m3-primary);
     --bg-color: var(--m3-background);
@@ -140,4 +143,84 @@ $font-family: 'Readex Pro', sans-serif;
 
 body {
     font-family: $font-family !important;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  M3 Typography Scale
+// ═══════════════════════════════════════════════════════════════
+:root {
+    // Display
+    --m3-display-large: 57px;
+    --m3-display-large-weight: 400;
+    --m3-display-large-tracking: -0.25px;
+    --m3-display-medium: 45px;
+    --m3-display-medium-weight: 400;
+    --m3-display-medium-tracking: 0;
+    --m3-display-small: 36px;
+    --m3-display-small-weight: 400;
+    --m3-display-small-tracking: 0;
+    // Headline
+    --m3-headline-large: 32px;
+    --m3-headline-large-weight: 400;
+    --m3-headline-large-tracking: 0;
+    --m3-headline-medium: 28px;
+    --m3-headline-medium-weight: 400;
+    --m3-headline-medium-tracking: 0;
+    --m3-headline-small: 24px;
+    --m3-headline-small-weight: 400;
+    --m3-headline-small-tracking: 0;
+    // Title
+    --m3-title-large: 22px;
+    --m3-title-large-weight: 400;
+    --m3-title-large-tracking: 0;
+    --m3-title-medium: 16px;
+    --m3-title-medium-weight: 500;
+    --m3-title-medium-tracking: 0.15px;
+    --m3-title-small: 14px;
+    --m3-title-small-weight: 500;
+    --m3-title-small-tracking: 0.1px;
+    // Body
+    --m3-body-large: 16px;
+    --m3-body-large-weight: 400;
+    --m3-body-large-tracking: 0.5px;
+    --m3-body-medium: 14px;
+    --m3-body-medium-weight: 400;
+    --m3-body-medium-tracking: 0.25px;
+    --m3-body-small: 12px;
+    --m3-body-small-weight: 400;
+    --m3-body-small-tracking: 0.4px;
+    // Label
+    --m3-label-large: 14px;
+    --m3-label-large-weight: 500;
+    --m3-label-large-tracking: 0.1px;
+    --m3-label-medium: 12px;
+    --m3-label-medium-weight: 500;
+    --m3-label-medium-tracking: 0.5px;
+    --m3-label-small: 11px;
+    --m3-label-small-weight: 500;
+    --m3-label-small-tracking: 0.5px;
+
+    // ── M3 Motion (Easing) ──
+    --m3-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --m3-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --m3-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --m3-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+    --m3-duration-short: 200ms;
+    --m3-duration-medium: 300ms;
+    --m3-duration-long: 500ms;
+
+    // ── M3 Shape ──
+    --m3-shape-none: 0px;
+    --m3-shape-extra-small: 4px;
+    --m3-shape-small: 8px;
+    --m3-shape-medium: 12px;
+    --m3-shape-large: 16px;
+    --m3-shape-extra-large: 28px;
+    --m3-shape-full: 100px;
+
+    // ── M3 State Layer Opacities ──
+    --m3-state-hover: 0.08;
+    --m3-state-focus: 0.12;
+    --m3-state-pressed: 0.12;
+    --m3-state-dragged: 0.16;
 }

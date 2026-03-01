@@ -1,230 +1,709 @@
-// ═══════════════════════════════════════════════════════
-//  Material Design 3 Components (Cards, Buttons, Inputs, Dialogs)
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+//  Material Design 3 — Component System
+//  Architectural pillars implemented:
+//    1. Global Token Application (typography scale, elevation-by-color)
+//    2. Hybrid Form Inputs → md-outlined-text-field visual parity
+//    3. Complete Button Hierarchy with M3 State Layers
+//    4. Surface Geometry (28px dialogs, 12-16px cards)
+//    5. Feedback: progress, toasts, badges
+//    6. Interaction: List rows, tabs, navbar, dropdowns
+// ═══════════════════════════════════════════════════════════════
 
-// ── 1. Shapes & Elevating with Color instead of Shadows ──
-// Remove aggressive box-shadows, use M3 surface colors
+// ── 0. GLOBAL SHADOW STRIP ────────────────────────────────────
+// Replace ALL legacy box-shadows with M3 color-based elevation
+// (Surface Container hierarchy is the M3 elevation signal)
+*,
+*::before,
+*::after {
+    box-shadow: none !important;
+}
+
+// Re-allow ONLY the surfaces that need intentional M3 elevation shadows
+.modal-content,
+.modal-dialog,
+.dropdown-menu,
+.popover,
+.tooltip-inner,
+.autocomplete-suggestions,
+.awesomplete>ul,
+#m3-fixed-sidebar {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06),
+        0 4px 12px rgba(0, 0, 0, .08),
+        0 8px 32px rgba(0, 0, 0, .06) !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  1. M3 TYPOGRAPHY SCALE — Applied to Frappe's native headings
+// ═══════════════════════════════════════════════════════════════
+
+h1,
+.h1 {
+    font-size: var(--m3-headline-large) !important;
+    font-weight: var(--m3-headline-large-weight) !important;
+    letter-spacing: var(--m3-headline-large-tracking) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+h2,
+.h2 {
+    font-size: var(--m3-headline-medium) !important;
+    font-weight: var(--m3-headline-medium-weight) !important;
+    letter-spacing: var(--m3-headline-medium-tracking) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+h3,
+.h3 {
+    font-size: var(--m3-headline-small) !important;
+    font-weight: var(--m3-headline-small-weight) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+h4,
+.h4 {
+    font-size: var(--m3-title-large) !important;
+    font-weight: var(--m3-title-large-weight) !important;
+    letter-spacing: var(--m3-title-large-tracking) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+h5,
+.h5 {
+    font-size: var(--m3-title-medium) !important;
+    font-weight: var(--m3-title-medium-weight) !important;
+    letter-spacing: var(--m3-title-medium-tracking) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+h6,
+.h6 {
+    font-size: var(--m3-title-small) !important;
+    font-weight: var(--m3-title-small-weight) !important;
+    letter-spacing: var(--m3-title-small-tracking) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+body,
+p,
+span:not(.material-symbols-rounded):not(.m3-system-icon),
+div,
+li,
+td,
+th,
+a {
+    font-size: var(--m3-body-medium) !important;
+    font-weight: var(--m3-body-medium-weight) !important;
+    letter-spacing: var(--m3-body-medium-tracking) !important;
+}
+
+.text-muted,
+.help-box,
+.description {
+    font-size: var(--m3-body-small) !important;
+    color: var(--m3-on-surface-variant) !important;
+}
+
+.control-label,
+label:not(.form-check-label) {
+    font-size: var(--m3-label-medium) !important;
+    font-weight: var(--m3-label-medium-weight) !important;
+    letter-spacing: var(--m3-label-medium-tracking) !important;
+    color: var(--m3-on-surface-variant) !important;
+    margin-bottom: 4px !important;
+}
+
+// Page titles and document titles (Title Large)
+.page-title .title-text,
+.page-head .title-area .title-text,
+.document-title {
+    font-size: var(--m3-title-large) !important;
+    font-weight: 600 !important;
+    color: var(--m3-on-surface) !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  2. SURFACE & ELEVATION — Color-only elevation (M3 tiers)
+// ═══════════════════════════════════════════════════════════════
+
+// Level 0 — Surface (base canvas)
+body,
+.page-body {
+    background-color: var(--m3-background) !important;
+}
+
+// Level 1 — Surface Container (cards, sidebar)
 .frappe-card,
 .widget,
+.dashboard-widget-box,
 .form-section,
-.dashboard-widget-box {
-    box-shadow: none !important;
-    background: var(--surface-container) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 12px !important; // M3 Medium Shape
+.section-body,
+.panel,
+.card {
+    background: var(--m3-surface-container) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: var(--m3-shape-medium) !important;
 }
 
+// Level 2 — Surface Container High (dropdowns, popovers)
+.dropdown-menu,
+.popover-body,
+.awesomplete>ul {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: var(--m3-shape-medium) !important;
+}
+
+// Level 3 — Extra Large Shape for DIALOGS
 .modal-content {
-    border-radius: 28px !important; // M3 Extra Large Shape for Dialogs
-    background: var(--bg-color) !important;
+    background: var(--m3-surface-container-low) !important;
     border: none !important;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12) !important; // Softer M3 Elevation 3
-    padding: 12px !important; // Extra breathing room
+    border-radius: var(--m3-shape-extra-large) !important; // 28px
+    padding: 8px !important;
+    color: var(--m3-on-surface) !important;
 }
 
-// ── 2. Button Hierarchy (Pills & Tonal Overrides) ──
-$btn-radius: 100px; // Fully rounded pills for most buttons
+.modal-header {
+    border-bottom: none !important;
+    padding: 20px 24px 12px !important;
+
+    .modal-title {
+        font-size: var(--m3-headline-small) !important;
+        font-weight: 400 !important;
+        color: var(--m3-on-surface) !important;
+    }
+}
+
+.modal-footer {
+    border-top: none !important;
+    padding: 12px 24px 20px !important;
+    gap: 8px;
+}
+
+.modal-backdrop.in {
+    opacity: 0.32 !important;
+    background: #000 !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  3. HYBRID FORM INPUTS → md-outlined-text-field visual parity
+//     1px resting outline · 2px primary focus ring ·
+//     exact M3 padding · supporting text below
+// ═══════════════════════════════════════════════════════════════
+
+// The .frappe-control wrapper is the equivalent of <md-outlined-text-field>
+.frappe-control {
+    margin-bottom: 20px !important;
+    position: relative;
+}
+
+// Native inputs restyled to match M3 outlined field exactly
+.form-control,
+.awesomplete>input,
+textarea.form-control {
+    // Geometry
+    border-radius: var(--m3-shape-extra-small) !important; // 4px per M3 spec
+    border: 1px solid var(--m3-outline) !important;
+    background-color: transparent !important;
+    color: var(--m3-on-surface) !important;
+
+    // Spacing (matches M3 outlined field 16px horizontal, 8px vertical)
+    padding: 8px 16px !important;
+    min-height: 56px !important;
+    line-height: 1.5 !important;
+
+    // Typography — Body Large for input text
+    font-size: var(--m3-body-large) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.5px !important;
+
+    // Transitions
+    transition: border-color var(--m3-duration-short) var(--m3-easing-standard),
+        border-width var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+    &:focus,
+    &:focus-visible {
+        border-width: 2px !important;
+        border-color: var(--m3-primary) !important;
+        padding: 7px 15px !important; // Compensate +1px border
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    &::placeholder {
+        color: var(--m3-on-surface-variant) !important;
+        opacity: 0.7 !important;
+    }
+
+    &[readonly],
+    &[disabled],
+    &.disabled {
+        background-color: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.04) !important;
+        border-color: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.12) !important;
+        color: var(--m3-on-surface-variant) !important;
+        cursor: default !important;
+    }
+}
+
+// Textarea specific
+textarea.form-control {
+    min-height: 120px !important;
+    resize: vertical !important;
+}
+
+// Select fields
+select.form-control {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    padding-right: 40px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' fill='%2379747E' viewBox='0 96 960 960' width='20'%3E%3Cpath d='M480 711 240 471l43-43 197 198 197-198 43 43-240 240Z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+}
+
+// Filled variant for compact contexts (filter bars, grid cells)
+.filter-section,
+.grid-row .form-control {
+
+    .form-control,
+    .awesomplete>input {
+        background-color: var(--m3-surface-container-highest) !important;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--m3-outline) !important;
+        border-radius: var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0 !important;
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 4px 12px !important;
+        font-size: var(--m3-body-medium) !important;
+
+        &:focus {
+            border-bottom: 2px solid var(--m3-primary) !important;
+            padding: 4px 12px 3px !important;
+        }
+    }
+}
+
+// Supporting text / help text below fields
+.help-box {
+    font-size: var(--m3-body-small) !important;
+    color: var(--m3-on-surface-variant) !important;
+    margin-top: 4px !important;
+    padding-left: 16px !important; // Align with field padding
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  4. BUTTON HIERARCHY with M3 State Layers
+//     Filled · Tonal · Outlined · Text · Icon
+// ═══════════════════════════════════════════════════════════════
+
+$btn-radius: var(--m3-shape-full); // 100px
 
 .btn {
     border-radius: $btn-radius !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.1px !important;
-    padding: 8px 24px !important;
+    font-size: var(--m3-label-large) !important;
+    font-weight: var(--m3-label-large-weight) !important;
+    letter-spacing: var(--m3-label-large-tracking) !important;
+    padding: 10px 24px !important;
     min-height: 40px !important;
     display: inline-flex;
     align-items: center !important;
     justify-content: center !important;
     white-space: nowrap !important;
-    flex-wrap: nowrap !important;
-    gap: 8px; // For icon + text spacing
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
-    box-shadow: none !important;
+    gap: 8px;
+    border: none !important;
+    transition:
+        background-color var(--m3-duration-short) var(--m3-easing-standard),
+        color var(--m3-duration-short) var(--m3-easing-standard) !important;
 
-    // M3 State Layer simulation (hover)
+    // M3 State Layer (transparent overlay on top of background)
     position: relative;
     overflow: hidden;
+    isolation: isolate;
 
-    &::after {
-        content: "";
+    &::before {
+        content: '';
         position: absolute;
         inset: 0;
-        background-color: currentColor;
+        border-radius: inherit;
+        background: currentColor;
         opacity: 0;
-        transition: opacity 0.2s ease;
+        transition: opacity var(--m3-duration-short) var(--m3-easing-standard);
         pointer-events: none;
+        z-index: 0;
     }
 
-    &:hover::after {
-        opacity: 0.08; // State layer opacity
+    &:hover::before {
+        opacity: var(--m3-state-hover, 0.08);
     }
 
-    &:active::after {
-        opacity: 0.12; // Press state
+    &:focus::before {
+        opacity: var(--m3-state-focus, 0.12);
+    }
+
+    &:active::before {
+        opacity: var(--m3-state-pressed, 0.12);
+    }
+
+    >* {
+        position: relative;
+        z-index: 1;
     }
 }
 
-// Drop button height down slightly for very tight spaces (e.g. table actions)
+// ── Filled (Primary action) ──
+.btn-primary {
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    border: none !important;
+}
+
+// ── Filled Tonal (Secondary/Default action) ──
+.btn-default,
+.btn-secondary {
+    background-color: var(--m3-secondary-container, var(--m3-surface-container-high)) !important;
+    color: var(--m3-on-secondary-container, var(--m3-on-surface)) !important;
+    border: none !important;
+}
+
+// ── Outlined ──
+.btn-outline,
+.btn-outline-primary {
+    background-color: transparent !important;
+    color: var(--m3-primary) !important;
+    border: 1px solid var(--m3-outline) !important;
+}
+
+// ── Danger / Error ──
+.btn-danger {
+    background-color: var(--m3-error) !important;
+    color: var(--m3-on-error) !important;
+    border: none !important;
+}
+
+// ── Small & XS ──
 .btn-sm,
 .btn-xs {
     min-height: 32px !important;
     padding: 0 16px !important;
-    font-size: 14px !important;
-    line-height: inherit !important;
+    font-size: var(--m3-label-medium) !important;
+    gap: 4px;
 }
 
-// ── a. Filled Button (Primary)
-.btn-primary {
-    background-color: var(--primary) !important;
-    color: var(--on-primary) !important;
+// Pill sidebar toggle button
+.m3-pill-sidebar-toggle {
+    border-radius: var(--m3-shape-full) !important;
+    padding: 6px 12px !important;
+    min-height: 36px !important;
+    background: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface-variant) !important;
+    border: none !important;
+
+    &.active {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  5. NAVBAR  — M3 Top App Bar
+// ═══════════════════════════════════════════════════════════════
+
+.navbar {
+    background: var(--m3-surface-container) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    height: 64px !important;
+    padding: 0 12px !important;
+
+    .navbar-brand {
+        color: var(--m3-on-surface) !important;
+        font-size: var(--m3-title-large) !important;
+        font-weight: 600 !important;
+    }
+
+    // Icon buttons in nav
+    .nav-link,
+    .btn-icon {
+        border-radius: var(--m3-shape-full) !important;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--m3-on-surface-variant) !important;
+        transition: background var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+        &:hover {
+            background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.08) !important;
+        }
+    }
+}
+
+// ── Dropdown menus (M3 Menu / Select) ──
+.dropdown-menu {
+    background: var(--m3-surface-container-high) !important;
+    border: none !important;
+    border-radius: var(--m3-shape-medium) !important;
+    padding: 8px 0 !important;
+    min-width: 200px;
+    overflow: hidden;
+
+    .dropdown-item {
+        font-size: var(--m3-body-medium) !important;
+        font-weight: 400 !important;
+        color: var(--m3-on-surface) !important;
+        padding: 12px 16px !important;
+        border-radius: 0 !important;
+        transition: background var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+        &:hover {
+            background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.08) !important;
+        }
+
+        &:active,
+        &.active {
+            background: var(--m3-primary-container) !important;
+            color: var(--m3-on-primary-container) !important;
+        }
+    }
+
+    .dropdown-divider {
+        border-color: var(--m3-outline-variant) !important;
+        margin: 4px 0 !important;
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  6. TABS — M3 Secondary Tabs style
+// ═══════════════════════════════════════════════════════════════
+
+.nav-tabs {
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    gap: 0;
+
+    .nav-item .nav-link {
+        border: none !important;
+        border-radius: 0 !important;
+        color: var(--m3-on-surface-variant) !important;
+        font-size: var(--m3-title-small) !important;
+        font-weight: var(--m3-title-small-weight) !important;
+        letter-spacing: var(--m3-title-small-tracking) !important;
+        padding: 14px 16px !important;
+        position: relative;
+        transition: color var(--m3-duration-short) var(--m3-easing-standard) !important;
+        background: transparent !important;
+
+        // Active indicator (3px bottom line = M3 secondary tab)
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+            background: var(--m3-primary);
+            transform: scaleX(0);
+            transition: transform var(--m3-duration-short) var(--m3-easing-standard);
+        }
+
+        &.active,
+        &[aria-selected="true"] {
+            color: var(--m3-primary) !important;
+
+            &::after {
+                transform: scaleX(1);
+            }
+        }
+
+        &:hover:not(.active) {
+            color: var(--m3-on-surface) !important;
+            background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.06) !important;
+        }
+    }
+}
+
+// Section tabs inside forms (M3 primary-style tabs)
+.form-tabs-list .nav-item .nav-link {
+    font-size: var(--m3-title-small) !important;
+    font-weight: 500 !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  7. LIST ROWS — M3 List Item anatomy
+// ═══════════════════════════════════════════════════════════════
+
+.list-row-head {
+    background: var(--m3-surface) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    font-size: var(--m3-label-large) !important;
+    font-weight: var(--m3-label-large-weight) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+.list-row {
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    background: transparent !important;
+    transition: background var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.06) !important;
+    }
+
+    .list-subject {
+        font-size: var(--m3-body-medium) !important;
+        font-weight: 500 !important;
+        color: var(--m3-on-surface) !important;
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  8. BADGES & TAGS
+// ═══════════════════════════════════════════════════════════════
+
+.badge,
+.indicator-pill {
+    border-radius: var(--m3-shape-full) !important;
+    font-size: var(--m3-label-small) !important;
+    font-weight: var(--m3-label-small-weight) !important;
+    letter-spacing: var(--m3-label-small-tracking) !important;
+    padding: 2px 8px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     border: none !important;
 }
 
-// ── b. Tonal / Outlined Button (Secondary/Default)
-.btn-default,
-.btn-secondary {
-    background-color: var(--surface-container-high) !important; // Tonal style
-    color: var(--text-color) !important;
-    border: 1px solid transparent !important;
-
-    // If you prefer Outlined style for default actions:
-    // background-color: transparent !important;
-    // border: 1px solid var(--outline) !important;
+.badge-primary,
+.indicator-pill.blue {
+    background: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
 }
 
-// ── 3. Form Inputs (M3 Outlined Text Fields) ──
-.form-control,
-.awesomplete>input {
-    border-radius: 4px !important; // M3 small shape
-    border: 1px solid var(--outline-variant) !important;
-    background-color: transparent !important;
-    color: var(--text-color) !important;
+.badge-success,
+.indicator-pill.green {
+    background: #C8E6C9 !important;
+    color: #1B5E20 !important;
+}
+
+.badge-warning,
+.indicator-pill.orange,
+.indicator-pill.yellow {
+    background: #FFF3E0 !important;
+    color: #E65100 !important;
+}
+
+.badge-danger,
+.indicator-pill.red {
+    background: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+}
+
+.indicator-pill.grey,
+.indicator-pill.gray {
+    background: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface-variant) !important;
+}
+
+// Frappe tag widgets
+.tags-area .tag-badge {
+    background: var(--m3-secondary-container, var(--m3-surface-container-high)) !important;
+    color: var(--m3-on-secondary-container, var(--m3-on-surface)) !important;
+    border-radius: var(--m3-shape-full) !important;
+    border: none !important;
+    font-size: var(--m3-label-medium) !important;
+    padding: 4px 12px !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  9. CHECKBOXES & RADIOS — M3 tonal accent
+// ═══════════════════════════════════════════════════════════════
+
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: var(--m3-primary) !important;
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  10. FRAPPE NOTIFICATION / TOAST — M3 Snackbar shape
+// ═══════════════════════════════════════════════════════════════
+
+.frappe-toast,
+.alert {
+    border-radius: var(--m3-shape-extra-small) !important;
+    font-size: var(--m3-body-medium) !important;
+    border: none !important;
     padding: 12px 16px !important;
-    min-height: 48px !important; // Taller hit targets
-    box-shadow: none !important;
-    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
-
-    &:focus,
-    &:focus-within {
-        border-width: 2px !important;
-        border-color: var(--primary) !important;
-        padding: 11px 15px !important; // Offset the +1px border to prevent layout shift
-        outline: none !important;
-    }
-
-    &[readonly],
-    &[disabled] {
-        background-color: var(--surface-container-low) !important;
-        border-color: var(--outline-variant) !important;
-        color: var(--text-muted) !important;
-    }
 }
 
-// Controls container needs proper margin spacing
-.frappe-control {
-    margin-bottom: 20px !important;
+.alert-success {
+    background: #C8E6C9 !important;
+    color: #1B5E20 !important;
 }
 
-// Support for labels
-.control-label,
-.help-box {
-    color: var(--text-muted) !important;
-    font-size: 12px !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.4px !important;
-    margin-bottom: 4px !important;
+.alert-danger,
+.alert-error {
+    background: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
 }
 
-// Custom select dropdown arrow positioning
-select.form-control {
-    padding-right: 36px !important;
+.alert-warning {
+    background: #FFF3E0 !important;
+    color: #E65100 !important;
 }
 
-// Drop active line animation on Frappe's old material logic (if active)
-.frappe-control .control-input .m0 {
-    display: none !important;
+.alert-info {
+    background: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
 }
 
-// ── 4. Typography Adjustments ──
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: var(--text-color) !important;
-    font-weight: 500 !important;
-}
 
-.text-muted {
-    color: var(--text-muted) !important;
-}
+// ═══════════════════════════════════════════════════════════════
+//  11. CHILD TABLES — M3 Table (Full-width, outlined container)
+// ═══════════════════════════════════════════════════════════════
 
-// Frappe grid list headers
-.list-row-head {
-    background-color: var(--surface) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-    font-weight: 500 !important;
-    color: var(--text-color) !important;
-}
-
-// List row items
-.list-row {
-    border-bottom: 1px solid var(--border-color) !important;
-    background: transparent !important;
-
-    &:hover {
-        background: var(--surface-container-lowest) !important; // Slight hover elevation
-    }
-}
-
-// ── 5. Compact Quick Filters (High Density) ──
-.filter-section {
-    .form-group {
-        margin-bottom: 4px !important;
-    }
-
-    .form-control,
-    .awesomplete>input {
-        min-height: 32px !important;
-        height: 32px !important;
-        padding: 4px 12px !important;
-        font-size: 13px !important;
-    }
-}
-
-// ── 6. Material 3 Styling for Frappe Tables (Child Tables) ──
 .frappe-control[data-fieldtype="Table"] {
-
     .form-grid {
-        background: var(--surface) !important;
-        border: 1px solid var(--border-color) !important;
-        border-radius: 12px !important; // M3 Table Radius
+        background: var(--m3-surface) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: var(--m3-shape-medium) !important;
         overflow: hidden !important;
-        box-shadow: none !important;
     }
 
     .grid-container {
         border: none !important;
         border-radius: 0 !important;
-        background: transparent !important;
     }
 
     .grid-heading-row {
-        background: var(--surface-container-low) !important;
-        border-bottom: 1px solid var(--border-color) !important;
-        font-weight: 500 !important;
-        color: var(--text-color) !important;
-        font-size: 13px !important;
+        background: var(--m3-surface-container-low) !important;
+        border-bottom: 1px solid var(--m3-outline-variant) !important;
+        font-size: var(--m3-label-large) !important;
+        font-weight: var(--m3-label-large-weight) !important;
+        color: var(--m3-on-surface) !important;
         padding: 4px 0 !important;
     }
 
     .grid-row {
         background: transparent !important;
-        border-bottom: 1px solid var(--border-color) !important;
-        transition: background 0.2s ease !important;
+        border-bottom: 1px solid var(--m3-outline-variant) !important;
+        transition: background var(--m3-duration-short) var(--m3-easing-standard) !important;
 
         &:hover {
-            background: var(--surface-container-lowest) !important;
+            background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.06) !important;
         }
     }
 
@@ -233,53 +712,149 @@ h6 {
     }
 
     .grid-row-check {
-        accent-color: var(--primary) !important;
-        width: 16px !important;
-        height: 16px !important;
-        cursor: pointer !important;
+        accent-color: var(--m3-primary) !important;
+        width: 18px !important;
+        height: 18px !important;
     }
 
     .btn-open-row {
-        background: var(--surface-container-highest) !important;
-        color: var(--text-color) !important;
-        border-radius: 100px !important;
-        box-shadow: none !important;
+        background: var(--m3-surface-container-highest) !important;
+        color: var(--m3-on-surface) !important;
+        border-radius: var(--m3-shape-full) !important;
     }
 
     .grid-empty {
         background: transparent !important;
-        color: var(--text-muted) !important;
-        padding: 24px !important;
+        color: var(--m3-on-surface-variant) !important;
+        padding: 32px 24px !important;
+        font-size: var(--m3-body-medium) !important;
     }
 
     .grid-footer {
         background: transparent !important;
+        border-top: 1px solid var(--m3-outline-variant) !important;
         border: none !important;
-        border-top: 1px solid var(--border-color) !important;
         padding: 12px 16px !important;
-    }
-
-    .grid-append-row,
-    .grid-add-multiple-rows {
-        margin: 0 !important;
     }
 
     .grid-add-row,
     .grid-add-multiple-rows {
-        border-radius: 100px !important;
-        background: var(--surface-container-high) !important;
-        border: none !important;
-        color: var(--text-color) !important;
+        border-radius: var(--m3-shape-full) !important;
+        background: var(--m3-surface-container-high) !important;
+        color: var(--m3-on-surface) !important;
         font-weight: 500 !important;
-        box-shadow: none !important;
+        border: none !important;
     }
 
     .grid-remove-rows {
-        border-radius: 100px !important;
-        background: var(--danger) !important;
-        color: white !important;
+        border-radius: var(--m3-shape-full) !important;
+        background: var(--m3-error) !important;
+        color: var(--m3-on-error) !important;
         border: none !important;
         font-weight: 500 !important;
-        box-shadow: none !important;
     }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  12. FORM SECTION CARDS
+// ═══════════════════════════════════════════════════════════════
+
+.form-section,
+.section-body {
+    background: var(--m3-surface-container) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: var(--m3-shape-large) !important; // 16px per M3 card spec
+    padding: 20px !important;
+    margin-bottom: 16px !important;
+}
+
+.section-head {
+    font-size: var(--m3-title-medium) !important;
+    font-weight: var(--m3-title-medium-weight) !important;
+    color: var(--m3-on-surface) !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    margin-bottom: 16px !important;
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  13. AUTOCOMPLETE & LINK FIELD DROPDOWNS
+// ═══════════════════════════════════════════════════════════════
+
+.awesomplete>ul {
+    background: var(--m3-surface-container-high) !important;
+    border: none !important;
+    border-radius: var(--m3-shape-medium) !important;
+    padding: 8px 0 !important;
+    overflow: hidden;
+
+    >li {
+        padding: 12px 16px !important;
+        font-size: var(--m3-body-medium) !important;
+        color: var(--m3-on-surface) !important;
+        border-radius: 0 !important;
+        cursor: pointer !important;
+
+        &:hover,
+        &[aria-selected="true"] {
+            background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.08) !important;
+            color: var(--m3-on-surface) !important;
+        }
+
+        mark {
+            background: transparent !important;
+            color: var(--m3-primary) !important;
+            font-weight: 600 !important;
+        }
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  14. FRAPPE WIDGETS & DASHBOARD CARDS (M3 Card anatomy)
+// ═══════════════════════════════════════════════════════════════
+
+.frappe-card,
+.widget,
+.dashboard-widget-box {
+    background: var(--m3-surface-container) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: var(--m3-shape-medium) !important; // 12px
+
+    .widget-title,
+    .widget-head .widget-title {
+        font-size: var(--m3-title-medium) !important;
+        font-weight: var(--m3-title-medium-weight) !important;
+        color: var(--m3-on-surface) !important;
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  15. PAGINATION
+// ═══════════════════════════════════════════════════════════════
+
+.pagination .page-item .page-link {
+    border-radius: var(--m3-shape-full) !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--m3-on-surface-variant) !important;
+    font-size: var(--m3-label-large) !important;
+    min-width: 40px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--m3-duration-short) var(--m3-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3-on-surface-rgb, 28, 27, 31), 0.08) !important;
+    }
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
 }
