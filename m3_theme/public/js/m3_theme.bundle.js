@@ -228,12 +228,28 @@
     // ── Ensure fixed sidebar exists ──
     function ensureSidebar() {
         var fresh = extractItems();
+        var currentType = (window.frappe && frappe.boot && frappe.boot.m3_theme_settings && frappe.boot.m3_theme_settings.sidebar_type) ? frappe.boot.m3_theme_settings.sidebar_type : 'Default Sidebar';
+
         if (fresh) {
             cachedItems = fresh;
-            try { localStorage.setItem('m3_sidebar_items', JSON.stringify(fresh)); } catch (e) { }
+            try {
+                localStorage.setItem('m3_sidebar_items', JSON.stringify(fresh));
+                localStorage.setItem('m3_sidebar_type', currentType);
+            } catch (e) { }
         }
         if (!cachedItems) {
-            try { var s = localStorage.getItem('m3_sidebar_items'); if (s) cachedItems = JSON.parse(s); } catch (e) { }
+            try {
+                var cachedType = localStorage.getItem('m3_sidebar_type');
+                // Only load cache if the requested sidebar type matches what is in local storage, preventing cross-contamination!
+                if (!cachedType || cachedType === currentType) {
+                    var s = localStorage.getItem('m3_sidebar_items');
+                    if (s) cachedItems = JSON.parse(s);
+                } else {
+                    // Type changed! Cache is invalid, clear it!
+                    localStorage.removeItem('m3_sidebar_items');
+                    localStorage.removeItem('m3_sidebar_type');
+                }
+            } catch (e) { }
         }
         if (!cachedItems) return;
 
