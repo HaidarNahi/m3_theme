@@ -10,7 +10,8 @@ class ThemeSettings(Document):
 		"""Clear cache when settings are saved so the new settings are served immediately."""
 		frappe.clear_cache()
 
-	@frappe.whitelist()
-	def get_theme_settings(self):
-		"""Public API — returns the full settings dict (called by frontend JS)."""
-		return frappe.get_single("Theme Settings").as_dict()
+
+@frappe.whitelist(allow_guest=True)
+def get_theme_settings():
+    """Public API — returns the full settings dict. Accessible to guests for styling the login page."""
+    return frappe.get_single("Theme Settings").as_dict()

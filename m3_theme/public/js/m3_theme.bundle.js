@@ -782,11 +782,11 @@
         // Apply Login Page Overrides if we are on the login screen
         if (window.location.pathname.startsWith('/login')) {
             if (doc.login_background_image) {
-                dynamicCSS += `body.login-page { background: url('${doc.login_background_image}') no-repeat center center fixed !important; background-size: cover !important; }\n`;
+                dynamicCSS += `body:has(#page-login) { background: url('${doc.login_background_image}') no-repeat center center fixed !important; background-size: cover !important; }\n`;
             }
             if (doc.login_overlay_opacity) {
-                dynamicCSS += `body.login-page::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,${doc.login_overlay_opacity}); z-index: 0; pointer-events: none; }\n`;
-                dynamicCSS += `.for-login { position: relative; z-index: 10; box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important; background: var(--card-bg) !important; }\n`;
+                dynamicCSS += `body:has(#page-login)::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,${doc.login_overlay_opacity}); z-index: 0; pointer-events: none; }\n`;
+                dynamicCSS += `.for-login { position: relative; z-index: 10; box-shadow: none !important; background: transparent !important; }\n`;
             }
             if (doc.login_logo) {
                 dynamicCSS += `.login-content .app-logo { content: url('${doc.login_logo}') !important; width: auto !important; height: auto !important; max-height: 80px !important; margin: 0 auto; }\n`;
