@@ -439,6 +439,65 @@
         checkCurrentSidebar();
         syncLikedByMeButton();
         injectCustomNavbarAndProfile();
+        injectM3LoadingIndicators();
+    }
+
+    // ── M3 Material Loading Indicators ──
+    var m3LoadersInjected = false;
+    function injectM3LoadingIndicators() {
+        if (m3LoadersInjected) return;
+        m3LoadersInjected = true;
+
+        // ── Step 1: Load @material/web progress components via ESM CDN ──
+        if (!document.getElementById('m3-web-components-script')) {
+            var modScript = document.createElement('script');
+            modScript.id = 'm3-web-components-script';
+            modScript.type = 'module';
+            modScript.textContent = [
+                "import 'https://esm.run/@material/web/progress/circular-progress.js';",
+                "import 'https://esm.run/@material/web/progress/linear-progress.js';"
+            ].join('\n');
+            document.head.appendChild(modScript);
+        }
+
+        // ── Step 2: Override Frappe's freeze (cover-screen) with md-circular-progress ──
+        if (window.frappe && frappe.ui) {
+            var _origFreeze = frappe.ui.freeze;
+            frappe.ui.freeze = function (msg) {
+                // Call original to create the overlay
+                if (_origFreeze) _origFreeze.call(frappe.ui, msg);
+                // Replace spinner content
+                var freezeMsg = document.querySelector('#freeze .freeze-message-container');
+                if (freezeMsg && !freezeMsg.querySelector('md-circular-progress')) {
+                    freezeMsg.innerHTML = '<md-circular-progress indeterminate></md-circular-progress>';
+                }
+            };
+        }
+
+        // ── Step 3: Linear progress bar on AJAX start/stop ──
+        function showLinearLoader() {
+            if (document.getElementById('m3-linear-loader')) return;
+            var bar = document.createElement('md-linear-progress');
+            bar.id = 'm3-linear-loader';
+            bar.setAttribute('indeterminate', '');
+            document.body.appendChild(bar);
+        }
+        function hideLinearLoader() {
+            var bar = document.getElementById('m3-linear-loader');
+            if (bar) bar.remove();
+        }
+
+        // Hook into Frappe's request lifecycle
+        if (window.frappe && frappe.request) {
+            $(document).ajaxStart(showLinearLoader);
+            $(document).ajaxStop(hideLinearLoader);
+        }
+
+        // Also cover frappe.route changes (route spinner)
+        if (window.frappe && frappe.router && frappe.router.on) {
+            frappe.router.on('change', showLinearLoader);
+            frappe.router.on('route-changed', hideLinearLoader);
+        }
     }
 
     function injectCustomNavbarAndProfile() {
