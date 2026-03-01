@@ -830,6 +830,16 @@
                 if (pwInput && !pwInput.parentElement.querySelector('.m3-login-icon')) {
                     pwInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">lock</span>');
                 }
+
+                var forgotEmailInput = document.getElementById('forgot_email');
+                if (forgotEmailInput && !forgotEmailInput.parentElement.querySelector('.m3-login-icon')) {
+                    forgotEmailInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">mail</span>');
+                }
+
+                var linkEmailInput = document.getElementById('login_with_email_link_email');
+                if (linkEmailInput && !linkEmailInput.parentElement.querySelector('.m3-login-icon')) {
+                    linkEmailInput.insertAdjacentHTML('beforebegin', '<span class="material-symbols-rounded m3-login-icon">mail</span>');
+                }
             }, 100);
         }
 
