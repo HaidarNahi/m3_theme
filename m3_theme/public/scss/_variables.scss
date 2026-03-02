@@ -1,139 +1,175 @@
 // ═══════════════════════════════════════════════════════════════
-//  Material Design 3 — Dynamic Light/Dark Theme System
+//  Material Design 3 Expressive — Token System
+//  Source: material.io/blog/material-3-expressive (2025)
+//  Spring physics, vibrant palette, expressive shape library
 // ═══════════════════════════════════════════════════════════════
 
+// ── M3E Expressive Color Palette (Warm Vibrant) ──────────────
 :root,
 [data-theme="light"] {
-    // ── Primary ──
-    --m3-primary: #6750A4;
-    --m3-primary-rgb: 103, 80, 164;
-    --m3-on-primary: #FFFFFF;
-    --m3-primary-container: #EADDFF;
-    --m3-on-primary-container: #21005D; // Best contrast guess
+    // Primary — deep violet → expressive warm purple
+    --m3e-primary: #7C3AED;
+    --m3e-primary-rgb: 124, 58, 237;
+    --m3e-on-primary: #FFFFFF;
+    --m3e-primary-container: #EDE9FE;
+    --m3e-on-primary-container: #4C1D95;
 
-    // ── Secondary ──
-    --m3-secondary: #625B71;
-    --m3-on-secondary: #FFFFFF;
-    --m3-secondary-container: #E8DEF8; // Guessed container
-    --m3-on-secondary-container: #1D192B; // Guessed on-container
+    // Secondary — warm rose/coral accent
+    --m3e-secondary: #DB2777;
+    --m3e-on-secondary: #FFFFFF;
+    --m3e-secondary-container: #FCE7F3;
+    --m3e-on-secondary-container: #831843;
 
-    // ── Surface & Background ──
-    --m3-background: #FFFBFE;
-    --m3-surface: #FFFBFE;
-    --m3-surface-variant: #E7E0EB;
-    --m3-on-surface: #1C1B1F;
-    --m3-on-surface-rgb: 28, 27, 31;
-    --m3-on-surface-variant: #49454E; // Slightly lighter than on-surface
+    // Tertiary — amber warmth
+    --m3e-tertiary: #D97706;
+    --m3e-on-tertiary: #FFFFFF;
+    --m3e-tertiary-container: #FEF3C7;
+    --m3e-on-tertiary-container: #78350F;
 
-    // Graduated Surface Containers (M3)
-    --m3-surface-container-highest: #E6E0E9;
-    --m3-surface-container-high: #ECE6F0;
-    --m3-surface-container: #F3EDF7;
-    --m3-surface-container-low: #F7F2FA;
-    --m3-surface-container-lowest: #FFFFFF;
+    // Surface system
+    --m3e-background: #FAFAF9;
+    --m3e-surface: #FAFAF9;
+    --m3e-surface-variant: #EDE9FE;
+    --m3e-on-surface: #1C1917;
+    --m3e-on-surface-rgb: 28, 25, 23;
+    --m3e-on-surface-variant: #57534E;
 
-    // ── Outline ──
-    --m3-outline: #79747E;
-    --m3-outline-rgb: 121, 116, 126;
-    --m3-outline-variant: #CAC4D0;
+    // Surface containers (elevation by color)
+    --m3e-surface-container-lowest: #FFFFFF;
+    --m3e-surface-container-low: #F5F3FF;
+    --m3e-surface-container: #EDE9FE;
+    --m3e-surface-container-high: #DDD6FE;
+    --m3e-surface-container-highest: #C4B5FD;
 
-    // ── Error ──
-    --m3-error: #B3261E;
-    --m3-on-error: #FFFFFF;
-    --m3-error-container: #F9DEDC;
-    --m3-on-error-container: #410E0B;
+    // Outline
+    --m3e-outline: #78716C;
+    --m3e-outline-rgb: 120, 113, 108;
+    --m3e-outline-variant: #D6D3D1;
+
+    // Error
+    --m3e-error: #DC2626;
+    --m3e-on-error: #FFFFFF;
+    --m3e-error-container: #FEE2E2;
+    --m3e-on-error-container: #7F1D1D;
+
+    // Success
+    --m3e-success: #059669;
+    --m3e-success-container: #D1FAE5;
+
+    // Warning
+    --m3e-warning: #D97706;
+    --m3e-warning-container: #FEF3C7;
+
+    // Scrim / overlay
+    --m3e-scrim: rgba(0, 0, 0, 0.32);
 }
 
 [data-theme="dark"] {
-    // ── Primary ──
-    --m3-primary: #D0BCFF;
-    --m3-primary-rgb: 208, 188, 255;
-    --m3-on-primary: #381E72;
-    --m3-primary-container: #4F378B;
-    --m3-on-primary-container: #EADDFF;
+    --m3e-primary: #C4B5FD;
+    --m3e-primary-rgb: 196, 181, 253;
+    --m3e-on-primary: #4C1D95;
+    --m3e-primary-container: #5B21B6;
+    --m3e-on-primary-container: #EDE9FE;
 
-    // ── Secondary ──
-    --m3-secondary: #CCC2DC;
-    --m3-on-secondary: #332D41;
-    --m3-secondary-container: #4A4458;
-    --m3-on-secondary-container: #E8DEF8;
+    --m3e-secondary: #F9A8D4;
+    --m3e-on-secondary: #831843;
+    --m3e-secondary-container: #9D174D;
+    --m3e-on-secondary-container: #FCE7F3;
 
-    // ── Surface & Background ──
-    --m3-background: #1C1B1F;
-    --m3-surface: #1C1B1F;
-    --m3-surface-variant: #49454F;
-    --m3-on-surface: #E6E1E5;
-    --m3-on-surface-rgb: 230, 225, 229;
-    --m3-on-surface-variant: #CAC4D0;
+    --m3e-tertiary: #FCD34D;
+    --m3e-on-tertiary: #78350F;
+    --m3e-tertiary-container: #92400E;
+    --m3e-on-tertiary-container: #FEF3C7;
 
-    // Graduated Surface Containers (M3)
-    --m3-surface-container-highest: #36343B;
-    --m3-surface-container-high: #2B2930;
-    --m3-surface-container: #211F26;
-    --m3-surface-container-low: #1C1B1F;
-    --m3-surface-container-lowest: #0F0D13;
+    --m3e-background: #1C1917;
+    --m3e-surface: #1C1917;
+    --m3e-surface-variant: #292524;
+    --m3e-on-surface: #E7E5E4;
+    --m3e-on-surface-rgb: 231, 229, 228;
+    --m3e-on-surface-variant: #A8A29E;
 
-    // ── Outline ──
-    --m3-outline: #938F99;
-    --m3-outline-rgb: 147, 143, 153;
-    --m3-outline-variant: #49454F;
+    --m3e-surface-container-lowest: #0C0A09;
+    --m3e-surface-container-low: #1C1917;
+    --m3e-surface-container: #231F1B;
+    --m3e-surface-container-high: #292524;
+    --m3e-surface-container-highest: #3C3732;
 
-    // ── Error ──
-    --m3-error: #F2B8B5;
-    --m3-on-error: #601410;
-    --m3-error-container: #8C1D18;
-    --m3-on-error-container: #F9DEDC;
+    --m3e-outline: #78716C;
+    --m3e-outline-rgb: 120, 113, 108;
+    --m3e-outline-variant: #44403C;
+
+    --m3e-error: #FCA5A5;
+    --m3e-on-error: #7F1D1D;
+    --m3e-error-container: #991B1B;
+    --m3e-on-error-container: #FEE2E2;
+
+    --m3e-success: #6EE7B7;
+    --m3e-success-container: #065F46;
+
+    --m3e-warning: #FCD34D;
+    --m3e-warning-container: #92400E;
+
+    --m3e-scrim: rgba(0, 0, 0, 0.6);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  Map M3 Variables to Frappe/SASS Ecosystem
-// ═══════════════════════════════════════════════════════════════
-
-// For SCSS files still relying on standard $variables as aliases to vars:
-$m3-surface: var(--m3-surface);
-$m3-surface-container: var(--m3-surface-container);
-$m3-outline-variant: var(--m3-outline-variant);
-$m3-on-surface: var(--m3-on-surface);
-$m3-on-surface-rgb: var(--m3-on-surface-rgb);
-$m3-primary: var(--m3-primary);
-$m3-primary-rgb: var(--m3-primary-rgb);
-$m3-outline: var(--m3-outline);
-$m3-outline-rgb: var(--m3-outline-rgb);
-
+// ── Map to Frappe's CSS variable expectations ─────────────────
 :root,
 [data-theme="light"],
 [data-theme="dark"] {
-    // ── Core ──
-    --primary: var(--m3-primary);
-    --bg-color: var(--m3-background);
-    --card-bg: var(--m3-surface-container);
-    --border-color: var(--m3-outline-variant);
-    --text-color: var(--m3-on-surface);
-    --text-muted: var(--m3-on-surface-variant);
-    --text-light: var(--m3-outline);
+    // Core Frappe vars → M3E
+    --primary: var(--m3e-primary);
+    --bg-color: var(--m3e-background);
+    --card-bg: var(--m3e-surface-container-low);
+    --border-color: var(--m3e-outline-variant);
+    --text-color: var(--m3e-on-surface);
+    --text-muted: var(--m3e-on-surface-variant);
+    --text-light: var(--m3e-outline);
 
-    // ── Surface hierarchy ──
-    --surface: var(--m3-surface);
-    --surface-container: var(--m3-surface-container);
-    --surface-container-low: var(--m3-surface-container-low);
-    --surface-container-high: var(--m3-surface-container-high);
+    // Surface hierarchy
+    --surface: var(--m3e-surface);
+    --surface-container: var(--m3e-surface-container);
+    --surface-container-low: var(--m3e-surface-container-low);
+    --surface-container-high: var(--m3e-surface-container-high);
 
-    // ── Primary shades ──
-    --primary-container: var(--m3-primary-container);
-    --on-primary: var(--m3-on-primary);
-    --on-primary-container: var(--m3-on-primary-container);
+    // Primary shades
+    --primary-container: var(--m3e-primary-container);
+    --on-primary: var(--m3e-on-primary);
+    --on-primary-container: var(--m3e-on-primary-container);
 
-    // ── Error ──
-    --error: var(--m3-error);
-    --error-container: var(--m3-error-container);
+    // Error
+    --error: var(--m3e-error);
+    --error-container: var(--m3e-error-container);
 
-    // ── Outline ──
-    --outline: var(--m3-outline);
-    --outline-variant: var(--m3-outline-variant);
+    // Outline
+    --outline: var(--m3e-outline);
+    --outline-variant: var(--m3e-outline-variant);
 
-    // ── DataValue/ERPNext specific overrides ──
-    --blue_color_style: var(--m3-primary);
-    --blue_color_style_light: var(--m3-primary-container);
+    // ERPNext specifics
+    --blue_color_style: var(--m3e-primary);
+    --blue_color_style_light: var(--m3e-primary-container);
+
+    // Keep legacy m3- aliases working
+    --m3-primary: var(--m3e-primary);
+    --m3-primary-rgb: var(--m3e-primary-rgb);
+    --m3-on-primary: var(--m3e-on-primary);
+    --m3-primary-container: var(--m3e-primary-container);
+    --m3-secondary: var(--m3e-secondary);
+    --m3-background: var(--m3e-background);
+    --m3-surface: var(--m3e-surface);
+    --m3-surface-variant: var(--m3e-surface-variant);
+    --m3-on-surface: var(--m3e-on-surface);
+    --m3-on-surface-rgb: var(--m3e-on-surface-rgb);
+    --m3-on-surface-variant: var(--m3e-on-surface-variant);
+    --m3-surface-container: var(--m3e-surface-container);
+    --m3-surface-container-low: var(--m3e-surface-container-low);
+    --m3-surface-container-high: var(--m3e-surface-container-high);
+    --m3-surface-container-highest: var(--m3e-surface-container-highest);
+    --m3-outline: var(--m3e-outline);
+    --m3-outline-rgb: var(--m3e-outline-rgb);
+    --m3-outline-variant: var(--m3e-outline-variant);
+    --m3-error: var(--m3e-error);
+    --m3-on-error: var(--m3e-on-error);
+    --m3-error-container: var(--m3e-error-container);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -145,82 +181,149 @@ body {
     font-family: $font-family !important;
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  M3 Typography Scale
-// ═══════════════════════════════════════════════════════════════
+// ── M3E Typography Scale (slightly bolder than M3 base) ──────
 :root {
-    // Display
-    --m3-display-large: 57px;
-    --m3-display-large-weight: 400;
-    --m3-display-large-tracking: -0.25px;
-    --m3-display-medium: 45px;
-    --m3-display-medium-weight: 400;
-    --m3-display-medium-tracking: 0;
-    --m3-display-small: 36px;
-    --m3-display-small-weight: 400;
-    --m3-display-small-tracking: 0;
+    // Display — expressive, larger weights
+    --m3e-display-large: 57px;
+    --m3e-display-large-weight: 700;
+    --m3e-display-large-tracking: -0.5px;
+    --m3e-display-medium: 45px;
+    --m3e-display-medium-weight: 700;
+    --m3e-display-medium-tracking: -0.25px;
+    --m3e-display-small: 36px;
+    --m3e-display-small-weight: 600;
+    --m3e-display-small-tracking: 0;
+
     // Headline
-    --m3-headline-large: 32px;
-    --m3-headline-large-weight: 400;
-    --m3-headline-large-tracking: 0;
-    --m3-headline-medium: 28px;
-    --m3-headline-medium-weight: 400;
-    --m3-headline-medium-tracking: 0;
-    --m3-headline-small: 24px;
-    --m3-headline-small-weight: 400;
-    --m3-headline-small-tracking: 0;
+    --m3e-headline-large: 32px;
+    --m3e-headline-large-weight: 600;
+    --m3e-headline-large-tracking: 0;
+    --m3e-headline-medium: 28px;
+    --m3e-headline-medium-weight: 600;
+    --m3e-headline-medium-tracking: 0;
+    --m3e-headline-small: 24px;
+    --m3e-headline-small-weight: 600;
+    --m3e-headline-small-tracking: 0;
+
     // Title
-    --m3-title-large: 22px;
-    --m3-title-large-weight: 400;
-    --m3-title-large-tracking: 0;
-    --m3-title-medium: 16px;
-    --m3-title-medium-weight: 500;
-    --m3-title-medium-tracking: 0.15px;
-    --m3-title-small: 14px;
-    --m3-title-small-weight: 500;
-    --m3-title-small-tracking: 0.1px;
-    // Body
-    --m3-body-large: 16px;
-    --m3-body-large-weight: 400;
-    --m3-body-large-tracking: 0.5px;
-    --m3-body-medium: 14px;
-    --m3-body-medium-weight: 400;
-    --m3-body-medium-tracking: 0.25px;
-    --m3-body-small: 12px;
-    --m3-body-small-weight: 400;
-    --m3-body-small-tracking: 0.4px;
+    --m3e-title-large: 22px;
+    --m3e-title-large-weight: 600;
+    --m3e-title-large-tracking: 0;
+    --m3e-title-medium: 16px;
+    --m3e-title-medium-weight: 500;
+    --m3e-title-medium-tracking: 0.15px;
+    --m3e-title-small: 14px;
+    --m3e-title-small-weight: 500;
+    --m3e-title-small-tracking: 0.1px;
+
+    // Body — same as M3
+    --m3e-body-large: 16px;
+    --m3e-body-large-weight: 400;
+    --m3e-body-large-tracking: 0.5px;
+    --m3e-body-medium: 14px;
+    --m3e-body-medium-weight: 400;
+    --m3e-body-medium-tracking: 0.25px;
+    --m3e-body-small: 12px;
+    --m3e-body-small-weight: 400;
+    --m3e-body-small-tracking: 0.4px;
+
     // Label
-    --m3-label-large: 14px;
-    --m3-label-large-weight: 500;
-    --m3-label-large-tracking: 0.1px;
-    --m3-label-medium: 12px;
-    --m3-label-medium-weight: 500;
-    --m3-label-medium-tracking: 0.5px;
-    --m3-label-small: 11px;
-    --m3-label-small-weight: 500;
-    --m3-label-small-tracking: 0.5px;
+    --m3e-label-large: 14px;
+    --m3e-label-large-weight: 500;
+    --m3e-label-large-tracking: 0.1px;
+    --m3e-label-medium: 12px;
+    --m3e-label-medium-weight: 500;
+    --m3e-label-medium-tracking: 0.5px;
+    --m3e-label-small: 11px;
+    --m3e-label-small-weight: 500;
+    --m3e-label-small-tracking: 0.5px;
 
-    // ── M3 Motion (Easing) ──
-    --m3-easing-standard: cubic-bezier(0.2, 0, 0, 1);
-    --m3-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
-    --m3-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
-    --m3-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
-    --m3-duration-short: 200ms;
-    --m3-duration-medium: 300ms;
-    --m3-duration-long: 500ms;
+    // Legacy aliases
+    --m3-body-large: var(--m3e-body-large);
+    --m3-body-medium: var(--m3e-body-medium);
+    --m3-body-medium-tracking: var(--m3e-body-medium-tracking);
+    --m3-body-small: var(--m3e-body-small);
+    --m3-title-large: var(--m3e-title-large);
+    --m3-title-medium: var(--m3e-title-medium);
+    --m3-title-small: var(--m3e-title-small);
+    --m3-label-large: var(--m3e-label-large);
+    --m3-label-medium: var(--m3e-label-medium);
+    --m3-label-small: var(--m3e-label-small);
 
-    // ── M3 Shape ──
-    --m3-shape-none: 0px;
-    --m3-shape-extra-small: 4px;
-    --m3-shape-small: 8px;
-    --m3-shape-medium: 12px;
-    --m3-shape-large: 16px;
-    --m3-shape-extra-large: 28px;
-    --m3-shape-full: 100px;
+    // ── M3E Spring Motion Physics ─────────────────────────────
+    // Standard spring — natural deceleration
+    --m3e-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    // Overshoot spring — bouncy, expressive
+    --m3e-spring-overshoot: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    // Gentle spring — settle without bounce
+    --m3e-spring-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    // Sharp exit — quick leave
+    --m3e-easing-exit: cubic-bezier(0.4, 0, 1, 1);
+    // Standard M3 enter
+    --m3e-easing-enter: cubic-bezier(0, 0, 0.2, 1);
+    // Standard M3 shared axis
+    --m3e-easing-standard: cubic-bezier(0.2, 0, 0, 1);
 
-    // ── M3 State Layer Opacities ──
-    --m3-state-hover: 0.08;
-    --m3-state-focus: 0.12;
-    --m3-state-pressed: 0.12;
-    --m3-state-dragged: 0.16;
+    // Duration scale
+    --m3e-dur-50: 50ms;
+    --m3e-dur-100: 100ms;
+    --m3e-dur-150: 150ms;
+    --m3e-dur-200: 200ms; // Short
+    --m3e-dur-250: 250ms;
+    --m3e-dur-300: 300ms; // Medium
+    --m3e-dur-400: 400ms;
+    --m3e-dur-500: 500ms; // Long
+    --m3e-dur-700: 700ms; // Extra long (shape morphing)
+
+    // Legacy motion aliases
+    --m3-easing-standard: var(--m3e-easing-standard);
+    --m3-duration-short: var(--m3e-dur-200);
+    --m3-duration-medium: var(--m3e-dur-300);
+    --m3-duration-long: var(--m3e-dur-500);
+
+    // ── M3E Expressive Shape Library ─────────────────────────
+    // M3E expands shape tokens with expressive rounding levels
+    --m3e-shape-none: 0px;
+    --m3e-shape-xs: 4px;
+    --m3e-shape-sm: 8px;
+    --m3e-shape-md: 12px;
+    --m3e-shape-lg: 16px;
+    --m3e-shape-xl: 24px;
+    --m3e-shape-2xl: 28px; // Dialog
+    --m3e-shape-3xl: 36px; // Expressive cards
+    --m3e-shape-4xl: 48px; // Large containers
+    --m3e-shape-pill: 100px; // Full pill
+    --m3e-shape-circle: 9999px; // Circle
+
+    // Asymmetric expressive shapes (top/bottom different radii)
+    --m3e-shape-scoop-top: 0px 0px 24px 24px; // Open at top
+    --m3e-shape-scoop-bottom: 24px 24px 0px 0px; // Open at bottom
+
+    // Legacy shape aliases
+    --m3-shape-none: var(--m3e-shape-none);
+    --m3-shape-extra-small: var(--m3e-shape-xs);
+    --m3-shape-small: var(--m3e-shape-sm);
+    --m3-shape-medium: var(--m3e-shape-md);
+    --m3-shape-large: var(--m3e-shape-lg);
+    --m3-shape-extra-large: var(--m3e-shape-2xl);
+    --m3-shape-full: var(--m3e-shape-pill);
+
+    // ── M3E State Layer Opacities ─────────────────────────────
+    --m3e-state-hover: 0.08;
+    --m3e-state-focus: 0.12;
+    --m3e-state-pressed: 0.12;
+    --m3e-state-dragged: 0.16;
+
+    // Legacy state aliases
+    --m3-state-hover: var(--m3e-state-hover);
+    --m3-state-focus: var(--m3e-state-focus);
+    --m3-state-pressed: var(--m3e-state-pressed);
+    --m3-state-dragged: var(--m3e-state-dragged);
+
+    // ── M3E Elevation (color-based) ───────────────────────────
+    --m3e-elevation-0: var(--m3e-surface);
+    --m3e-elevation-1: var(--m3e-surface-container-low);
+    --m3e-elevation-2: var(--m3e-surface-container);
+    --m3e-elevation-3: var(--m3e-surface-container-high);
+    --m3e-elevation-4: var(--m3e-surface-container-highest);
 }
