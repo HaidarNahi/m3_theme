@@ -1,18 +1,24 @@
 // ═══════════════════════════════════════════════════════════════
 //  Material 3 Expressive — Layout & Shell
-//  Target: Frappe v16/develop DOM structure
-//  DOM confirmed: .body-sidebar-container, .main-section,
-//                 .navbar.desktop-navbar, .layout-side-section
+//  Target: Frappe v16/develop DOM structure (Custom Fixed Sidebar)
 // ═══════════════════════════════════════════════════════════════
 
 @import 'variables';
 
-// ── 0. GLOBAL RESET ──────────────────────────────────────────
+$nav-drawer-width: 260px;
+$nav-rail-width: 80px;
+$navbar-height: 64px;
+
+// ── Set navbar height CSS variable for Frappe's sticky page-head ──
+:root {
+    --navbar-height: #{$navbar-height} !important;
+}
+
+// ── 0. GLOBAL RESET & SURFACES ──────────────────────────────
 *,
 *::before,
 *::after {
-    box-shadow: none !important;
-    // Remove legacy Frappe shadows everywhere
+    box-shadow: none !important; // Remove legacy Frappe shadows
 }
 
 // Restore intentional M3E elevation surfaces
@@ -26,7 +32,6 @@
         0 2px 8px rgba(0, 0, 0, .08) !important;
 }
 
-// ── 1. BODY & BACKGROUND ─────────────────────────────────────
 html,
 body {
     background: var(--m3e-background) !important;
@@ -36,250 +41,629 @@ body {
         color var(--m3e-dur-300) var(--m3e-easing-standard);
 }
 
-// ── 2. TOP NAVBAR (v16: .desktop-navbar / .navbar-container) ─
-.navbar,
-.desktop-navbar,
-.navbar-container {
-    background: var(--m3e-surface-container) !important;
-    border-bottom: 1px solid var(--m3e-outline-variant) !important;
-    height: 64px !important;
-    min-height: 64px !important;
-    padding: 0 16px !important;
-    display: flex !important;
-    align-items: center !important;
+// ═══════════════════════════════
+//  LAYOUT RESETS (For v16 structure)
+// ═══════════════════════════════
+.page-body.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-    // M3E Top App Bar — no shadow, use surface tint
-    .navbar-brand,
-    .form-control,
-    button {
-        background: transparent !important;
+.layout-main.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    display: flex !important;
+
+    // Force the main content left, Form/List sidebar right
+    .layout-main-section-wrapper {
+        order: 1 !important;
+    }
+
+    .layout-side-section {
+        order: 2 !important;
     }
 }
 
-// Navbar search pill (v16 style)
-.navbar .search-bar,
-.navbar [class*="search"],
-.navbar .command-palette-btn {
-    background: var(--m3e-surface-container-low) !important;
-    border: 1px solid var(--m3e-outline-variant) !important;
-    border-radius: var(--m3e-shape-pill) !important;
-    height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    transition: background var(--m3e-dur-200) var(--m3e-spring-gentle),
-        border-color var(--m3e-dur-200) var(--m3e-easing-standard);
+// Hide Frappe's original sidebar completely if it contains desk sidebar
+.layout-side-section,
+.body-sidebar-container {
+    &:has(.desk-sidebar) {
+        display: none !important;
+    }
+}
 
-    &:hover {
-        background: var(--m3e-surface-container) !important;
-        border-color: var(--m3e-primary) !important;
+.desk-sidebar {
+    display: none !important;
+}
+
+// ── Inside styling for Form/List Sidebar ──
+.m3-internal-sidebar {
+    padding: 16px !important;
+    background: var(--m3e-surface-container-low) !important;
+    border-radius: var(--m3e-shape-3xl) !important;
+}
+
+// ── M3 Internal Toggle Pill ──
+.m3-pill-sidebar-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    border-radius: var(--m3e-shape-circle) !important;
+    background: transparent !important;
+    color: var(--m3e-on-surface) !important;
+    border: none !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard),
+        transform var(--m3e-dur-150) var(--m3e-spring) !important;
+    margin-left: 12px !important;
+    order: 999 !important; // Force right
+
+    .material-symbols-rounded {
+        font-size: 20px !important;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
 
-    input.form-control,
-    input {
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+
+    &.active {
+        background: var(--m3e-secondary-container) !important;
+        color: var(--m3e-on-secondary-container) !important;
+
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            color: var(--m3e-on-secondary-container) !important;
+        }
+    }
+}
+
+// ═══════════════════════════════
+//  PUSH CONTENT RIGHT (M3 FIXED SIDEBAR)
+// ═══════════════════════════════
+body.m3-desk .page-container {
+    padding-left: $nav-drawer-width !important;
+    transition: padding-left var(--m3e-dur-300) var(--m3e-spring-gentle) !important;
+
+    @media (max-width: 991px) {
+        padding-left: $nav-rail-width !important;
+    }
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+}
+
+body.m3-desk.sidebar-collapsed .page-container {
+    padding-left: $nav-rail-width !important;
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+}
+
+.layout-main-section {
+    margin-top: 24px !important;
+    padding: 16px 24px !important;
+}
+
+// ═══════════════════════════════
+//  FIXED SIDEBAR & BACKDROP
+// ═══════════════════════════════
+
+body.m3-desk {
+    #m3-mobile-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--m3e-scrim);
+        z-index: 1025;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity var(--m3e-dur-300) var(--m3e-easing-standard);
+
+        body.mobile-sidebar-open & {
+            @media (max-width: 767px) {
+                display: block;
+                opacity: 1;
+            }
+        }
+    }
+}
+
+#m3-fixed-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $nav-drawer-width;
+    background: var(--m3e-surface-container) !important;
+    border-right: 1px solid var(--m3e-outline-variant);
+    box-sizing: border-box;
+    padding: 0 12px 12px 12px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1030;
+    transition: width var(--m3e-dur-300) var(--m3e-spring-gentle),
+        padding var(--m3e-dur-300) var(--m3e-spring-gentle);
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(var(--m3e-outline-rgb), 0.3);
+        border-radius: 4px;
+    }
+
+    @media (max-width: 991px) {
+        width: $nav-rail-width;
+        padding: 0 4px 12px 4px;
+    }
+
+    @media (max-width: 767px) {
+        width: $nav-drawer-width;
+        padding: 0 12px 12px 12px;
+        transform: translateX(-100%);
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    body.sidebar-collapsed & {
+        width: $nav-rail-width;
+        padding: 0 4px 12px 4px;
+    }
+
+    body.mobile-sidebar-open & {
+        @media (max-width: 767px) {
+            transform: translateX(0);
+        }
+    }
+
+    .m3-sidebar-header {
+        height: $navbar-height;
+        min-height: $navbar-height;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: var(--m3e-surface-container);
+        padding-left: 8px;
+
+        body.sidebar-collapsed &,
+        body.mobile-sidebar-open & {
+            justify-content: center;
+            padding-left: 0;
+        }
+
+        @media (max-width: 991px) {
+            justify-content: center;
+            padding-left: 0;
+        }
+
+        @media (max-width: 767px) {
+            justify-content: flex-start;
+            padding-left: 8px;
+        }
+
+        .m3-sidebar-toggle-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 44px !important;
+            height: 44px !important;
+            border-radius: var(--m3e-shape-circle) !important;
+            border: none !important;
+            background: none !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            margin-left: 0 !important;
+            transition: background var(--m3e-dur-200) var(--m3e-spring);
+
+            &:hover {
+                background: rgba(var(--m3e-primary-rgb), var(--m3e-state-hover)) !important;
+            }
+
+            .material-symbols-rounded {
+                font-size: 24px;
+                color: var(--m3e-on-surface);
+            }
+        }
+    }
+
+    .sidebar-item-container {
+        margin: 4px 0 12px 0 !important;
+        padding-bottom: 4px !important;
+    }
+
+    .desk-sidebar-item {
+        border-radius: var(--m3e-shape-pill) !important;
+        margin: 0 !important;
+        position: relative;
+
+        a.item-anchor {
+            display: flex !important;
+            align-items: center !important;
+            padding: 0 16px !important;
+            height: 56px !important;
+            gap: 12px !important;
+            text-decoration: none !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: padding var(--m3e-dur-200) var(--m3e-spring), gap var(--m3e-dur-200) var(--m3e-spring);
+
+            body.sidebar-collapsed & {
+                justify-content: center !important;
+                padding: 0 !important;
+                gap: 0 !important;
+            }
+        }
+
+        .sidebar-item-icon {
+            min-width: 24px !important;
+            width: 24px !important;
+            height: 24px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+
+            .material-symbols-rounded {
+                font-size: 24px;
+                color: var(--m3e-on-surface);
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+
+            svg {
+                display: none !important;
+            }
+        }
+
+        .sidebar-item-label {
+            font-size: var(--m3e-label-large) !important;
+            font-weight: 500 !important;
+            letter-spacing: var(--m3e-label-large-tracking) !important;
+            color: var(--m3e-on-surface) !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: opacity var(--m3e-dur-200) var(--m3e-easing-standard), max-width var(--m3e-dur-200) var(--m3e-easing-standard), margin var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+            max-width: 200px;
+
+            body.sidebar-collapsed & {
+                opacity: 0 !important;
+                max-width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: var(--m3e-primary);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
+        }
+
+        &:hover::before {
+            opacity: var(--m3e-state-hover);
+        }
+
+        &.selected {
+            background: var(--m3e-secondary-container) !important;
+
+            .sidebar-item-label {
+                color: var(--m3e-on-secondary-container) !important;
+                font-weight: 600 !important;
+            }
+
+            .sidebar-item-icon .material-symbols-rounded {
+                color: var(--m3e-on-secondary-container);
+                font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+        }
+    }
+}
+
+// Collapsed Tooltips
+body.sidebar-collapsed {
+    #m3-fixed-sidebar .desk-sidebar-item {
+        position: relative;
+
+        &:hover::after {
+            content: attr(data-label);
+            position: absolute;
+            left: calc(100% + 8px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--m3e-surface-container-highest);
+            color: var(--m3e-on-surface);
+            padding: 6px 16px;
+            border-radius: var(--m3e-shape-sm);
+            font-size: var(--m3e-label-medium);
+            font-weight: 500;
+            white-space: nowrap;
+            z-index: 9999;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(var(--m3e-on-surface-rgb), 0.15);
+            animation: m3-tooltip-in var(--m3e-dur-150) var(--m3e-spring);
+        }
+    }
+}
+
+@keyframes m3-tooltip-in {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+// ═══════════════════════════════
+//  NAVBAR / TOP APP BAR
+// ═══════════════════════════════
+body.m3-desk .navbar {
+    height: $navbar-height !important;
+    min-height: $navbar-height !important;
+    padding: 0 0 0 $nav-drawer-width !important;
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    display: flex !important;
+    align-items: center !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1020 !important;
+    transition: padding-left var(--m3e-dur-300) var(--m3e-spring-gentle) !important;
+
+    @media (max-width: 991px) {
+        padding-left: $nav-rail-width !important;
+    }
+
+    @media (max-width: 767px) {
+        padding-left: 0 !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 16px !important;
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        flex-shrink: 0;
+        margin-right: 0 !important;
+    }
+
+    .navbar-collapse {
+        height: 100%;
+        display: flex !important;
+        align-items: center !important;
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
+    }
+
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+body.m3-desk.sidebar-collapsed .navbar {
+    padding-left: $nav-rail-width !important;
+}
+
+// SEARCH BAR — Locked Center
+.navbar .search-bar {
+    width: 360px !important;
+    max-width: 360px !important;
+    min-width: 360px !important;
+    height: 48px !important;
+    border-radius: var(--m3e-shape-pill) !important;
+    background: var(--m3e-surface-container-high) !important;
+    border: none !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+    transition: background var(--m3e-dur-200) var(--m3e-easing-standard), box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+    @media (max-width: 767px) {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: unset !important;
+        flex-grow: 1;
+        margin: 0 8px;
+    }
+
+    &:focus-within {
+        background: var(--m3e-surface-container-highest) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    #navbar-search,
+    input.form-control {
+        height: 48px !important;
+        min-height: 48px !important;
+        font-size: var(--m3e-body-medium) !important;
         background: transparent !important;
         border: none !important;
-        height: 100% !important;
-        min-height: unset !important;
         box-shadow: none !important;
-        font-size: var(--m3e-body-medium) !important;
+        padding: 0 8px 0 36px !important;
         color: var(--m3e-on-surface) !important;
-        padding: 0 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        line-height: 48px !important;
 
         &::placeholder {
             color: var(--m3e-on-surface-variant) !important;
             font-size: var(--m3e-body-medium) !important;
         }
 
-        &:focus,
-        &:focus-visible {
+        &:focus {
             border: none !important;
+            padding: 0 8px 0 36px !important;
             outline: none !important;
-            box-shadow: none !important;
-            padding: 0 8px !important; // no border compensation needed
         }
     }
-}
 
-// Navbar icon buttons (notifications, profile)
-.navbar .nav-link,
-.navbar .navbar-nav>li>a,
-.navbar [class*="notification"],
-.navbar [class*="avatar"] {
-    border-radius: var(--m3e-shape-circle) !important;
-    width: 40px !important;
-    height: 40px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-    overflow: hidden !important;
-    transition: background var(--m3e-dur-200) var(--m3e-spring);
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: var(--m3e-on-surface);
-        opacity: 0;
-        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
-        pointer-events: none;
-    }
-
-    &:hover::before {
-        opacity: var(--m3e-state-hover);
-    }
-
-    &:active::before {
-        opacity: var(--m3e-state-pressed);
+    .search-icon,
+    .input-group-prepend {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        color: var(--m3e-on-surface-variant);
+        flex-shrink: 0;
     }
 }
 
-// ── 3. LEFT SIDEBAR (v16: .body-sidebar-container) ───────────
-.body-sidebar-container {
-    background: var(--m3e-surface-container-low) !important;
-}
-
-// v16 sidebar nav items
-.body-sidebar-container .sidebar-item,
-.body-sidebar-container .standard-sidebar-item,
-.body-sidebar-container [class*="sidebar-item"],
-.layout-side-section .sidebar-item,
-.layout-side-section [class*="sidebar-item"] {
-    border-radius: var(--m3e-shape-pill) !important;
-    padding: 10px 16px !important;
-    margin: 2px 8px !important;
-    transition: background var(--m3e-dur-200) var(--m3e-spring),
-        color var(--m3e-dur-150) var(--m3e-easing-standard);
-    font-size: var(--m3e-label-large) !important;
-    font-weight: 500 !important;
-    letter-spacing: var(--m3e-label-large-tracking) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    cursor: pointer !important;
-    position: relative !important;
-    overflow: hidden !important;
-
-    // State layer
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: var(--m3e-primary);
-        opacity: 0;
-        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
-        pointer-events: none;
-    }
-
-    &:hover::before {
-        opacity: var(--m3e-state-hover);
-    }
-
-    &:active::before {
-        opacity: var(--m3e-state-pressed);
-    }
-
-    &.selected,
-    &.active,
-    &[aria-selected="true"] {
-        background: var(--m3e-secondary-container) !important;
-        color: var(--m3e-on-secondary-container) !important;
-        font-weight: 600 !important;
-    }
-}
-
-// Sidebar section headers
-.body-sidebar-container .sidebar-group-title,
-.body-sidebar-container h5,
-.body-sidebar-container .list-sidebar-label {
-    font-size: var(--m3e-label-small) !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    color: var(--m3e-on-surface-variant) !important;
-    padding: 16px 24px 8px !important;
-    margin: 0 !important;
-}
-
-// ── 4. MAIN CONTENT AREA ─────────────────────────────────────
-.main-section {
-    background: var(--m3e-background) !important;
-}
-
-// ── 5. APP DRAWER (v16 home screen) ──────────────────────────
-// .body-sidebar-container is the shell on the home page
-// App icons are rendered as grid items
-.apps-section,
-[class*="app-launcher"],
-[class*="app-icon"],
-[class*="workspace-name"] {
-    position: relative !important; // Prevent empty ruleset lint
-}
-
-// App icon tiles on home screen
-.desk-icon,
-[class*="desk-icon"],
-[class*="app-link"],
-[class*="module-link"] {
-    border-radius: var(--m3e-shape-3xl) !important;
-    transition: transform var(--m3e-dur-200) var(--m3e-spring),
-        box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
-
-    &:hover {
-        transform: scale(1.06) translateY(-2px) !important;
-        box-shadow: 0 8px 24px rgba(var(--m3e-primary-rgb), 0.15) !important;
-    }
-
-    &:active {
-        transform: scale(0.97) !important;
-        transition-duration: var(--m3e-dur-100) !important;
-    }
-}
-
-// ── 6. PAGE HEADER / TOOLBAR ─────────────────────────────────
-// v16 page header: .page-head / .title-area
+// ═══════════════════════════════
+//  PAGE HEAD — Flex overrides & Buttons
+// ═══════════════════════════════
 .page-head,
 [class*="page-head"] {
-    background: var(--m3e-surface-container-low) !important;
+    background: var(--m3e-surface) !important;
     border-bottom: 1px solid var(--m3e-outline-variant) !important;
-    padding: 8px 16px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    min-height: 56px !important;
+    box-shadow: none !important;
+    position: sticky !important;
+    z-index: 100 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    .row.page-head-content,
+    .page-head-content {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .page-title,
+    .page-head-content>.page-title {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        flex-shrink: 1 !important;
+        flex-grow: 0 !important;
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    .page-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        margin-left: auto !important;
+        margin-right: 0 !important;
+        flex-shrink: 0 !important;
+        flex-wrap: nowrap !important;
+        width: auto !important;
+        max-width: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        .custom-actions {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 4px !important;
+            margin-right: 4px !important;
+        }
+
+        .standard-actions {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .btn:empty,
+        .btn[class*='btn-default']:empty,
+        .btn[class*='btn-secondary']:empty {
+            display: none !important;
+        }
+    }
+
+    .page-icon-group .btn:empty {
+        display: none !important;
+    }
+
+    .sidebar-toggle-btn {
+        display: none !important;
+
+        @media (max-width: 767px) {
+            display: inline-flex !important;
+            margin-right: 12px !important;
+            background: none !important;
+            border: none !important;
+            align-items: center;
+            justify-content: center;
+            color: var(--m3e-on-surface);
+
+            .material-symbols-rounded {
+                font-size: 24px !important;
+            }
+
+            svg {
+                display: none !important;
+            }
+        }
+    }
+
+    .title-text {
+        font-size: var(--m3e-title-large) !important;
+        font-weight: var(--m3e-title-large-weight) !important;
+        color: var(--m3e-on-surface) !important;
+    }
 }
 
-.page-head .title-text,
-.page-head h3,
-.page-title {
-    font-size: var(--m3e-title-large) !important;
-    font-weight: var(--m3e-title-large-weight) !important;
-    color: var(--m3e-on-surface) !important;
-}
-
-// Page breadcrumb
-.breadcrumb-area,
-.current-page,
-[class*="breadcrumb"] {
-    font-size: var(--m3e-label-large) !important;
-    color: var(--m3e-on-surface-variant) !important;
-}
-
-// ── 7. PAGE ACTIONS BAR ───────────────────────────────────────
-.page-actions,
-.page-head .btn-group,
-[class*="page-actions"] {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-}
-
-// ── 8. M3E BUTTONS ───────────────────────────────────────────
-// M3E: Filled, Filled Tonal, Outlined, Text — spring physics on press
-
+// ── BUTTONS ──
 .btn {
     border-radius: var(--m3e-shape-pill) !important;
     font-size: var(--m3e-label-large) !important;
@@ -297,12 +681,8 @@ body {
     justify-content: center !important;
     gap: 8px !important;
     white-space: nowrap !important;
-    transition:
-        transform var(--m3e-dur-150) var(--m3e-spring),
-        background var(--m3e-dur-200) var(--m3e-easing-standard),
-        color var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+    transition: transform var(--m3e-dur-150) var(--m3e-spring), background var(--m3e-dur-200) var(--m3e-easing-standard), color var(--m3e-dur-100) var(--m3e-easing-standard) !important;
 
-    // M3E state layer
     &::before {
         content: '';
         position: absolute;
@@ -343,238 +723,65 @@ body {
     }
 }
 
-// Filled (primary) — spring press effect
 .btn-primary {
     background: var(--m3e-primary) !important;
     color: var(--m3e-on-primary) !important;
-    box-shadow: none !important;
 }
 
-// Filled Tonal (secondary container)
 .btn-secondary,
 .btn-default,
 .btn-xs,
 .btn-sm {
     background: var(--m3e-secondary-container) !important;
     color: var(--m3e-on-secondary-container) !important;
-    box-shadow: none !important;
 }
 
-// Outlined Buttons
 .btn-outline-primary,
 .btn-light {
     background: transparent !important;
     color: var(--m3e-primary) !important;
     border: 1px solid var(--m3e-outline) !important;
-    box-shadow: none !important;
 }
 
-// Danger
 .btn-danger {
     background: var(--m3e-error) !important;
     color: var(--m3e-on-error) !important;
 }
 
-// Success
 .btn-success {
     background: var(--m3e-success) !important;
     color: #FFFFFF !important;
 }
 
-// ── 9. M3E FAB (Floating Action Button) ──────────────────────
-// The FAB is injected by JS — style it here
-.m3e-fab {
-    position: fixed !important;
-    bottom: 28px !important;
-    right: 28px !important;
-    z-index: 900 !important;
-    background: var(--m3e-primary-container) !important;
-    color: var(--m3e-on-primary-container) !important;
-    border-radius: var(--m3e-shape-lg) !important; // FABs use large, not pill
-    height: 56px !important;
-    min-width: 56px !important;
-    padding: 0 20px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    font-size: var(--m3e-label-large) !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    border: none !important;
+// APP HOMESCREEN TILES
+.apps-section,
+[class*="app-launcher"],
+[class*="app-icon"],
+[class*="workspace-name"] {
     position: relative !important;
-    overflow: hidden !important;
-    transition:
-        transform var(--m3e-dur-200) var(--m3e-spring-overshoot),
-        background var(--m3e-dur-200) var(--m3e-easing-standard),
-        border-radius var(--m3e-dur-300) var(--m3e-spring) !important;
+}
 
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: currentColor;
-        opacity: 0;
-        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
-        pointer-events: none;
-    }
+.desk-icon,
+[class*="desk-icon"],
+[class*="app-link"],
+[class*="module-link"] {
+    border-radius: var(--m3e-shape-3xl) !important;
+    transition: transform var(--m3e-dur-200) var(--m3e-spring), box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
 
     &:hover {
-        transform: scale(1.04) !important;
-
-        &::before {
-            opacity: var(--m3e-state-hover);
-        }
+        transform: scale(1.06) translateY(-2px) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
     }
 
     &:active {
-        transform: scale(0.96) !important;
-
-        &::before {
-            opacity: var(--m3e-state-pressed);
-        }
-    }
-
-    // Extended FAB with label
-    &.m3e-fab--extended {
-        border-radius: var(--m3e-shape-lg) !important;
-        padding: 0 20px 0 16px !important;
-    }
-
-    .m3e-fab-icon {
-        font-family: 'Material Symbols Rounded' !important;
-        font-size: 24px !important;
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        transform: scale(0.97) !important;
+        transition-duration: var(--m3e-dur-100) !important;
     }
 }
 
-// ── 10. FORM CONTROLS ────────────────────────────────────────
-.form-control,
-.awesomplete>input {
-    border-radius: var(--m3e-shape-xs) !important;
-    border: 1px solid var(--m3e-outline) !important;
-    background: transparent !important;
-    color: var(--m3e-on-surface) !important;
-    padding: 6px 12px !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    font-size: var(--m3e-body-medium) !important;
-    font-weight: 400 !important;
-    transition:
-        border-color var(--m3e-dur-200) var(--m3e-easing-standard),
-        border-width var(--m3e-dur-150) var(--m3e-easing-standard) !important;
-
-    &:focus,
-    &:focus-visible {
-        border-width: 2px !important;
-        border-color: var(--m3e-primary) !important;
-        padding: 5px 11px !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    &::placeholder {
-        color: var(--m3e-on-surface-variant) !important;
-        font-size: var(--m3e-body-medium) !important;
-        opacity: 0.7 !important;
-    }
-
-    &[readonly],
-    &[disabled],
-    &.disabled {
-        background: rgba(var(--m3e-on-surface-rgb), 0.04) !important;
-        border-color: rgba(var(--m3e-on-surface-rgb), 0.12) !important;
-        color: var(--m3e-on-surface-variant) !important;
-    }
-}
-
-textarea.form-control {
-    height: auto !important;
-    min-height: 100px !important;
-    resize: vertical !important;
-    padding: 10px 12px !important;
-}
-
-select.form-control {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    padding-right: 36px !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' fill='%2378716C' viewBox='0 96 960 960' width='20'%3E%3Cpath d='M480 711 240 471l43-43 197 198 197-198 43 43-240 240Z'/%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: right 10px center !important;
-}
-
-// ── 11. LINK FIELD BUTTONS ───────────────────────────────────
-.link-field .link-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 2px !important;
-    position: absolute !important;
-    right: 6px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 2;
-    background: transparent !important;
-}
-
-.link-field .btn-clear,
-.link-field .btn-open {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: var(--m3e-shape-circle) !important;
-    padding: 0 !important;
-    border: none !important;
-    background: transparent !important;
-    color: var(--m3e-on-surface-variant) !important;
-    cursor: pointer !important;
-    text-decoration: none !important;
-    position: relative !important;
-    overflow: hidden !important;
-    transition:
-        color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: currentColor;
-        opacity: 0;
-        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
-        pointer-events: none;
-    }
-
-    &:hover::before {
-        opacity: var(--m3e-state-hover);
-    }
-
-    &:active::before {
-        opacity: var(--m3e-state-pressed);
-    }
-
-    >svg {
-        display: none !important;
-    }
-
-    .m3-system-icon {
-        font-size: 18px !important;
-        pointer-events: none;
-    }
-}
-
-.link-field .btn-clear:hover {
-    color: var(--m3e-error) !important;
-}
-
-.link-field .btn-open:hover {
-    color: var(--m3e-primary) !important;
-}
-
-// ── 12. MATERIAL SYMBOLS ICONS ───────────────────────────────
+// ═══════════════════════════════
+//  SYSTEM ICON REPLACEMENTS
+// ═══════════════════════════════
 .m3-system-icon {
     font-family: 'Material Symbols Rounded' !important;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -627,37 +834,209 @@ select.form-control {
     }
 }
 
-// ── 13. LIKE / FAVORITE BUTTON ───────────────────────────────
+// M3E FAB
+.m3e-fab {
+    position: fixed !important;
+    bottom: 28px !important;
+    right: 36px !important;
+    z-index: 900 !important;
+    background: var(--m3e-primary-container) !important;
+    color: var(--m3e-on-primary-container) !important;
+    border-radius: var(--m3e-shape-lg) !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    padding: 0 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: var(--m3e-label-large) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    border: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: transform var(--m3e-dur-200) var(--m3e-spring-overshoot), background var(--m3e-dur-200) var(--m3e-easing-standard), border-radius var(--m3e-dur-300) var(--m3e-spring) !important;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: scale(1.04) translateY(-2px) !important;
+
+        &::before {
+            opacity: var(--m3e-state-hover);
+        }
+
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    &:active {
+        transform: scale(0.96) !important;
+
+        &::before {
+            opacity: var(--m3e-state-pressed);
+        }
+    }
+
+    &.m3e-fab--extended {
+        border-radius: var(--m3e-shape-lg) !important;
+        padding: 0 24px !important;
+    }
+
+    .m3e-fab-icon {
+        font-family: 'Material Symbols Rounded' !important;
+        font-size: 24px !important;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+}
+
+// Like/Fav buttons
 .like-action.not-liked .m3-system-icon,
 .like-action:not(.liked) .m3-system-icon {
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    color: var(--m3e-on-surface-variant) !important;
-    transition: font-variation-settings var(--m3e-dur-300) var(--m3e-spring),
-        color var(--m3e-dur-200) var(--m3e-easing-standard);
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20 !important;
+    color: var(--m3e-outline) !important;
+    transition: font-variation-settings var(--m3e-dur-300) var(--m3e-spring), color var(--m3e-dur-200) var(--m3e-easing-standard);
 }
 
 .like-action.liked .m3-system-icon {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20 !important;
     color: var(--m3e-error) !important;
+    transition: font-variation-settings var(--m3e-dur-300) var(--m3e-spring), color var(--m3e-dur-200) var(--m3e-easing-standard);
 }
 
 .like-action.not-liked:hover .m3-system-icon,
 .like-action:not(.liked):hover .m3-system-icon {
-    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 20 !important;
     color: var(--m3e-error) !important;
 }
 
-.list-liked-by-me:not(.active) .m3-system-icon {
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+// Form Controls
+.form-control,
+.awesomplete>input {
+    border-radius: var(--m3e-shape-sm) !important;
+    border: 1px solid var(--m3e-outline) !important;
+    background: transparent !important;
+    color: var(--m3e-on-surface) !important;
+    padding: 6px 12px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    font-size: var(--m3e-body-medium) !important;
+    font-weight: 400 !important;
+    transition: border-color var(--m3e-dur-200) var(--m3e-easing-standard), border-width var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:focus,
+    &:focus-visible {
+        border-width: 2px !important;
+        border-color: var(--m3e-primary) !important;
+        padding: 5px 11px !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    &::placeholder {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-body-medium) !important;
+        opacity: 0.7 !important;
+    }
+
+    &[readonly],
+    &[disabled],
+    &.disabled {
+        background: rgba(0, 0, 0, 0.04) !important;
+        border-color: rgba(0, 0, 0, 0.12) !important;
+        color: var(--m3e-on-surface-variant) !important;
+    }
+}
+
+textarea.form-control {
+    height: auto !important;
+    min-height: 100px !important;
+    resize: vertical !important;
+    padding: 10px 12px !important;
+}
+
+select.form-control {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    padding-right: 36px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' fill='%2378716C' viewBox='0 96 960 960' width='20'%3E%3Cpath d='M480 711 240 471l43-43 197 198 197-198 43 43-240 240Z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+}
+
+// Link field buttons
+.link-field .link-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    position: absolute !important;
+    right: 6px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+    background: transparent !important;
+}
+
+.link-field .btn-clear,
+.link-field .btn-open {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: var(--m3e-shape-circle) !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
     color: var(--m3e-on-surface-variant) !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity var(--m3e-dur-150) var(--m3e-easing-standard);
+        pointer-events: none;
+    }
+
+    &:hover::before {
+        opacity: var(--m3e-state-hover);
+    }
+
+    &:active::before {
+        opacity: var(--m3e-state-pressed);
+    }
+
+    >svg {
+        display: none !important;
+    }
+
+    .m3-system-icon {
+        font-size: 18px !important;
+        pointer-events: none;
+    }
 }
 
-.list-liked-by-me.active .m3-system-icon {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+.link-field .btn-clear:hover {
     color: var(--m3e-error) !important;
 }
 
-.list-liked-by-me:not(.active):hover .m3-system-icon {
-    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    color: var(--m3e-error) !important;
+.link-field .btn-open:hover {
+    color: var(--m3e-primary) !important;
 }
