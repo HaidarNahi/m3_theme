@@ -440,6 +440,7 @@
         syncLikedByMeButton();
         injectCustomNavbarAndProfile();
         injectM3LoadingIndicators();
+        applyM3EEnhancements();
     }
 
     // ── M3 Material Loading Indicators ──
@@ -630,6 +631,7 @@
                 checkCurrentSidebar();
                 syncLikedByMeButton();
                 injectCustomNavbarAndProfile();
+                applyM3EEnhancements();
             }, 50); // Speed up alignment tick on observe
         }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
     }
@@ -971,6 +973,68 @@
             }).catch(() => { });
     }
 
+    // ── M3E Specific Enhancements (Toolbars, FABs, Split Buttons) ──
+    function applyM3EEnhancements() {
+        if (!isDeskPage()) return;
+
+        // 1. Convert Form/List standard Dropdowns to M3E Split Buttons
+        document.querySelectorAll('.page-actions .btn-group, .standard-actions .btn-group').forEach(function (group) {
+            if (group.classList.contains('m3e-split-btn-group') || group.dataset.m3eProcessed) return;
+            var mainBtn = group.querySelector('.btn:not([data-toggle="dropdown"])');
+            var dropBtn = group.querySelector('.btn[data-toggle="dropdown"]');
+
+            if (mainBtn && dropBtn) {
+                group.dataset.m3eProcessed = "true";
+                group.classList.add('m3e-split-btn-group');
+                mainBtn.classList.add('m3e-split-main');
+                dropBtn.classList.add('m3e-split-caret');
+
+                // Track dropdown open state for shape morphing
+                $(dropBtn).on('show.bs.dropdown', function () { dropBtn.setAttribute('aria-expanded', 'true'); });
+                $(dropBtn).on('hide.bs.dropdown', function () { dropBtn.setAttribute('aria-expanded', 'false'); });
+            }
+        });
+
+        // 2. Identify and construct the M3E FAB for List Views
+        var listContainer = document.querySelector('.frappe-list');
+        var existingFab = document.getElementById('m3e-list-fab');
+        var primaryAction = document.querySelector('.page-actions .btn-primary');
+
+        if (listContainer) {
+            // Only inject FAB if Frappe has fully rendered the primary action button
+            if (primaryAction && !existingFab) {
+                primaryAction.style.display = 'none';
+
+                var fab = document.createElement('button');
+                fab.id = 'm3e-list-fab';
+                fab.className = 'm3e-fab m3e-fab--extended';
+                var label = primaryAction.innerText.trim() || 'Add';
+                fab.innerHTML = '<span class="material-symbols-rounded m3e-fab-icon">add</span><span class="m3e-fab-label">' + label + '</span>';
+
+                // Proxy the click to the real button
+                fab.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    primaryAction.click();
+                });
+
+                document.body.appendChild(fab);
+            } else if (primaryAction && existingFab) {
+                // Ensure text stays up to date
+                primaryAction.style.display = 'none';
+                var label2 = primaryAction.innerText.trim() || 'Add';
+                var labelSpan = existingFab.querySelector('.m3e-fab-label');
+                if (labelSpan && labelSpan.innerText !== label2) {
+                    labelSpan.innerText = label2;
+                }
+            }
+        } else {
+            // Not a list view, remove FAB
+            if (existingFab) existingFab.remove();
+            // Un-hide primary actions just in case
+            if (primaryAction) primaryAction.style.display = '';
+        }
+    }
+
     // ── Startup ──
     function go() {
         applyBootThemeSettings(); // Re-run just in case it loaded late
@@ -998,6 +1062,7 @@
                 replaceSystemIcons(); ensureSidebar(); patchToggles(); ensureFormSidebarToggle(); checkCurrentSidebar();
                 syncLikedByMeButton();
                 injectCustomNavbarAndProfile();
+                applyM3EEnhancements();
             }, 400);
         });
     }
@@ -1012,6 +1077,7 @@
             checkCurrentSidebar();
             syncLikedByMeButton();
             injectCustomNavbarAndProfile();
+            applyM3EEnhancements();
         }, 400);
     });
 })();

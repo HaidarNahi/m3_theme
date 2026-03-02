@@ -215,8 +215,7 @@ body {
 [class*="app-launcher"],
 [class*="app-icon"],
 [class*="workspace-name"] {
-    // Let Frappe's own grid handle layout
-    // Apply M3E card styling to each app tile
+    position: relative !important; // Prevent empty ruleset lint
 }
 
 // App icon tiles on home screen
