@@ -1,0 +1,816 @@
+// ═══════════════════════════════════════════════════════════════
+//  _forms.scss — M3E Form System
+//  Overrides all Frappe form components with Material 3 Expressive
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ── 1. FORM LAYOUT ───────────────────────────────────────────
+.form-page,
+.form-layout {
+    background: var(--m3e-surface) !important;
+}
+
+.std-form-layout>.form-layout>.form-page {
+    background: var(--m3e-surface) !important;
+    box-shadow: none !important;
+}
+
+// ── 2. SECTION BREAKS ────────────────────────────────────────
+.form-section,
+.form-dashboard-section {
+    padding: 0 var(--m3e-padding-md, 16px) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+
+    .section-head {
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+        letter-spacing: var(--m3e-title-small-tracking, 0) !important;
+        color: var(--m3e-on-surface) !important;
+        padding: 16px !important;
+
+        .collapse-indicator {
+            color: var(--m3e-on-surface-variant) !important;
+            transition: transform var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+        }
+
+        &.collapsed .collapse-indicator {
+            transform: rotate(-90deg) !important;
+        }
+    }
+
+    .section-body {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    &.card-section {
+        border-bottom: 1px solid var(--m3e-outline-variant) !important;
+        border-radius: 0 !important;
+
+        &.hide-border {
+            border-bottom: none !important;
+        }
+    }
+}
+
+.form-section-description {
+    color: var(--m3e-on-surface-variant) !important;
+    font-size: var(--m3e-body-small) !important;
+}
+
+// ── 3. FORM COLUMNS ─────────────────────────────────────────
+.form-column {
+    .column-label {
+        font-weight: 600 !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-label-large) !important;
+    }
+
+    .form-column-description {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-body-small) !important;
+    }
+}
+
+// ── 4. CONTROL LABELS ───────────────────────────────────────
+.control-label {
+    color: var(--m3e-on-surface-variant) !important;
+    font-size: var(--m3e-body-small) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    margin-bottom: 6px !important;
+
+    &.reqd::after {
+        color: var(--m3e-error) !important;
+    }
+}
+
+// ── 5. TEXT INPUTS — M3E Filled Text Field Style ────────────
+// This is the core M3E input: surface-container-high bg, pill radius,
+// 2px primary underline on focus, animated label support
+.form-control,
+.input-with-feedback,
+input.form-control,
+textarea.form-control,
+select.form-control {
+    background: var(--m3e-surface-container-high) !important;
+    border: 1.5px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-md) !important;
+    color: var(--m3e-on-surface) !important;
+    font-size: var(--m3e-body-medium) !important;
+    padding: 10px 14px !important;
+    min-height: 44px !important;
+    transition:
+        border-color var(--m3e-dur-200) var(--m3e-easing-standard),
+        background var(--m3e-dur-200) var(--m3e-easing-standard),
+        box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+    &::placeholder {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-body-medium) !important;
+    }
+
+    &:focus,
+    &:focus-within {
+        border-color: var(--m3e-primary) !important;
+        border-width: 2px !important;
+        background: var(--m3e-surface-container-highest) !important;
+        box-shadow: none !important;
+    }
+
+    &:hover:not(:focus) {
+        border-color: var(--m3e-on-surface) !important;
+    }
+
+    &:disabled,
+    &[readonly] {
+        background: var(--m3e-surface-container-low) !important;
+        border-color: var(--m3e-outline-variant) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        cursor: not-allowed !important;
+        opacity: 0.6 !important;
+    }
+}
+
+// Textarea gets taller min-height
+textarea.form-control {
+    min-height: 100px !important;
+    border-radius: var(--m3e-shape-lg) !important;
+}
+
+// ── 6. VALIDATION ERROR STATES ──────────────────────────────
+.has-error .form-control,
+.has-error .input-with-feedback,
+.frappe-control.has-error .form-control {
+    border-color: var(--m3e-error) !important;
+    border-width: 2px !important;
+    background: var(--m3e-error-container) !important;
+
+    &:focus {
+        border-color: var(--m3e-error) !important;
+    }
+}
+
+.has-error .control-label {
+    color: var(--m3e-error) !important;
+}
+
+// Supporting / helper text
+.frappe-control .help,
+.form-group .help-block {
+    color: var(--m3e-on-surface-variant) !important;
+    font-size: var(--m3e-body-small) !important;
+    margin-top: 4px !important;
+}
+
+.has-error .help,
+.has-error .help-block {
+    color: var(--m3e-error) !important;
+}
+
+// ── 7. LINK FIELD — trailing icon button ────────────────────
+.frappe-control .link-btn,
+.frappe-control .action-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--m3e-on-surface-variant) !important;
+    border-radius: var(--m3e-shape-pill) !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+}
+
+// ── 8. SELECT FIELD ─────────────────────────────────────────
+select.form-control {
+    padding-right: 36px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%2378716C' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+}
+
+// ── 9. CHECKBOX / SWITCH — M3E Toggle ───────────────────────
+.frappe-control[data-fieldtype="Check"] .input-area {
+    display: flex !important;
+    align-items: center !important;
+
+    input[type="checkbox"] {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        width: 44px !important;
+        height: 24px !important;
+        background: var(--m3e-surface-container-highest) !important;
+        border: 2px solid var(--m3e-outline) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition:
+            background var(--m3e-dur-200) var(--m3e-easing-standard),
+            border-color var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+        // Thumb
+        &::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 2px !important;
+            left: 2px !important;
+            width: 16px !important;
+            height: 16px !important;
+            background: var(--m3e-outline) !important;
+            border-radius: 50% !important;
+            transition:
+                transform var(--m3e-dur-200) var(--m3e-spring, ease),
+                background var(--m3e-dur-200) var(--m3e-easing-standard),
+                width var(--m3e-dur-100) var(--m3e-easing-standard),
+                height var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+        }
+
+        &:checked {
+            background: var(--m3e-primary) !important;
+            border-color: var(--m3e-primary) !important;
+
+            &::after {
+                background: var(--m3e-on-primary) !important;
+                transform: translateX(20px) !important;
+            }
+        }
+
+        &:active::after {
+            width: 20px !important;
+            height: 20px !important;
+            top: 0 !important;
+        }
+    }
+}
+
+// ── 10. ATTACH FIELD / FILE UPLOAD ──────────────────────────
+.file-upload-area,
+.attach-input {
+    background: var(--m3e-surface-container-low) !important;
+    border: 2px dashed var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    padding: 24px !important;
+    text-align: center !important;
+    color: var(--m3e-on-surface-variant) !important;
+    transition:
+        border-color var(--m3e-dur-200) var(--m3e-easing-standard),
+        background var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+    &:hover,
+    &.dragover {
+        border-color: var(--m3e-primary) !important;
+        background: var(--m3e-primary-container) !important;
+        color: var(--m3e-on-primary-container) !important;
+    }
+}
+
+// ── 11. MULTISELECT ─────────────────────────────────────────
+.table-multiselect {
+    background: var(--m3e-surface-container-high) !important;
+    border: 1.5px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-md) !important;
+    padding: 8px !important;
+    gap: 6px !important;
+    min-height: 44px !important;
+
+    &:focus-within {
+        border-color: var(--m3e-primary) !important;
+        border-width: 2px !important;
+    }
+
+    .tb-selected-value {
+        background: var(--m3e-secondary-container) !important;
+        color: var(--m3e-on-secondary-container) !important;
+        border: none !important;
+        border-radius: var(--m3e-shape-sm) !important;
+        padding: 4px 8px !important;
+        font-size: var(--m3e-label-medium) !important;
+    }
+
+    input {
+        background: transparent !important;
+        border: none !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-medium) !important;
+    }
+}
+
+// ── 12. PASSWORD FIELD ──────────────────────────────────────
+.frappe-control[data-fieldtype="Password"] {
+    .toggle-password {
+        color: var(--m3e-on-surface-variant) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        padding: 6px !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+    }
+
+    .password-strength-indicator .progress {
+        background: var(--m3e-surface-container-high) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        height: 4px !important;
+        overflow: hidden !important;
+
+        .progress-bar {
+            background: var(--m3e-primary) !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            transition: width var(--m3e-dur-300) var(--m3e-spring, ease) !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FORM TABS — M3E Primary Indicator Tabs
+// ══════════════════════════════════════════════════════════════
+.form-tabs {
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    padding: 0 16px !important;
+
+    .nav-tabs {
+        border-bottom: none !important;
+        gap: 0 !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+    }
+
+    .nav-item {
+        flex-shrink: 0 !important;
+    }
+
+    .nav-link {
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.03em !important;
+        padding: 14px 24px !important;
+        position: relative !important;
+        transition:
+            color var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+        white-space: nowrap !important;
+
+        // Bottom indicator line (inactive: invisible)
+        &::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 50% !important;
+            transform: translateX(-50%) scaleX(0) !important;
+            width: calc(100% - 32px) !important;
+            height: 3px !important;
+            border-radius: 3px 3px 0 0 !important;
+            background: var(--m3e-primary) !important;
+            transition: transform var(--m3e-dur-200) var(--m3e-spring, ease) !important;
+        }
+
+        &:hover {
+            color: var(--m3e-on-surface) !important;
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+
+        &.active {
+            color: var(--m3e-primary) !important;
+            font-weight: 600 !important;
+
+            &::after {
+                transform: translateX(-50%) scaleX(1) !important;
+            }
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FORM SIDEBAR
+// ══════════════════════════════════════════════════════════════
+.form-sidebar {
+    background: var(--m3e-surface-container-low) !important;
+    border-left: 1px solid var(--m3e-outline-variant) !important;
+    padding: 16px !important;
+
+    .sidebar-menu {
+        list-style: none !important;
+        padding: 0 !important;
+
+        .sidebar-label {
+            color: var(--m3e-on-surface-variant) !important;
+            font-size: var(--m3e-label-medium) !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            padding: 8px 0 4px !important;
+        }
+    }
+}
+
+// Sidebar action buttons
+.add-assignment-btn,
+.add-attachment-btn,
+.add-review-btn,
+.add-tags-btn,
+.share-doc-btn,
+.followed-by {
+    border-radius: var(--m3e-shape-pill) !important;
+    padding: 6px !important;
+    color: var(--m3e-on-surface-variant) !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+}
+
+// Attachment rows
+.attachment-row {
+    .data-pill {
+        background: transparent !important;
+        border-radius: var(--m3e-shape-md) !important;
+        color: var(--m3e-on-surface) !important;
+        padding: 4px 8px !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+    }
+}
+
+// Tags in sidebar
+.form-tag-row .data-pill {
+    background: var(--m3e-secondary-container) !important;
+    color: var(--m3e-on-secondary-container) !important;
+    border-radius: var(--m3e-shape-sm) !important;
+    border: none !important;
+    font-size: var(--m3e-label-medium) !important;
+}
+
+// Assignment rows
+.dialog-assignment-row {
+    border-radius: var(--m3e-shape-md) !important;
+    padding: 4px 8px !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+}
+
+// Liked-by
+.liked-by {
+    border-radius: var(--m3e-shape-pill) !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+
+    .like-active-item svg {
+        fill: var(--m3e-error) !important;
+        transition: transform var(--m3e-dur-200) var(--m3e-spring, ease) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  COMMENT BOX
+// ══════════════════════════════════════════════════════════════
+.comment-box {
+    .comment-input-header {
+        .comment-title {
+            font-size: var(--m3e-title-small) !important;
+            font-weight: 600 !important;
+            color: var(--m3e-on-surface) !important;
+        }
+
+        .comment-count {
+            color: var(--m3e-on-surface-variant) !important;
+        }
+    }
+
+    .comment-input-control {
+        .ql-editor {
+            background: var(--m3e-surface-container-high) !important;
+            border: 1.5px solid var(--m3e-outline-variant) !important;
+            border-radius: var(--m3e-shape-lg) !important;
+            padding: 12px 16px !important;
+            min-height: 80px !important;
+            color: var(--m3e-on-surface) !important;
+            font-size: var(--m3e-body-medium) !important;
+
+            &:focus {
+                border-color: var(--m3e-primary) !important;
+                border-width: 2px !important;
+            }
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TIMELINE — M3E Dots + Line
+// ══════════════════════════════════════════════════════════════
+.new-timeline {
+    padding-top: 16px !important;
+
+    // Vertical connecting line
+    &::before {
+        border-left: 2px solid var(--m3e-outline-variant) !important;
+    }
+
+    // Dot marker
+    .timeline-dot {
+        background: var(--m3e-surface) !important;
+
+        &::before {
+            background: var(--m3e-primary) !important;
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+        }
+    }
+
+    .activity-title h4 {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+    }
+
+    .timeline-item {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-medium) !important;
+
+        b {
+            color: var(--m3e-on-surface) !important;
+            font-weight: 600 !important;
+        }
+
+        .timeline-content {
+            background: var(--m3e-surface-container-low) !important;
+            border-radius: var(--m3e-shape-lg) !important;
+            border: 1px solid var(--m3e-outline-variant) !important;
+            padding: 12px 16px !important;
+        }
+
+        .timeline-badge {
+            background: var(--m3e-secondary-container) !important;
+            color: var(--m3e-on-secondary-container) !important;
+        }
+
+        .timeline-message-box {
+            background: var(--m3e-surface-container-low) !important;
+            border-radius: var(--m3e-shape-lg) !important;
+            border: 1px solid var(--m3e-outline-variant) !important;
+        }
+
+        // Action buttons in timeline
+        .action-btn {
+            color: var(--m3e-primary) !important;
+            font-size: var(--m3e-label-medium) !important;
+            font-weight: 500 !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FORM DASHBOARD (stats / connections at top of form)
+// ══════════════════════════════════════════════════════════════
+.form-dashboard-section {
+    .section-body {
+        padding: 12px 16px !important;
+    }
+
+    .progress {
+        background: var(--m3e-surface-container-high) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        height: 6px !important;
+
+        .progress-bar {
+            background: var(--m3e-primary) !important;
+            border-radius: var(--m3e-shape-pill) !important;
+        }
+    }
+}
+
+// Form inner toolbar
+.form-inner-toolbar {
+    padding: 12px 0 !important;
+
+    .btn {
+        border-radius: var(--m3e-shape-pill) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GRID / TABLE FIELD (child tables inside forms)
+// ══════════════════════════════════════════════════════════════
+.frappe-control[data-fieldtype="Table"] {
+    .form-grid {
+        border: 1px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-lg) !important;
+        overflow: hidden !important;
+
+        .grid-heading-row {
+            background: var(--m3e-surface-container-low) !important;
+            border-bottom: 2px solid var(--m3e-outline-variant) !important;
+            color: var(--m3e-on-surface-variant) !important;
+            font-size: var(--m3e-label-medium) !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.06em !important;
+        }
+
+        .rows .row {
+            border-bottom: 1px solid var(--m3e-outline-variant) !important;
+            background: var(--m3e-surface) !important;
+            transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+            &:hover {
+                background: var(--m3e-surface-container-low) !important;
+            }
+        }
+
+        // Grid static cell (read-only view)
+        .static-area {
+            color: var(--m3e-on-surface) !important;
+            font-size: var(--m3e-body-medium) !important;
+        }
+
+        // "Add Row" button
+        .grid-footer {
+            background: var(--m3e-surface-container-low) !important;
+            border-top: 1px solid var(--m3e-outline-variant) !important;
+            padding: 8px 12px !important;
+
+            .btn-xs {
+                background: var(--m3e-primary-container) !important;
+                color: var(--m3e-on-primary-container) !important;
+                border: none !important;
+                border-radius: var(--m3e-shape-pill) !important;
+                font-size: var(--m3e-label-medium) !important;
+                font-weight: 500 !important;
+                padding: 6px 16px !important;
+                transition:
+                    background var(--m3e-dur-150) var(--m3e-easing-standard),
+                    transform var(--m3e-dur-100) var(--m3e-spring, ease) !important;
+
+                &:hover {
+                    background: var(--m3e-secondary-container) !important;
+                    color: var(--m3e-on-secondary-container) !important;
+                }
+            }
+        }
+    }
+}
+
+// Grid form (inline editing row)
+.grid-form-heading {
+    background: var(--m3e-surface-container-low) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+}
+
+.grid-form-body {
+    background: var(--m3e-surface) !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FRAPPE CONTROL WRAPPER (generic overrides)
+// ══════════════════════════════════════════════════════════════
+.frappe-control {
+
+    // Quill editor inside form controls
+    .ql-editor:not(.read-mode) {
+        background: var(--m3e-surface-container-high) !important;
+        border: 1.5px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-lg) !important;
+        color: var(--m3e-on-surface) !important;
+
+        &:focus {
+            border-color: var(--m3e-primary) !important;
+        }
+    }
+
+    // Address / Contact box
+    .address-box,
+    .contact-box {
+        background: var(--m3e-surface-container-low) !important;
+        border: 1px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-lg) !important;
+        padding: 12px !important;
+        color: var(--m3e-on-surface) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AWESOMPLETE / AUTOCOMPLETE — inside form fields
+// ══════════════════════════════════════════════════════════════
+.awesomplete>ul,
+.autocomplete-suggestions {
+    background: var(--m3e-surface-container) !important;
+    border: none !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+    padding: 6px !important;
+    z-index: 1060 !important;
+
+    li,
+    .autocomplete-suggestion {
+        border-radius: var(--m3e-shape-sm) !important;
+        padding: 10px 14px !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-medium) !important;
+        transition: background var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+        &:hover,
+        &[aria-selected="true"] {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+
+        &.selected,
+        &.autocomplete-selected {
+            background: var(--m3e-secondary-container) !important;
+            color: var(--m3e-on-secondary-container) !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DATEPICKER — M3E styled
+// ══════════════════════════════════════════════════════════════
+.datepicker--nav {
+    background: var(--m3e-surface-container-low) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    padding: 8px !important;
+
+    .datepicker--nav-title {
+        color: var(--m3e-on-surface) !important;
+        font-weight: 600 !important;
+    }
+
+    .datepicker--nav-action {
+        color: var(--m3e-on-surface-variant) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+    }
+}
+
+.datepicker--content {
+    background: var(--m3e-surface-container) !important;
+}
+
+.datepicker--cell {
+    border-radius: var(--m3e-shape-pill) !important;
+    color: var(--m3e-on-surface) !important;
+    font-size: var(--m3e-body-small) !important;
+    transition:
+        background var(--m3e-dur-100) var(--m3e-easing-standard),
+        color var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+
+    &.-selected-,
+    &.-current- {
+        background: var(--m3e-primary) !important;
+        color: var(--m3e-on-primary) !important;
+    }
+
+    &.-in-range- {
+        background: var(--m3e-primary-container) !important;
+        color: var(--m3e-on-primary-container) !important;
+    }
+
+    &.-disabled- {
+        color: var(--m3e-on-surface-variant) !important;
+        opacity: 0.38 !important;
+    }
+}
+
+.datepicker {
+    background: var(--m3e-surface-container) !important;
+    border: none !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+    overflow: hidden !important;
+}
+
+.datepicker--day-name {
+    color: var(--m3e-on-surface-variant) !important;
+    font-size: var(--m3e-label-small, 11px) !important;
+    font-weight: 600 !important;
+}

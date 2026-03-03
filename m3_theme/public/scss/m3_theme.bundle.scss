@@ -17,6 +17,10 @@
 @import "button_groups";
 @import "waveform";
 @import "components";
+@import "forms";
+@import "views";
+@import "navigation";
+@import "micro";
 @import "layout";
 @import "login";
 
@@ -36,6 +40,14 @@ body {
 // ── Restore M3E shadows that were stripped by layout reset ────
 // (layout.scss has a blanket box-shadow: none reset for legacy Frappe
 //  shadows; these intentional M3E shadows are re-declared here)
-.m3e-fab        { box-shadow: var(--m3e-shadow-3) !important; }
-.m3e-fab:hover  { box-shadow: var(--m3e-shadow-4) !important; }
-.m3e-fab:active { box-shadow: var(--m3e-shadow-1) !important; }
+.m3e-fab {
+    box-shadow: var(--m3e-shadow-3) !important;
+}
+
+.m3e-fab:hover {
+    box-shadow: var(--m3e-shadow-4) !important;
+}
+
+.m3e-fab:active {
+    box-shadow: var(--m3e-shadow-1) !important;
+}

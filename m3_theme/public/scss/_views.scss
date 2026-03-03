@@ -1,0 +1,617 @@
+// ═══════════════════════════════════════════════════════════════
+//  _views.scss — M3E View Overrides
+//  Covers: Report, Kanban, Calendar, Image, Dashboard,
+//          Tree, File, Gantt views
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+//  1. REPORT VIEW / DATATABLE
+// ══════════════════════════════════════════════════════════════
+.dt-scrollable {
+    background: var(--m3e-surface) !important;
+}
+
+.dt-header {
+    background: var(--m3e-surface-container-low) !important;
+    border-bottom: 2px solid var(--m3e-outline-variant) !important;
+
+    .dt-cell--header {
+        background: var(--m3e-surface-container-low) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-medium) !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        border-right: 1px solid var(--m3e-outline-variant) !important;
+        border-bottom: none !important;
+    }
+}
+
+.dt-row {
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: var(--m3e-surface-container-low) !important;
+    }
+
+    .dt-cell {
+        background: transparent !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-medium) !important;
+        border-right: 1px solid var(--m3e-outline-variant) !important;
+        border-bottom: none !important;
+        padding: 10px 14px !important;
+    }
+}
+
+.dt-cell--focus {
+    outline: 2px solid var(--m3e-primary) !important;
+    outline-offset: -2px !important;
+    box-shadow: none !important;
+}
+
+// DataTable total row
+.dt-row--totals {
+    background: var(--m3e-primary-container) !important;
+    font-weight: 600 !important;
+
+    .dt-cell {
+        color: var(--m3e-on-primary-container) !important;
+    }
+}
+
+// DataTable freeze column
+.dt-cell--frozen {
+    background: var(--m3e-surface-container-low) !important;
+}
+
+// Report builder controls
+.report-wrapper {
+    background: var(--m3e-surface) !important;
+}
+
+.report-view .datatable {
+    border-radius: var(--m3e-shape-lg) !important;
+    overflow: hidden !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  2. KANBAN VIEW
+// ══════════════════════════════════════════════════════════════
+.kanban {
+    background: var(--m3e-surface) !important;
+    padding: 16px !important;
+    gap: 16px !important;
+}
+
+.kanban-column {
+    background: var(--m3e-surface-container-low) !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    border: none !important;
+    min-width: 280px !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+
+    .kanban-column-title {
+        padding: 16px 16px 12px !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+        color: var(--m3e-on-surface) !important;
+        border-bottom: 1px solid var(--m3e-outline-variant) !important;
+
+        .column-title {
+            font-weight: 600 !important;
+        }
+
+        .kanban-title-area .add-card {
+            color: var(--m3e-primary) !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            width: 32px !important;
+            height: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+
+            &:hover {
+                background: rgba(var(--m3e-primary-rgb), var(--m3e-state-hover)) !important;
+            }
+        }
+    }
+
+    .kanban-cards {
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}
+
+.kanban-card {
+    background: var(--m3e-surface) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-lg) !important;
+    padding: 12px 16px !important;
+    cursor: grab !important;
+    box-shadow: none !important;
+    transition:
+        transform var(--m3e-dur-150) var(--m3e-spring, ease),
+        box-shadow var(--m3e-dur-200) var(--m3e-easing-standard),
+        border-color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-2) !important;
+        border-color: var(--m3e-primary) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    &:active,
+    &.is-dragging {
+        box-shadow: var(--m3e-shadow-4) !important;
+        transform: scale(1.02) rotate(1deg) !important;
+        cursor: grabbing !important;
+    }
+
+    .kanban-card-title {
+        font-size: var(--m3e-body-medium) !important;
+        font-weight: 500 !important;
+        color: var(--m3e-on-surface) !important;
+    }
+
+    .kanban-card-meta {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-body-small) !important;
+        margin-top: 8px !important;
+    }
+}
+
+// Empty state
+.kanban-column .add-new-btn {
+    color: var(--m3e-primary) !important;
+    font-size: var(--m3e-label-large) !important;
+    font-weight: 500 !important;
+    padding: 8px !important;
+    border-radius: var(--m3e-shape-md) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-primary-rgb), var(--m3e-state-hover)) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  3. CALENDAR VIEW
+// ══════════════════════════════════════════════════════════════
+.frappe-calendar,
+.fc {
+    background: var(--m3e-surface) !important;
+
+    // Toolbar
+    .fc-toolbar {
+        background: var(--m3e-surface) !important;
+        padding: 12px 16px !important;
+
+        .fc-toolbar-title {
+            font-size: var(--m3e-title-large) !important;
+            font-weight: 600 !important;
+            color: var(--m3e-on-surface) !important;
+        }
+
+        .fc-button {
+            background: var(--m3e-surface-container) !important;
+            border: 1px solid var(--m3e-outline-variant) !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            color: var(--m3e-on-surface) !important;
+            font-size: var(--m3e-label-medium) !important;
+            font-weight: 500 !important;
+            padding: 6px 16px !important;
+            transition:
+                background var(--m3e-dur-150) var(--m3e-easing-standard),
+                border-color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+            &:hover {
+                background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+            }
+
+            &.fc-button-active {
+                background: var(--m3e-primary) !important;
+                color: var(--m3e-on-primary) !important;
+                border-color: var(--m3e-primary) !important;
+            }
+        }
+    }
+
+    // Day headers
+    .fc-col-header-cell {
+        background: var(--m3e-surface-container-low) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-medium) !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        padding: 10px !important;
+        border-color: var(--m3e-outline-variant) !important;
+    }
+
+    // Day cells
+    .fc-daygrid-day {
+        border-color: var(--m3e-outline-variant) !important;
+        background: var(--m3e-surface) !important;
+        transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            background: var(--m3e-surface-container-low) !important;
+        }
+
+        // Today highlight
+        &.fc-day-today {
+            background: var(--m3e-primary-container) !important;
+        }
+
+        .fc-daygrid-day-number {
+            color: var(--m3e-on-surface) !important;
+            font-weight: 500 !important;
+        }
+    }
+
+    // Events
+    .fc-event,
+    .fc-daygrid-event {
+        background: var(--m3e-primary-container) !important;
+        color: var(--m3e-on-primary-container) !important;
+        border: none !important;
+        border-radius: var(--m3e-shape-sm) !important;
+        padding: 2px 6px !important;
+        font-size: var(--m3e-label-medium) !important;
+        font-weight: 500 !important;
+        transition:
+            transform var(--m3e-dur-100) var(--m3e-spring, ease),
+            box-shadow var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            box-shadow: var(--m3e-shadow-2) !important;
+            transform: scale(1.02) !important;
+        }
+
+        .fc-event-title {
+            font-weight: 500 !important;
+        }
+    }
+
+    // Different event colors
+    .fc-event.fc-event-secondary,
+    .fc-event[data-color="secondary"] {
+        background: var(--m3e-secondary-container) !important;
+        color: var(--m3e-on-secondary-container) !important;
+    }
+
+    .fc-event.fc-event-tertiary,
+    .fc-event[data-color="tertiary"] {
+        background: var(--m3e-tertiary-container) !important;
+        color: var(--m3e-on-tertiary-container) !important;
+    }
+
+    // Borders
+    td,
+    th {
+        border-color: var(--m3e-outline-variant) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  4. IMAGE VIEW
+// ══════════════════════════════════════════════════════════════
+.image-view-container {
+    padding: 16px !important;
+    gap: 16px !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+}
+
+.image-view-item,
+.image-view-container .image-view-item {
+    background: var(--m3e-surface-container-low) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    transition:
+        transform var(--m3e-dur-200) var(--m3e-spring, ease),
+        box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        transform: translateY(-4px) scale(1.02) !important;
+        box-shadow: var(--m3e-shadow-3) !important;
+        border-color: var(--m3e-primary) !important;
+    }
+
+    .image-view-header {
+        padding: 12px 16px !important;
+        background: var(--m3e-surface) !important;
+
+        .image-view-title {
+            font-size: var(--m3e-body-medium) !important;
+            font-weight: 500 !important;
+            color: var(--m3e-on-surface) !important;
+        }
+    }
+
+    .image-field {
+        border-radius: 0 !important;
+        aspect-ratio: 4/3 !important;
+        object-fit: cover !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  5. DASHBOARD VIEW
+// ══════════════════════════════════════════════════════════════
+.dashboard-view {
+    padding: 16px !important;
+    background: var(--m3e-surface) !important;
+}
+
+// Number cards
+.number-widget-box,
+.number-widget {
+    background: var(--m3e-surface-container-low) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-3xl) !important;
+    padding: 20px 24px !important;
+    transition:
+        transform var(--m3e-dur-200) var(--m3e-spring, ease),
+        box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: var(--m3e-shadow-2) !important;
+    }
+
+    .widget-title,
+    .number-widget-title {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-large) !important;
+        font-weight: 500 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+    }
+
+    .number-widget-value,
+    .widget-body .number {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-display-small, 36px) !important;
+        font-weight: 600 !important;
+    }
+
+    .indicator-pill-round,
+    .indicator-pill {
+        border-radius: var(--m3e-shape-pill) !important;
+    }
+}
+
+// Chart widgets
+.chart-container,
+.frappe-chart,
+.chart-column-container {
+    background: var(--m3e-surface-container-low) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-3xl) !important;
+    padding: 16px !important;
+    overflow: hidden !important;
+}
+
+// Shortcut widgets
+.shortcut-widget-box {
+    background: var(--m3e-surface-container-low) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    padding: 12px 16px !important;
+    color: var(--m3e-on-surface) !important;
+    transition:
+        background var(--m3e-dur-150) var(--m3e-easing-standard),
+        border-color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: var(--m3e-surface-container) !important;
+        border-color: var(--m3e-primary) !important;
+    }
+}
+
+// Dashboard widget header
+.widget-head,
+.widget-header {
+
+    .widget-label,
+    .widget-title {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+    }
+
+    .widget-control {
+        color: var(--m3e-on-surface-variant) !important;
+
+        .btn {
+            border-radius: var(--m3e-shape-pill) !important;
+        }
+    }
+}
+
+// Widget group
+.widget-group {
+    .widget-group-head {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-title-medium, 16px) !important;
+        font-weight: 600 !important;
+        padding: 16px 0 8px !important;
+    }
+
+    .widget-group-body {
+        gap: 16px !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  6. TREE VIEW
+// ══════════════════════════════════════════════════════════════
+.tree-node {
+    .tree-link {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-medium) !important;
+        padding: 8px 12px !important;
+        border-radius: var(--m3e-shape-md) !important;
+        transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+
+        &.active {
+            background: var(--m3e-secondary-container) !important;
+            color: var(--m3e-on-secondary-container) !important;
+            font-weight: 500 !important;
+        }
+    }
+
+    // Expand/collapse toggle
+    .tree-toggle {
+        color: var(--m3e-on-surface-variant) !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+    }
+
+    // Child indent
+    .tree-children {
+        border-left: 1px solid var(--m3e-outline-variant) !important;
+        margin-left: 18px !important;
+        padding-left: 12px !important;
+    }
+}
+
+// Tree toolbar
+.tree-toolbar {
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    padding: 8px 16px !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  7. FILE VIEW
+// ══════════════════════════════════════════════════════════════
+.file-listing {
+    background: var(--m3e-surface) !important;
+}
+
+.file-item,
+.file-listing .list-row {
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    padding: 10px 16px !important;
+    transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        background: var(--m3e-surface-container-low) !important;
+    }
+
+    .file-name {
+        color: var(--m3e-on-surface) !important;
+        font-weight: 500 !important;
+    }
+
+    .file-size {
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-body-small) !important;
+    }
+}
+
+// File breadcrumb nav
+.file-header {
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+    padding: 12px 16px !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  8. GANTT CHART
+// ══════════════════════════════════════════════════════════════
+.gantt-container {
+    background: var(--m3e-surface) !important;
+}
+
+.gantt {
+    .grid-header {
+        fill: var(--m3e-surface-container-low) !important;
+    }
+
+    .grid-row {
+        fill: var(--m3e-surface) !important;
+
+        &:nth-child(even) {
+            fill: var(--m3e-surface-container-low) !important;
+        }
+    }
+
+    .bar {
+        fill: var(--m3e-primary-container) !important;
+        stroke: var(--m3e-primary) !important;
+        stroke-width: 1 !important;
+        rx: 8 !important;
+        ry: 8 !important;
+    }
+
+    .bar-progress {
+        fill: var(--m3e-primary) !important;
+        rx: 8 !important;
+        ry: 8 !important;
+    }
+
+    .bar-label {
+        fill: var(--m3e-on-primary-container) !important;
+        font-size: var(--m3e-label-medium) !important;
+        font-weight: 500 !important;
+    }
+
+    .tick {
+        stroke: var(--m3e-outline-variant) !important;
+    }
+
+    .today-highlight {
+        fill: var(--m3e-primary) !important;
+        opacity: 0.1 !important;
+    }
+
+    .upper-text,
+    .lower-text {
+        fill: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-medium) !important;
+    }
+
+    .handle {
+        fill: var(--m3e-primary) !important;
+    }
+}
+
+// Gantt popup
+.gantt-popup-wrapper {
+    .title {
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+    }
+
+    .pointer {
+        background: var(--m3e-surface-container) !important;
+    }
+}

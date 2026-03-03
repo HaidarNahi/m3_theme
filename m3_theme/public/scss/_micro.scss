@@ -1,0 +1,740 @@
+// ═══════════════════════════════════════════════════════════════
+//  _micro.scss — M3E Micro-Components
+//  Covers: Tags, Scrollbar, Tooltips, Popovers, Quill Editor,
+//          Print Preview, Role Editor, Version Timeline,
+//          Misc small reusable primitives
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+//  1. TAGS / PILLS / CHIPS
+// ══════════════════════════════════════════════════════════════
+.tag-pill,
+.tags-input .tag,
+[class*="tag-pill"] {
+    background: var(--m3e-secondary-container) !important;
+    color: var(--m3e-on-secondary-container) !important;
+    border: none !important;
+    border-radius: var(--m3e-shape-sm) !important;
+    padding: 4px 12px !important;
+    font-size: var(--m3e-label-medium) !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition:
+        background var(--m3e-dur-150) var(--m3e-easing-standard),
+        transform var(--m3e-dur-100) var(--m3e-spring, ease) !important;
+
+    &:hover {
+        background: var(--m3e-primary-container) !important;
+        color: var(--m3e-on-primary-container) !important;
+    }
+
+    .close,
+    .tag-close,
+    .remove-tag {
+        font-size: 14px !important;
+        color: inherit !important;
+        opacity: 0.7 !important;
+        cursor: pointer !important;
+        border-radius: 50% !important;
+        width: 18px !important;
+        height: 18px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: opacity var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            opacity: 1 !important;
+            background: rgba(0, 0, 0, 0.1) !important;
+        }
+    }
+}
+
+.tags-input {
+    background: var(--m3e-surface-container-high) !important;
+    border: 1.5px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-md) !important;
+    padding: 6px 10px !important;
+    min-height: 36px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+
+    &:focus-within {
+        border-color: var(--m3e-primary) !important;
+        border-width: 2px !important;
+    }
+
+    input {
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-body-small) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  2. SCROLLBAR — Thin M3E style
+// ══════════════════════════════════════════════════════════════
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-pill) !important;
+    min-height: 40px !important;
+    transition: background 0.2s ease !important;
+
+    &:hover {
+        background: var(--m3e-outline) !important;
+    }
+
+    &:active {
+        background: var(--m3e-primary) !important;
+    }
+}
+
+// Firefox
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--m3e-outline-variant) transparent !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  3. TOOLTIPS
+// ══════════════════════════════════════════════════════════════
+.tooltip {
+    z-index: 10000 !important;
+
+    .tooltip-inner {
+        background: var(--m3e-on-surface) !important;
+        color: var(--m3e-surface) !important;
+        border-radius: var(--m3e-shape-sm) !important;
+        padding: 6px 12px !important;
+        font-size: var(--m3e-body-small) !important;
+        font-weight: 500 !important;
+        max-width: 240px !important;
+        box-shadow: var(--m3e-shadow-2) !important;
+    }
+
+    .tooltip-arrow,
+    .arrow {
+        &::before {
+            border-top-color: var(--m3e-on-surface) !important;
+            border-bottom-color: var(--m3e-on-surface) !important;
+        }
+    }
+}
+
+// Frappe's custom tooltip
+.tooltip-content {
+    background: var(--m3e-on-surface) !important;
+    color: var(--m3e-surface) !important;
+    border-radius: var(--m3e-shape-sm) !important;
+    padding: 4px 8px !important;
+    font-size: var(--m3e-body-small) !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  4. POPOVERS
+// ══════════════════════════════════════════════════════════════
+.popover {
+    background: var(--m3e-surface-container) !important;
+    border: none !important;
+    border-radius: var(--m3e-shape-xl) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+
+    .popover-header {
+        background: transparent !important;
+        border-bottom: 1px solid var(--m3e-outline-variant) !important;
+        color: var(--m3e-on-surface) !important;
+        font-size: var(--m3e-title-small) !important;
+        font-weight: 600 !important;
+        padding: 16px 16px 12px !important;
+    }
+
+    .popover-body {
+        color: var(--m3e-on-surface) !important;
+        padding: 12px 16px !important;
+        font-size: var(--m3e-body-medium) !important;
+    }
+
+    .popover-arrow,
+    .arrow {
+
+        &::before,
+        &::after {
+            border-color: transparent !important;
+        }
+    }
+}
+
+// Liked-by popover
+.liked-by-popover {
+    background: var(--m3e-surface-container) !important;
+    border-radius: var(--m3e-shape-lg) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+    border: none !important;
+
+    .popover-body {
+        padding: 0 !important;
+
+        .liked-by-popover-summary {
+            border-bottom: 1px solid var(--m3e-outline-variant) !important;
+            color: var(--m3e-on-surface-variant) !important;
+            font-size: var(--m3e-body-small) !important;
+            padding: 8px 12px !important;
+        }
+
+        ul li {
+            border-radius: var(--m3e-shape-sm) !important;
+            padding: 6px 8px !important;
+
+            &:hover {
+                background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+            }
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  5. QUILL RICH TEXT EDITOR
+// ══════════════════════════════════════════════════════════════
+.ql-toolbar.ql-snow {
+    background: var(--m3e-surface-container-low) !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-radius: var(--m3e-shape-lg) var(--m3e-shape-lg) 0 0 !important;
+    padding: 8px !important;
+
+    .ql-formats {
+        margin-right: 8px !important;
+    }
+
+    button {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: var(--m3e-shape-sm) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: background var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+
+        &.ql-active {
+            background: var(--m3e-primary-container) !important;
+            color: var(--m3e-on-primary-container) !important;
+        }
+
+        svg {
+            stroke: var(--m3e-on-surface-variant) !important;
+        }
+    }
+
+    .ql-picker {
+        color: var(--m3e-on-surface-variant) !important;
+
+        .ql-picker-label {
+            border-color: var(--m3e-outline-variant) !important;
+            border-radius: var(--m3e-shape-sm) !important;
+            padding: 4px 8px !important;
+        }
+
+        .ql-picker-options {
+            background: var(--m3e-surface-container) !important;
+            border: none !important;
+            border-radius: var(--m3e-shape-lg) !important;
+            box-shadow: var(--m3e-shadow-3) !important;
+            padding: 4px !important;
+        }
+    }
+}
+
+.ql-container.ql-snow {
+    border: 1px solid var(--m3e-outline-variant) !important;
+    border-top: none !important;
+    border-radius: 0 0 var(--m3e-shape-lg) var(--m3e-shape-lg) !important;
+}
+
+.ql-editor {
+    background: var(--m3e-surface-container-high) !important;
+    color: var(--m3e-on-surface) !important;
+    font-size: var(--m3e-body-medium) !important;
+    padding: 12px 16px !important;
+    min-height: 120px !important;
+
+    &.ql-blank::before {
+        color: var(--m3e-on-surface-variant) !important;
+        font-style: normal !important;
+    }
+}
+
+// Quill tooltip (link editor)
+.ql-tooltip {
+    background: var(--m3e-surface-container) !important;
+    border: none !important;
+    border-radius: var(--m3e-shape-lg) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+    padding: 8px 12px !important;
+    color: var(--m3e-on-surface) !important;
+
+    input[type="text"] {
+        background: var(--m3e-surface-container-high) !important;
+        border: 1px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-sm) !important;
+        color: var(--m3e-on-surface) !important;
+        padding: 4px 8px !important;
+
+        &:focus {
+            border-color: var(--m3e-primary) !important;
+        }
+    }
+
+    a {
+        color: var(--m3e-primary) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  6. PRINT PREVIEW
+// ══════════════════════════════════════════════════════════════
+.print-preview,
+.print-format-builder {
+    background: var(--m3e-surface-container-low) !important;
+    padding: 24px !important;
+
+    .print-preview-wrapper {
+        background: var(--m3e-surface) !important;
+        border-radius: var(--m3e-shape-lg) !important;
+        box-shadow: var(--m3e-shadow-2) !important;
+        padding: 48px !important;
+        max-width: 800px !important;
+        margin: 0 auto !important;
+    }
+}
+
+.print-format {
+    background: var(--m3e-surface) !important;
+    color: var(--m3e-on-surface) !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  7. ROLE EDITOR
+// ══════════════════════════════════════════════════════════════
+.role-editor {
+    background: var(--m3e-surface) !important;
+
+    .perm-toggle,
+    .perm-check {
+
+        // Use M3E switch style for permission toggles
+        input[type="checkbox"] {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            width: 36px !important;
+            height: 20px !important;
+            background: var(--m3e-surface-container-highest) !important;
+            border: 2px solid var(--m3e-outline) !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            cursor: pointer !important;
+            position: relative !important;
+            transition:
+                background var(--m3e-dur-200) var(--m3e-easing-standard),
+                border-color var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+            &::after {
+                content: '' !important;
+                position: absolute !important;
+                top: 1px !important;
+                left: 1px !important;
+                width: 14px !important;
+                height: 14px !important;
+                background: var(--m3e-outline) !important;
+                border-radius: 50% !important;
+                transition:
+                    transform var(--m3e-dur-200) var(--m3e-spring, ease),
+                    background var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+            }
+
+            &:checked {
+                background: var(--m3e-primary) !important;
+                border-color: var(--m3e-primary) !important;
+
+                &::after {
+                    background: var(--m3e-on-primary) !important;
+                    transform: translateX(16px) !important;
+                }
+            }
+        }
+    }
+
+    .perm-level-row {
+        background: var(--m3e-surface-container-low) !important;
+        border: 1px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-lg) !important;
+        padding: 12px 16px !important;
+        margin-bottom: 8px !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  8. VERSION TIMELINE
+// ══════════════════════════════════════════════════════════════
+.version-timeline,
+.version-list {
+
+    .version-item,
+    .version-row {
+        border-bottom: 1px solid var(--m3e-outline-variant) !important;
+        padding: 12px 16px !important;
+        transition: background var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            background: var(--m3e-surface-container-low) !important;
+        }
+
+        .version-title {
+            color: var(--m3e-on-surface) !important;
+            font-weight: 500 !important;
+        }
+
+        .version-meta {
+            color: var(--m3e-on-surface-variant) !important;
+            font-size: var(--m3e-body-small) !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  9. M3E BUTTONS — Global override for all Frappe .btn
+// ══════════════════════════════════════════════════════════════
+.btn {
+    border-radius: var(--m3e-shape-pill) !important;
+    font-size: var(--m3e-label-large) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.03em !important;
+    padding: 8px 20px !important;
+    transition:
+        background var(--m3e-dur-150) var(--m3e-easing-standard),
+        border-color var(--m3e-dur-150) var(--m3e-easing-standard),
+        transform var(--m3e-dur-100) var(--m3e-spring, ease),
+        box-shadow var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+    border: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+
+    &:active {
+        transform: scale(0.97) !important;
+    }
+}
+
+// Primary button — M3E filled
+.btn-primary,
+.btn-primary-dark {
+    background: var(--m3e-primary) !important;
+    color: var(--m3e-on-primary) !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-2) !important;
+        background: var(--m3e-primary) !important;
+        filter: brightness(1.08) !important;
+    }
+
+    &:disabled {
+        background: var(--m3e-surface-container-high) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        opacity: 0.38 !important;
+    }
+}
+
+// Default button — M3E outlined
+.btn-default,
+.btn-secondary {
+    background: transparent !important;
+    color: var(--m3e-primary) !important;
+    border: 1px solid var(--m3e-outline) !important;
+
+    &:hover {
+        background: rgba(var(--m3e-primary-rgb), var(--m3e-state-hover)) !important;
+    }
+
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+// Danger button — M3E error
+.btn-danger {
+    background: var(--m3e-error) !important;
+    color: var(--m3e-on-error) !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-2) !important;
+        filter: brightness(1.08) !important;
+    }
+}
+
+// Success button
+.btn-success {
+    background: var(--m3e-success) !important;
+    color: #fff !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-2) !important;
+        filter: brightness(1.08) !important;
+    }
+}
+
+// Warning button
+.btn-warning {
+    background: var(--m3e-warning) !important;
+    color: #fff !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-2) !important;
+        filter: brightness(1.08) !important;
+    }
+}
+
+// Info button — M3E tonal
+.btn-info {
+    background: var(--m3e-primary-container) !important;
+    color: var(--m3e-on-primary-container) !important;
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-1) !important;
+    }
+}
+
+// XS / SM button sizes
+.btn-xs,
+.btn-sm {
+    padding: 4px 12px !important;
+    font-size: var(--m3e-label-medium) !important;
+    min-height: 28px !important;
+}
+
+// Icon-only buttons
+.btn-icon,
+.icon-btn {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: var(--m3e-shape-pill) !important;
+    background: transparent !important;
+    color: var(--m3e-on-surface-variant) !important;
+    border: none !important;
+
+    &:hover {
+        background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  10. M3E ALERTS
+// ══════════════════════════════════════════════════════════════
+.alert {
+    border-radius: var(--m3e-shape-lg) !important;
+    border: none !important;
+    padding: 14px 20px !important;
+    font-size: var(--m3e-body-medium) !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+}
+
+.alert-info {
+    background: var(--m3e-primary-container) !important;
+    color: var(--m3e-on-primary-container) !important;
+}
+
+.alert-success {
+    background: var(--m3e-success-container) !important;
+    color: #064e3b !important;
+}
+
+.alert-warning {
+    background: var(--m3e-warning-container) !important;
+    color: #78350f !important;
+}
+
+.alert-danger,
+.alert-error {
+    background: var(--m3e-error-container) !important;
+    color: var(--m3e-on-error-container) !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  11. TABLES (general Bootstrap tables)
+// ══════════════════════════════════════════════════════════════
+.table {
+    color: var(--m3e-on-surface) !important;
+
+    thead th {
+        background: var(--m3e-surface-container-low) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-medium) !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        border-bottom: 2px solid var(--m3e-outline-variant) !important;
+        padding: 12px 16px !important;
+    }
+
+    td {
+        border-bottom: 1px solid var(--m3e-outline-variant) !important;
+        border-top: none !important;
+        padding: 10px 16px !important;
+        font-size: var(--m3e-body-medium) !important;
+    }
+
+    tbody tr {
+        transition: background var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            background: var(--m3e-surface-container-low) !important;
+        }
+    }
+
+    &.table-bordered {
+        border: 1px solid var(--m3e-outline-variant) !important;
+
+        td,
+        th {
+            border-color: var(--m3e-outline-variant) !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  12. PAGINATION
+// ══════════════════════════════════════════════════════════════
+.pagination {
+    gap: 4px !important;
+
+    .page-item {
+        .page-link {
+            background: transparent !important;
+            border: none !important;
+            border-radius: var(--m3e-shape-pill) !important;
+            color: var(--m3e-on-surface) !important;
+            font-size: var(--m3e-label-large) !important;
+            min-width: 36px !important;
+            height: 36px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: background var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+            &:hover {
+                background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+            }
+        }
+
+        &.active .page-link {
+            background: var(--m3e-primary) !important;
+            color: var(--m3e-on-primary) !important;
+        }
+
+        &.disabled .page-link {
+            opacity: 0.38 !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  13. NAV PILLS / TAB NAV (outside forms, e.g. list sidebar)
+// ══════════════════════════════════════════════════════════════
+.nav-pills {
+    gap: 4px !important;
+
+    .nav-link {
+        border-radius: var(--m3e-shape-pill) !important;
+        color: var(--m3e-on-surface-variant) !important;
+        font-size: var(--m3e-label-large) !important;
+        font-weight: 500 !important;
+        padding: 8px 16px !important;
+        transition: background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+        &:hover {
+            background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+        }
+
+        &.active {
+            background: var(--m3e-secondary-container) !important;
+            color: var(--m3e-on-secondary-container) !important;
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  14. TEXT UTILITIES
+// ══════════════════════════════════════════════════════════════
+.text-muted {
+    color: var(--m3e-on-surface-variant) !important;
+}
+
+.text-primary {
+    color: var(--m3e-primary) !important;
+}
+
+.text-danger {
+    color: var(--m3e-error) !important;
+}
+
+.text-success {
+    color: var(--m3e-success) !important;
+}
+
+.text-warning {
+    color: var(--m3e-warning) !important;
+}
+
+a {
+    color: var(--m3e-primary) !important;
+    text-decoration: none !important;
+    transition: color var(--m3e-dur-100) var(--m3e-easing-standard) !important;
+
+    &:hover {
+        color: var(--m3e-on-primary-container) !important;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  15. PAGE CONTAINER / MAIN AREA
+// ══════════════════════════════════════════════════════════════
+.page-container {
+    background: var(--m3e-surface) !important;
+}
+
+.layout-main-section {
+    background: var(--m3e-surface) !important;
+}
+
+// Web form styles
+.web-form-container {
+    background: var(--m3e-surface) !important;
+
+    .form-section {
+        background: var(--m3e-surface-container-low) !important;
+        border-radius: var(--m3e-shape-xl) !important;
+        padding: 24px !important;
+        margin-bottom: 16px !important;
+        border: 1px solid var(--m3e-outline-variant) !important;
+    }
+}
