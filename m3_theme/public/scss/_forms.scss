@@ -145,11 +145,11 @@ textarea.form-control {
 .has-error .input-with-feedback,
 .frappe-control.has-error .form-control {
     border-color: var(--m3e-error) !important;
-    border-width: 2px !important;
-    background: var(--m3e-error-container) !important;
+    border-width: 1.5px !important;
 
     &:focus {
-        border-color: var(--m3e-error) !important;
+        border-width: 2px !important;
+        background: var(--m3e-error-container) !important;
     }
 }
 
@@ -210,6 +210,10 @@ select.form-control {
         -webkit-appearance: none !important;
         width: 44px !important;
         height: 24px !important;
+        min-width: 44px !important;
+        min-height: 24px !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
         background: var(--m3e-surface-container-highest) !important;
         border: 2px solid var(--m3e-outline) !important;
         border-radius: var(--m3e-shape-pill) !important;

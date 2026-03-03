@@ -542,6 +542,15 @@
     }
 }
 
+.modal.search-modal {
+    .modal-content {
+        background: var(--m3e-surface-container-high) !important;
+        border: none !important;
+        border-radius: var(--m3e-shape-xl) !important;
+        box-shadow: var(--m3e-shadow-4) !important;
+    }
+}
+
 // ══════════════════════════════════════════════════════════════
 //  11. DRIVER.JS (onboarding tours)
 // ══════════════════════════════════════════════════════════════

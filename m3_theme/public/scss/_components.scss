@@ -302,6 +302,28 @@ md-linear-progress {
 // IMPORTANT: Only target .list-row directly (not [class*="list-row"]) to avoid
 // double borders on .list-row-col, .list-row-head inner divs etc.
 
+input[type="checkbox"].list-row-checkbox {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: 2px !important;
+    background: var(--m3e-surface-container-high) !important;
+    border: 2px solid var(--m3e-outline) !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: all var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+    &:checked {
+        background: var(--m3e-primary) !important;
+        border-color: var(--m3e-primary) !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") !important;
+        background-size: 14px !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+    }
+}
+
 .frappe-list {
     background: transparent !important;
     padding: 0 !important;
