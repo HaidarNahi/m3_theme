@@ -84,6 +84,8 @@
         'icon-dashboard': 'dashboard', 'icon-reports': 'assessment', 'icon-report': 'analytics',
         'icon-history': 'history', 'icon-list-alt': 'list_alt', 'icon-list': 'list',
         'icon-kanban': 'view_kanban', 'icon-image-view': 'grid_view', 'icon-table': 'table_view',
+        // Frappe uses 'sheet' for the Report View icon in the list view switcher
+        'sheet': 'table_chart', 'icon-sheet': 'table_chart',
 
         // Items, Files & Folders
         'icon-folder': 'folder', 'icon-folder-normal': 'folder', 'icon-folder-open': 'folder_open',
