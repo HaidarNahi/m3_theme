@@ -412,6 +412,7 @@ input[type="checkbox"].list-row-checkbox {
 }
 
 // The .select-like wrapper — never style as a btn
+// margin-right adds breathing room between checkbox and the next column
 .list-row .select-like,
 .list-row-head .select-like {
     display: inline-flex !important;
@@ -419,11 +420,21 @@ input[type="checkbox"].list-row-checkbox {
     justify-content: center !important;
     width: 20px !important;
     height: 20px !important;
+    margin-right: 10px !important; // ← gap between checkbox and name column
     background: none !important;
     border: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
     box-shadow: none !important;
+}
+
+// Comment icon + counter spacing in list rows
+// DOM: .list-row-col .btn.btn-link > [icon] + .count
+.frappe-list .list-row .btn.btn-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important; // ← space between the comment icon and the number
+    padding: 0 4px !important;
 }
 
 // ── 7. FILTER BAR — M3E standard filter inputs ───────────────
@@ -466,8 +477,11 @@ input[type="checkbox"].list-row-checkbox {
         border: 1.5px solid var(--m3e-outline-variant) !important;
         border-radius: var(--m3e-shape-pill) !important;
         background: var(--m3e-surface-container-high) !important;
-        overflow: hidden !important;
+        // overflow:hidden is intentionally REMOVED — it clips the match-type dropdown
+        // Instead we clip the children directly using border-radius
+        overflow: visible !important;
         height: 36px !important;
+        position: relative !important;
         transition:
             border-color var(--m3e-dur-200) var(--m3e-easing-standard),
             box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
@@ -477,14 +491,15 @@ input[type="checkbox"].list-row-checkbox {
             border-width: 2px !important;
         }
 
-        // The text input inside
+        // The text input inside — clip left side of pill
         >input.form-control,
         >input.input-with-feedback {
             flex: 1 !important;
             height: 100% !important;
             min-height: unset !important;
             border: none !important;
-            border-radius: 0 !important;
+            // Left side gets pill radius, right side is flush with the ≈ button
+            border-radius: var(--m3e-shape-pill) 0 0 var(--m3e-shape-pill) !important;
             background: transparent !important;
             padding: 0 12px !important;
             font-size: var(--m3e-body-small) !important;
@@ -521,13 +536,42 @@ input[type="checkbox"].list-row-checkbox {
             background: transparent !important;
             border: none !important;
             border-left: 1px solid var(--m3e-outline-variant) !important;
-            border-radius: 0 !important;
+            // Right side gets pill radius to complete the pill shape
+            border-radius: 0 var(--m3e-shape-pill) var(--m3e-shape-pill) 0 !important;
             color: var(--m3e-on-surface-variant) !important;
             cursor: pointer !important;
             transform: none !important;
             box-shadow: none !important;
+            line-height: 1 !important;
             transition: background var(--m3e-dur-150) var(--m3e-easing-standard),
                 color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+            // Dropdown menu that appears on click — must float above sticky header
+            +.dropdown-menu,
+            ~.dropdown-menu {
+                z-index: 1050 !important;
+                position: absolute !important;
+                top: 100% !important;
+                right: 0 !important;
+                margin-top: 4px !important;
+            }
+
+            // center inner icon/span regardless of type
+            >svg,
+            >use,
+            >span,
+            >.m3-system-icon,
+            >.material-symbols-rounded {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 16px !important;
+                height: 16px !important;
+                font-size: 14px !important;
+                line-height: 1 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
 
             &:hover {
                 background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
@@ -543,6 +587,36 @@ input[type="checkbox"].list-row-checkbox {
             use {
                 width: 14px !important;
                 height: 14px !important;
+            }
+        }
+    }
+
+    // end .input-group
+
+    // The dropdown that the ≈ button opens — must clear the sticky list-row-head (z-index: 10)
+    .input-group-btn .dropdown-menu,
+    .dropdown-menu {
+        z-index: 1050 !important;
+        position: absolute !important;
+        top: calc(100% + 4px) !important;
+        right: 0 !important;
+        left: auto !important;
+        border-radius: var(--m3e-shape-xl) !important;
+        background: var(--m3e-surface-container) !important;
+        box-shadow: var(--m3e-shadow-3) !important;
+        border: 1px solid var(--m3e-outline-variant) !important;
+        padding: 6px !important;
+        min-width: 140px !important;
+
+        li>a {
+            font-size: var(--m3e-body-small) !important;
+            color: var(--m3e-on-surface) !important;
+            border-radius: var(--m3e-shape-sm) !important;
+            padding: 6px 12px !important;
+            display: block !important;
+
+            &:hover {
+                background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
             }
         }
     }
