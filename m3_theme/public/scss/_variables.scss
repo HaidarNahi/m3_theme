@@ -125,6 +125,24 @@
     --text-muted: var(--m3e-on-surface-variant);
     --text-light: var(--m3e-outline);
 
+    // Frappe v16 border-radius tokens → M3E shapes
+    --border-radius-tiny: var(--m3e-shape-xs);
+    --border-radius-sm: var(--m3e-shape-sm);
+    --border-radius: var(--m3e-shape-sm);
+    --border-radius-md: var(--m3e-shape-sm-md);
+    --border-radius-lg: var(--m3e-shape-lg);
+    --border-radius-xl: var(--m3e-shape-xl);
+    --border-radius-2xl: var(--m3e-shape-2xl);
+    --border-radius-full: var(--m3e-shape-pill);
+
+    // Frappe v16 shadow tokens → M3E shadows
+    --shadow-xs: var(--m3e-shadow-1);
+    --shadow-sm: var(--m3e-shadow-1);
+    --shadow-md: var(--m3e-shadow-2);
+    --shadow-lg: var(--m3e-shadow-3);
+    --shadow-xl: var(--m3e-shadow-4);
+    --shadow-2xl: var(--m3e-shadow-5);
+
     // Surface hierarchy
     --surface: var(--m3e-surface);
     --surface-container: var(--m3e-surface-container);
@@ -281,23 +299,49 @@ body {
     --m3-duration-medium: var(--m3e-dur-300);
     --m3-duration-long: var(--m3e-dur-500);
 
-    // ── M3E Expressive Shape Library ─────────────────────────
-    // M3E expands shape tokens with expressive rounding levels
+    // ── M3E Expressive Shape Library (35 shapes) ─────────────
+    // === SYMMETRIC SHAPES (17) ===
     --m3e-shape-none: 0px;
     --m3e-shape-xs: 4px;
+    --m3e-shape-xs-sm: 6px;
     --m3e-shape-sm: 8px;
+    --m3e-shape-sm-md: 10px;
     --m3e-shape-md: 12px;
+    --m3e-shape-md-lg: 14px;
     --m3e-shape-lg: 16px;
+    --m3e-shape-lg-xl: 20px;
     --m3e-shape-xl: 24px;
-    --m3e-shape-2xl: 28px; // Dialog
-    --m3e-shape-3xl: 36px; // Expressive cards
-    --m3e-shape-4xl: 48px; // Large containers
-    --m3e-shape-pill: 100px; // Full pill
-    --m3e-shape-circle: 9999px; // Circle
+    --m3e-shape-xl-2xl: 26px;
+    --m3e-shape-2xl: 28px;         // Dialog corners
+    --m3e-shape-2xl-3xl: 32px;
+    --m3e-shape-3xl: 36px;         // Expressive cards
+    --m3e-shape-4xl: 48px;         // Large containers
+    --m3e-shape-pill: 100px;       // Full pill
+    --m3e-shape-circle: 9999px;    // Perfect circle
 
-    // Asymmetric expressive shapes (top/bottom different radii)
-    --m3e-shape-scoop-top: 0px 0px 24px 24px; // Open at top
-    --m3e-shape-scoop-bottom: 24px 24px 0px 0px; // Open at bottom
+    // === ASYMMETRIC CORNER SHAPES (8) ===
+    // Each value: top-left top-right bottom-right bottom-left
+    --m3e-shape-start-top:    36px 36px 4px 4px;   // Wide top corners
+    --m3e-shape-end-top:      4px 36px 4px 4px;    // Wide top-right only
+    --m3e-shape-start-bottom: 4px 4px 4px 36px;    // Wide bottom-left only
+    --m3e-shape-end-bottom:   4px 4px 36px 4px;    // Wide bottom-right only
+    --m3e-shape-scoop-top:    36px 36px 12px 12px; // Scooped top
+    --m3e-shape-scoop-bottom: 12px 12px 36px 36px; // Scooped bottom
+    --m3e-shape-scoop-left:   36px 12px 12px 36px; // Scooped left (detail sidebar)
+    --m3e-shape-scoop-right:  12px 36px 36px 12px; // Scooped right
+
+    // === ORGANIC SHAPE REFERENCE TOKENS (10) ===
+    // These are used as class triggers — full definitions live in _shapes.scss
+    --m3e-shape-blob-sm-control:   60% 40% 30% 70%;  // border-radius control
+    --m3e-shape-blob-md-control:   40% 60% 70% 30%;
+    --m3e-shape-blob-lg-control:   50% 50% 40% 60%;
+    --m3e-shape-petal-control:     100% 0%;           // petal: opposing corners
+    --m3e-shape-bridge-control:    100px 100px 0 0;   // bridge/arch top
+    --m3e-shape-pill-asymm-control: 100px 100px 12px 12px; // pill with flat bottom
+    --m3e-shape-arch-v:            50% 50% 0 0;       // vertical half-arch
+    --m3e-shape-arch-h-control:    100% 100% 0 0;     // horizontal full-arch
+    --m3e-shape-leaf-control:      100% 0 100% 0;     // diagonal leaf
+    --m3e-shape-comma-control:     100% 0% 0% 100%;   // comma turn
 
     // Legacy shape aliases
     --m3-shape-none: var(--m3e-shape-none);
@@ -320,10 +364,58 @@ body {
     --m3-state-pressed: var(--m3e-state-pressed);
     --m3-state-dragged: var(--m3e-state-dragged);
 
-    // ── M3E Elevation (color-based) ───────────────────────────
+    // ── M3E Elevation — Color-Based (surface tint levels) ────
     --m3e-elevation-0: var(--m3e-surface);
     --m3e-elevation-1: var(--m3e-surface-container-low);
     --m3e-elevation-2: var(--m3e-surface-container);
     --m3e-elevation-3: var(--m3e-surface-container-high);
     --m3e-elevation-4: var(--m3e-surface-container-highest);
+
+    // ── M3E Elevation — Shadow-Based (drop shadows) ───────────
+    // Used for FABs, dialogs, and elevated surfaces
+    --m3e-shadow-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+    --m3e-shadow-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+    --m3e-shadow-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+    --m3e-shadow-4: 0 6px 10px 4px rgba(0,0,0,0.15), 0 2px 3px rgba(0,0,0,0.3);
+    --m3e-shadow-5: 0 8px 12px 6px rgba(0,0,0,0.15), 0 4px 4px rgba(0,0,0,0.3);
+
+    // ── M3E Font Family Token ─────────────────────────────────
+    --m3e-font-family: 'Readex Pro', sans-serif;
+
+    // ── M3E Typography Line Heights ───────────────────────────
+    --m3e-display-large-line: 64px;
+    --m3e-display-medium-line: 52px;
+    --m3e-display-small-line: 44px;
+    --m3e-headline-large-line: 40px;
+    --m3e-headline-medium-line: 36px;
+    --m3e-headline-small-line: 32px;
+    --m3e-title-large-line: 28px;
+    --m3e-title-medium-line: 24px;
+    --m3e-title-small-line: 20px;
+    --m3e-body-large-line: 24px;
+    --m3e-body-medium-line: 20px;
+    --m3e-body-small-line: 16px;
+    --m3e-label-large-line: 20px;
+    --m3e-label-medium-line: 16px;
+    --m3e-label-small-line: 16px;
+
+    // ── M3E Duration Aliases (long names for readability) ────
+    --m3e-duration-50:  var(--m3e-dur-50);
+    --m3e-duration-100: var(--m3e-dur-100);
+    --m3e-duration-150: var(--m3e-dur-150);
+    --m3e-duration-200: var(--m3e-dur-200);
+    --m3e-duration-250: var(--m3e-dur-250);
+    --m3e-duration-300: var(--m3e-dur-300);
+    --m3e-duration-400: var(--m3e-dur-400);
+    --m3e-duration-500: var(--m3e-dur-500);
+    --m3e-duration-700: var(--m3e-dur-700);
+
+    // ── M3E Spring Aliases ────────────────────────────────────
+    --m3e-spring-standard: var(--m3e-spring);
+
+    // ── Frappe v16 Component Layout Tokens ───────────────────
+    --m3e-detail-sidebar-width: 280px;   // .layout-side-section width
+    --m3e-app-drawer-width: 320px;       // .app-switcher-dialog width
+    --m3e-frozen-col-bg: var(--m3e-surface-container);      // sticky columns
+    --m3e-frozen-col-border: var(--m3e-outline-variant);    // sticky col divider
 }

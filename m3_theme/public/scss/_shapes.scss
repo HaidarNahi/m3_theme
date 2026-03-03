@@ -1,0 +1,174 @@
+// ═══════════════════════════════════════════════════════════════
+//  _shapes.scss — M3E Expressive Shape Library (35 shapes)
+//  CSS classes for all M3E shape variants + morph keyframes
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ── SYMMETRIC SHAPE CLASSES (17) ─────────────────────────────
+.m3e-shape-none    { border-radius: var(--m3e-shape-none) !important; }
+.m3e-shape-xs      { border-radius: var(--m3e-shape-xs) !important; }
+.m3e-shape-xs-sm   { border-radius: var(--m3e-shape-xs-sm) !important; }
+.m3e-shape-sm      { border-radius: var(--m3e-shape-sm) !important; }
+.m3e-shape-sm-md   { border-radius: var(--m3e-shape-sm-md) !important; }
+.m3e-shape-md      { border-radius: var(--m3e-shape-md) !important; }
+.m3e-shape-md-lg   { border-radius: var(--m3e-shape-md-lg) !important; }
+.m3e-shape-lg      { border-radius: var(--m3e-shape-lg) !important; }
+.m3e-shape-lg-xl   { border-radius: var(--m3e-shape-lg-xl) !important; }
+.m3e-shape-xl      { border-radius: var(--m3e-shape-xl) !important; }
+.m3e-shape-xl-2xl  { border-radius: var(--m3e-shape-xl-2xl) !important; }
+.m3e-shape-2xl     { border-radius: var(--m3e-shape-2xl) !important; }
+.m3e-shape-2xl-3xl { border-radius: var(--m3e-shape-2xl-3xl) !important; }
+.m3e-shape-3xl     { border-radius: var(--m3e-shape-3xl) !important; }
+.m3e-shape-4xl     { border-radius: var(--m3e-shape-4xl) !important; }
+.m3e-shape-pill    { border-radius: var(--m3e-shape-pill) !important; }
+.m3e-shape-circle  { border-radius: var(--m3e-shape-circle) !important; }
+
+// ── ASYMMETRIC CORNER SHAPE CLASSES (8) ──────────────────────
+// Each value: top-left top-right bottom-right bottom-left
+.m3e-shape-start-top    { border-radius: var(--m3e-shape-start-top) !important; }
+.m3e-shape-end-top      { border-radius: var(--m3e-shape-end-top) !important; }
+.m3e-shape-start-bottom { border-radius: var(--m3e-shape-start-bottom) !important; }
+.m3e-shape-end-bottom   { border-radius: var(--m3e-shape-end-bottom) !important; }
+.m3e-shape-scoop-top    { border-radius: var(--m3e-shape-scoop-top) !important; }
+.m3e-shape-scoop-bottom { border-radius: var(--m3e-shape-scoop-bottom) !important; }
+.m3e-shape-scoop-left   { border-radius: var(--m3e-shape-scoop-left) !important; }
+.m3e-shape-scoop-right  { border-radius: var(--m3e-shape-scoop-right) !important; }
+
+// ── ORGANIC EXPRESSIVE SHAPE CLASSES (10) ────────────────────
+// Blob shapes — organic, amoeba-like curves using border-radius percentages
+.m3e-shape-blob-sm {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40% !important;
+    overflow: hidden;
+}
+
+.m3e-shape-blob-md {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50% !important;
+    overflow: hidden;
+}
+
+.m3e-shape-blob-lg {
+    border-radius: 50% 50% 40% 60% / 30% 60% 40% 70% !important;
+    overflow: hidden;
+}
+
+// Wave shape — sinusoidal edges using SVG clip-path
+.m3e-shape-wave-sm {
+    clip-path: path("M 0,12 C 16,4 34,4 50,12 C 66,20 84,20 100,12 L 100,88 C 84,96 66,96 50,88 C 34,80 16,80 0,88 Z");
+    overflow: hidden;
+}
+
+.m3e-shape-wave-md {
+    clip-path: path("M 0,20 C 20,4 40,4 60,14 C 80,24 90,8 100,18 L 100,82 C 90,92 80,76 60,86 C 40,96 20,96 0,80 Z");
+    overflow: hidden;
+}
+
+// Petal — all four corners convex-outward, opposing corners match
+.m3e-shape-petal {
+    border-radius: 100% 0% 100% 0% / 100% 0% 100% 0% !important;
+    overflow: hidden;
+}
+
+// Diamond — a rotated square
+.m3e-shape-diamond {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    overflow: hidden;
+}
+
+// Leaf — diagonal rounding
+.m3e-shape-leaf {
+    border-radius: 100% 0 100% 0 !important;
+    overflow: hidden;
+}
+
+// Pill with asymmetric bottom — pill top, small bottom radius
+.m3e-shape-pill-asymm {
+    border-radius: 100px 100px 12px 12px !important;
+    overflow: hidden;
+}
+
+// Bridge / Arch — rounded top, flat bottom
+.m3e-shape-bridge {
+    border-radius: 100px 100px 0 0 !important;
+    overflow: hidden;
+}
+
+// ── MORPH KEYFRAMES ──────────────────────────────────────────
+// Shape morph animations used by JS (.m3e-morph-* utility classes)
+
+// Expand from small to large corner radius
+@keyframes m3e-morph-sm-to-lg {
+    from { border-radius: var(--m3e-shape-sm); }
+    to   { border-radius: var(--m3e-shape-lg); }
+}
+
+// Collapse from large to small
+@keyframes m3e-morph-lg-to-sm {
+    from { border-radius: var(--m3e-shape-lg); }
+    to   { border-radius: var(--m3e-shape-sm); }
+}
+
+// Pill open → card (pill morphs into card shape on dropdown open)
+@keyframes m3e-morph-pill-to-card {
+    from { border-radius: var(--m3e-shape-pill); }
+    to   { border-radius: var(--m3e-shape-2xl); }
+}
+
+// Card close → pill
+@keyframes m3e-morph-card-to-pill {
+    from { border-radius: var(--m3e-shape-2xl); }
+    to   { border-radius: var(--m3e-shape-pill); }
+}
+
+// Morph to blob — card becomes organic on hover/focus
+@keyframes m3e-morph-to-blob {
+    from { border-radius: var(--m3e-shape-2xl); }
+    50%  { border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%; }
+    to   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+// Side panel entry — from 0 width to full, with scoop shape
+@keyframes m3e-morph-side-open {
+    from { width: 0; border-radius: 0; opacity: 0; transform: translateX(20px); }
+    to   {
+        width: var(--m3e-detail-sidebar-width);
+        border-radius: var(--m3e-shape-scoop-left);
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// App drawer entry — scale + opacity
+@keyframes m3e-morph-drawer-enter {
+    from { transform: scale(0.85) translateY(-8px); opacity: 0; }
+    60%  { transform: scale(1.02) translateY(0); opacity: 1; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+// FAB expand from icon to extended (icon → icon + label)
+@keyframes m3e-morph-fab-extend {
+    from { width: 56px; border-radius: var(--m3e-shape-lg); }
+    to   { width: auto; min-width: 120px; border-radius: var(--m3e-shape-pill); }
+}
+
+// ── MORPH UTILITY CLASSES ─────────────────────────────────────
+// Applied via JS on component state transitions
+
+.m3e-morph-enter {
+    animation: m3e-morph-sm-to-lg var(--m3e-duration-300) var(--m3e-easing-enter) forwards;
+}
+
+.m3e-morph-exit {
+    animation: m3e-morph-lg-to-sm var(--m3e-duration-200) var(--m3e-easing-exit) forwards;
+}
+
+.m3e-morph-side-open {
+    animation: m3e-morph-side-open var(--m3e-duration-300) var(--m3e-spring-standard) forwards;
+}
+
+.m3e-morph-drawer-enter {
+    animation: m3e-morph-drawer-enter var(--m3e-duration-300) var(--m3e-spring-overshoot) forwards;
+}
+
+.m3e-morph-fab-extend {
+    animation: m3e-morph-fab-extend var(--m3e-duration-300) var(--m3e-spring-standard) forwards;
+}

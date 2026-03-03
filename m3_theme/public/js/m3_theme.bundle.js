@@ -977,6 +977,12 @@
     function applyM3EEnhancements() {
         if (!isDeskPage()) return;
 
+        // 0. Inject waveform into freeze-container if present
+        injectFreezeWaveform();
+
+        // 0b. Upgrade button groups with M3E bump-and-react
+        upgradeButtonGroups();
+
         // 1. Convert Form/List standard Dropdowns to M3E Split Buttons
         document.querySelectorAll('.page-actions .btn-group, .standard-actions .btn-group').forEach(function (group) {
             if (group.classList.contains('m3e-split-btn-group') || group.dataset.m3eProcessed) return;
@@ -1035,10 +1041,135 @@
         }
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    //  M3E BUTTON GROUPS — "bump and react" wrapping
+    // ═══════════════════════════════════════════════════════════════
+
+    function upgradeButtonGroups() {
+        document.querySelectorAll('.page-actions:not([data-m3e-group]), .standard-actions:not([data-m3e-group])').forEach(function (container) {
+            var buttons = Array.from(container.querySelectorAll('.btn:not(.m3e-fab):not([data-m3e-skip])'));
+
+            if (buttons.length >= 2) {
+                // Check if already wrapped
+                if (container.querySelector('.m3e-btn-group')) {
+                    container.dataset.m3eGroup = 'true';
+                    return;
+                }
+                var group = document.createElement('div');
+                group.className = 'm3e-btn-group';
+                // Insert before the first button
+                buttons[0].parentNode.insertBefore(group, buttons[0]);
+                buttons.forEach(function (btn) { group.appendChild(btn); });
+            }
+            container.dataset.m3eGroup = 'true';
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  M3E WAVEFORM — AJAX + freeze-container replacement
+    // ═══════════════════════════════════════════════════════════════
+
+    function createWaveformEl(barCount, modifierClass) {
+        var container = document.createElement('div');
+        container.className = 'm3e-waveform-container' + (modifierClass ? ' ' + modifierClass : '');
+        for (var i = 0; i < (barCount || 5); i++) {
+            var bar = document.createElement('div');
+            bar.className = 'm3e-wave-bar';
+            container.appendChild(bar);
+        }
+        return container;
+    }
+
+    function injectFreezeWaveform() {
+        // Frappe uses id="freeze" with .freeze-message inside (not .freeze-container)
+        var freezeMsg = document.querySelector('#freeze .freeze-message');
+        if (!freezeMsg || freezeMsg.querySelector('.m3e-waveform-container')) return;
+        var wf = createWaveformEl(7, 'm3e-waveform-container--large');
+        freezeMsg.appendChild(wf);
+    }
+
+    var _waveformSetup = false;
+    function setupWaveformHooks() {
+        if (_waveformSetup) return;
+        _waveformSetup = true;
+
+        // Global AJAX waveform (top-of-page indicator)
+        if (typeof $ !== 'undefined') {
+            $(document).on('ajaxStart', function () {
+                if (document.getElementById('m3e-ajax-waveform')) return;
+                var wf = createWaveformEl(5, 'm3e-waveform-container--compact');
+                wf.id = 'm3e-ajax-waveform';
+                wf.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;';
+                document.body.appendChild(wf);
+            });
+
+            $(document).on('ajaxStop', function () {
+                var wf = document.getElementById('m3e-ajax-waveform');
+                if (wf) wf.remove();
+            });
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  M3E RIGHT SIDEBAR MORPH OBSERVER
+    //  Watches Frappe v16's .layout-side-section for open/close
+    // ═══════════════════════════════════════════════════════════════
+
+    var _rightSidebarObserver = null;
+
+    function observeRightSidebar() {
+        // Only set up once
+        if (_rightSidebarObserver) return;
+
+        function handleSidebarMutation(mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.type !== 'attributes') return;
+                var el = mutation.target;
+                if (!el.classList.contains('layout-side-section')) return;
+                if (el.querySelector('.desk-sidebar')) return; // Skip our custom sidebar
+
+                var isHidden = el.classList.contains('hidden') || el.classList.contains('hide');
+                if (!isHidden) {
+                    el.classList.remove('m3e-morph-exit');
+                    el.classList.add('m3e-morph-side-open');
+                    el.addEventListener('animationend', function () {
+                        el.classList.remove('m3e-morph-side-open');
+                    }, { once: true });
+                } else {
+                    el.classList.remove('m3e-morph-side-open');
+                }
+            });
+        }
+
+        _rightSidebarObserver = new MutationObserver(handleSidebarMutation);
+
+        // Observe existing sidebar elements
+        document.querySelectorAll('.layout-side-section').forEach(function (el) {
+            _rightSidebarObserver.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+
+        // Also watch the DOM for dynamically added .layout-side-section elements
+        var bodyObs = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (node) {
+                    if (node.nodeType !== 1) return;
+                    var sideSections = node.classList && node.classList.contains('layout-side-section')
+                        ? [node]
+                        : Array.from(node.querySelectorAll ? node.querySelectorAll('.layout-side-section') : []);
+                    sideSections.forEach(function (el) {
+                        _rightSidebarObserver.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+                    });
+                });
+            });
+        });
+        bodyObs.observe(document.body, { childList: true, subtree: true });
+    }
+
     // ── Startup ──
     function go() {
         applyBootThemeSettings(); // Re-run just in case it loaded late
-        setTimeout(function () { init(); startObs(); }, 300);
+        setupWaveformHooks();     // Set up AJAX waveform hooks once
+        setTimeout(function () { init(); startObs(); observeRightSidebar(); }, 300);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
     else go();

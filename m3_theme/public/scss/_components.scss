@@ -298,19 +298,20 @@ md-linear-progress {
 }
 
 // ── 6. LIST VIEW — M3E TABLE ──────────────────────────────────
-// v16 classes: .list-row, .list-row-head
-.frappe-list,
-[class*="frappe-list"] {
+// v16 DOM: .frappe-list > .list-row-head + .list-row, nested in .level divs
+// IMPORTANT: Only target .list-row directly (not [class*="list-row"]) to avoid
+// double borders on .list-row-col, .list-row-head inner divs etc.
+
+.frappe-list {
     background: transparent !important;
     padding: 0 !important;
 }
 
-// List header
-.list-row-head,
-[class*="list-row-head"] {
+// ── List header row (sticky, uppercase labels) ──
+.list-row-head {
     background: var(--m3e-surface-container-low) !important;
-    border-bottom: 1px solid var(--m3e-outline-variant) !important;
-    padding: 8px 16px !important;
+    border-bottom: 2px solid var(--m3e-outline-variant) !important;
+    padding: 0 16px !important;
     font-size: var(--m3e-label-medium) !important;
     font-weight: 600 !important;
     letter-spacing: 0.06em !important;
@@ -319,23 +320,29 @@ md-linear-progress {
     position: sticky !important;
     top: 0 !important;
     z-index: 10 !important;
+
+    // Kill any inner-col borders inside the header
+    .list-row-col {
+        border: none !important;
+    }
 }
 
-// List rows — M3E spring hover
-.list-row,
-[class*="list-row"] {
+// ── Data rows: only target the outer .list-row, not nested children ──
+.frappe-list .list-row {
     background: var(--m3e-surface) !important;
     border-bottom: 1px solid var(--m3e-outline-variant) !important;
-    padding: 10px 16px !important;
+    border-top: none !important;
+    padding: 0 16px !important;
+    min-height: 52px !important;
     cursor: pointer !important;
     font-size: var(--m3e-body-medium) !important;
     color: var(--m3e-on-surface) !important;
     position: relative !important;
     transition:
-        background var(--m3e-dur-150) var(--m3e-easing-standard),
-        transform var(--m3e-dur-100) var(--m3e-spring) !important;
+        background var(--m3e-dur-150) var(--m3e-easing-standard) !important;
 
-    &::before {
+    // State layer overlay
+    &::after {
         content: '';
         position: absolute;
         inset: 0;
@@ -347,33 +354,202 @@ md-linear-progress {
 
     &:hover {
         background: var(--m3e-surface-container-low) !important;
-
-        &::before {
-            opacity: var(--m3e-state-hover);
-        }
     }
 
-    &:active {
-        &::before {
-            opacity: var(--m3e-state-pressed);
-        }
+    &:hover::after {
+        opacity: var(--m3e-state-hover);
     }
 
-    &.list-row-checkbox-area .checkbox {
-        accent-color: var(--m3e-primary) !important;
+    &:active::after {
+        opacity: var(--m3e-state-pressed);
     }
 
-    // Bold the name/title cell
-    >.level-item:nth-child(2) {
+    // The inner col divs MUST NOT have their own borders
+    .list-row-col,
+    .level-left,
+    .level-right,
+    .level-item {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    // Title cell slight emphasis
+    .list-subject .level-item:last-child {
         font-weight: 500 !important;
         color: var(--m3e-on-surface) !important;
     }
+
+    // Tag indicators
+    .indicator-pill {
+        z-index: 1;
+    }
 }
 
-// ── 7. FILTER BAR (v16 top filter chips) ─────────────────────
-// v16 has filter pills above the list
+// ── M3E CHECKBOXES (list iterations) ──
+// Frappe wraps in .select-like > input[type=checkbox]
+// Reset any pill/btn radius that bleeds in from global .btn rule
+.list-row-checkbox,
+.list-header-checkbox,
+.list-check-all,
+input[type="checkbox"].list-row-checkbox {
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    border-radius: 4px !important;
+    border: 1.5px solid var(--m3e-outline) !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    accent-color: var(--m3e-primary) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    flex-shrink: 0 !important;
+}
+
+// The .select-like wrapper — never style as a btn
+.list-row .select-like,
+.list-row-head .select-like {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+// ── 7. FILTER BAR — M3E standard filter inputs ───────────────
+// Structure: .standard-filter-section contains .input-group:
+//   .input-group > input.form-control + .input-group-btn > button.match-type-dropdown-btn
+// Goal: make them look like a single unified M3E pill input with appended icon btn
+
+.filter-section {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 8px 16px !important;
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+}
+
+.standard-filter-section {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 4px 16px 8px !important;
+    background: var(--m3e-surface) !important;
+    border-bottom: 1px solid var(--m3e-outline-variant) !important;
+
+    // The outer group that wraps a single filter column
+    .col-md-2,
+    .col {
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+        min-width: 140px !important;
+        max-width: 200px !important;
+    }
+
+    // Unified pill: input + button fused as one unit
+    .input-group {
+        display: flex !important;
+        align-items: stretch !important;
+        border: 1.5px solid var(--m3e-outline-variant) !important;
+        border-radius: var(--m3e-shape-pill) !important;
+        background: var(--m3e-surface-container-high) !important;
+        overflow: hidden !important;
+        height: 36px !important;
+        transition:
+            border-color var(--m3e-dur-200) var(--m3e-easing-standard),
+            box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
+
+        &:focus-within {
+            border-color: var(--m3e-primary) !important;
+            border-width: 2px !important;
+        }
+
+        // The text input inside
+        >input.form-control,
+        >input.input-with-feedback {
+            flex: 1 !important;
+            height: 100% !important;
+            min-height: unset !important;
+            border: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            padding: 0 12px !important;
+            font-size: var(--m3e-body-small) !important;
+            color: var(--m3e-on-surface) !important;
+            box-shadow: none !important;
+            outline: none !important;
+
+            &::placeholder {
+                color: var(--m3e-on-surface-variant) !important;
+                font-size: var(--m3e-body-small) !important;
+            }
+        }
+
+        // The ≈ button wrapper
+        .input-group-btn {
+            display: flex !important;
+            align-items: stretch !important;
+            border: none !important;
+            background: transparent !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        // The ≈ button itself
+        .match-type-dropdown-btn,
+        .input-group-btn>.btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 100% !important;
+            width: 32px !important;
+            min-width: 32px !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            border-left: 1px solid var(--m3e-outline-variant) !important;
+            border-radius: 0 !important;
+            color: var(--m3e-on-surface-variant) !important;
+            cursor: pointer !important;
+            transform: none !important;
+            box-shadow: none !important;
+            transition: background var(--m3e-dur-150) var(--m3e-easing-standard),
+                color var(--m3e-dur-150) var(--m3e-easing-standard) !important;
+
+            &:hover {
+                background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
+                color: var(--m3e-primary) !important;
+                transform: none !important;
+            }
+
+            &:active {
+                transform: none !important;
+            }
+
+            svg,
+            use {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+    }
+}
+
+// ── Legacy filter-area / tag-filters ──
 .filter-area,
-[class*="filter-area"],
 .list-header-bar {
     display: flex !important;
     align-items: center !important;
@@ -658,32 +834,9 @@ md-linear-progress {
 }
 
 // ── 14. FREEZE OVERLAY ────────────────────────────────────────
-// Frappe's loading overlay — M3E scrim + circular progress
-.freeze-screen,
-[class*="freeze"],
-.loading-screen {
-    background: var(--m3e-scrim) !important;
-    backdrop-filter: blur(4px) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-direction: column !important;
-    gap: 16px !important;
-}
-
-.freeze-message,
-[class*="freeze-message"] {
-    background: var(--m3e-surface-container) !important;
-    border-radius: var(--m3e-shape-3xl) !important;
-    padding: 24px 32px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 16px !important;
-    font-size: var(--m3e-body-medium) !important;
-    color: var(--m3e-on-surface) !important;
-    animation: m3e-dialog-enter var(--m3e-dur-400) var(--m3e-spring) !important;
-}
+// Frappe's loading overlay — only target #freeze (the actual overlay ID).
+// Never use [class*="freeze"] — it matches Frappe's native .freeze div
+// which has style="display:none" and must NOT be forced to display:flex.
 
 @keyframes m3e-dialog-enter {
     from {
@@ -730,5 +883,158 @@ md-linear-progress {
         &:hover {
             background: rgba(var(--m3e-on-surface-rgb), var(--m3e-state-hover)) !important;
         }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  16. M3E STATE LAYERS — Universal hover/focus/press overlay
+//  Applies to all interactive elements via ::before pseudo-element
+// ═══════════════════════════════════════════════════════════════
+
+// State layers applied only to simple, non-DataTable interactive elements.
+// .list-row is intentionally excluded — it already has its own ::before
+// in section 6 above, and DataTable cell children cannot safely have
+// > * { z-index: 1 } applied to them.
+.btn:not(.m3e-fab):not(.m3e-split-btn__primary):not(.m3e-split-btn__dropdown),
+.desk-sidebar-item,
+.frappe-card,
+.list-sidebar-item,
+.sidebar-action,
+.workspace-shortcut-item {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity var(--m3e-dur-100) var(--m3e-easing-standard);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    &:hover::before {
+        opacity: var(--m3e-state-hover);
+    }
+
+    &:focus-visible::before {
+        opacity: var(--m3e-state-focus);
+    }
+
+    &:active::before {
+        opacity: var(--m3e-state-pressed);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  17. M3E FREEZE / LOADING OVERLAY OVERRIDE
+//  Frappe uses #freeze (ID) with .freeze-message-container inside.
+//  We style the container as an M3E surface overlay and ensure
+//  any waveform injected by JS is visible.
+// ═══════════════════════════════════════════════════════════════
+
+// Frappe's loading overlay: <div id="freeze" class="modal-backdrop fade">
+#freeze {
+    background-color: transparent !important;
+
+    .freeze-message-container {
+        background: color-mix(in srgb, var(--m3e-surface) 90%, transparent) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        color: var(--m3e-on-surface) !important;
+    }
+
+    .freeze-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+
+        // Hide any legacy spinner icons (but NOT generic svg — too broad)
+        .icon-container,
+        .freeze-icon,
+        md-circular-progress,
+        .m3-circular-progress-container {
+            display: none !important;
+        }
+    }
+
+    // Show M3E waveform if injected by JS
+    .m3e-waveform-container {
+        display: flex !important;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  18. M3E TOOLTIP UPGRADE
+// ═══════════════════════════════════════════════════════════════
+
+.tooltip .tooltip-inner,
+.tippy-box {
+    background: var(--m3e-surface-container-highest) !important;
+    color: var(--m3e-on-surface) !important;
+    border-radius: var(--m3e-shape-xs-sm) !important;
+    font-size: var(--m3e-label-small) !important;
+    font-weight: var(--m3e-label-small-weight) !important;
+    letter-spacing: var(--m3e-label-small-tracking) !important;
+    box-shadow: var(--m3e-shadow-2) !important;
+    padding: 6px 10px !important;
+    max-width: 240px;
+}
+
+.tooltip.bs-tooltip-top .arrow::before {
+    border-top-color: var(--m3e-surface-container-highest) !important;
+}
+
+.tooltip.bs-tooltip-bottom .arrow::before {
+    border-bottom-color: var(--m3e-surface-container-highest) !important;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  19. M3E SNACKBAR / NOTIFICATION OVERRIDE
+// ═══════════════════════════════════════════════════════════════
+
+.frappe-toast,
+.alert.alert-success,
+.alert.alert-danger,
+.alert.alert-warning {
+    border-radius: var(--m3e-shape-xs-sm) !important;
+    box-shadow: var(--m3e-shadow-3) !important;
+    border: none !important;
+    font-size: var(--m3e-body-medium) !important;
+    animation: m3e-snackbar-enter var(--m3e-duration-300) var(--m3e-spring-standard) !important;
+}
+
+.alert.alert-success {
+    background: var(--m3e-success-container) !important;
+    color: var(--m3e-on-surface) !important;
+}
+
+.alert.alert-danger {
+    background: var(--m3e-error-container) !important;
+    color: var(--m3e-on-error-container) !important;
+}
+
+.alert.alert-warning {
+    background: var(--m3e-warning-container) !important;
+    color: var(--m3e-on-surface) !important;
+}
+
+@keyframes m3e-snackbar-enter {
+    from {
+        transform: translateY(100%) scale(0.9);
+        opacity: 0;
+    }
+
+    60% {
+        transform: translateY(-4px) scale(1.01);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 }

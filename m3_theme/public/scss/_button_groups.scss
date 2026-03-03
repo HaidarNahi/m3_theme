@@ -1,0 +1,256 @@
+// ═══════════════════════════════════════════════════════════════
+//  _button_groups.scss — M3E Shape-Shifting Button Groups
+//  Implements "bump and react" interaction physics
+//  Includes Split Button (connected primary + dropdown pair)
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ── M3E BUTTON GROUP ─────────────────────────────────────────
+// Wraps adjacent buttons; shapes react to each other on hover
+
+.m3e-btn-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+
+    // Each button in the group
+    .btn {
+        position: relative;
+        border-radius: var(--m3e-shape-sm);
+        transition:
+            border-radius var(--m3e-duration-150) var(--m3e-spring-standard),
+            transform var(--m3e-duration-100) var(--m3e-spring-overshoot),
+            box-shadow var(--m3e-duration-100) var(--m3e-easing-standard),
+            background var(--m3e-duration-100) var(--m3e-easing-standard);
+        // Prevent overlap from cutting off transitions
+        overflow: visible;
+        z-index: 0;
+
+        // ── "BUMP AND REACT" sibling interaction ────────────
+        // Hovered button expands its outer corners
+        &:hover {
+            border-radius: var(--m3e-shape-xl);
+            transform: scaleX(1.04);
+            z-index: 2;
+
+            // Right-adjacent button deforms left side away
+            & + .btn {
+                border-radius:
+                    var(--m3e-shape-sm-md)        // top-left
+                    var(--m3e-shape-lg)            // top-right
+                    var(--m3e-shape-lg)            // bottom-right
+                    var(--m3e-shape-sm-md) !important; // bottom-left
+                transform: translateX(3px);
+            }
+        }
+
+        // Left-adjacent button deforms right side away
+        &:has(+ .btn:hover) {
+            border-radius:
+                var(--m3e-shape-lg)     // top-left
+                var(--m3e-shape-sm-md)  // top-right
+                var(--m3e-shape-sm-md)  // bottom-right
+                var(--m3e-shape-lg) !important;    // bottom-left
+            transform: translateX(-3px);
+        }
+    }
+
+    // ── FIRST & LAST ROUNDING ─────────────────────────────────
+    .btn:first-child {
+        border-radius:
+            var(--m3e-shape-pill)   // top-left
+            var(--m3e-shape-sm)     // top-right
+            var(--m3e-shape-sm)     // bottom-right
+            var(--m3e-shape-pill);  // bottom-left
+
+        &:hover {
+            border-radius:
+                var(--m3e-shape-pill)
+                var(--m3e-shape-xl)
+                var(--m3e-shape-xl)
+                var(--m3e-shape-pill);
+        }
+    }
+
+    .btn:last-child {
+        border-radius:
+            var(--m3e-shape-sm)     // top-left
+            var(--m3e-shape-pill)   // top-right
+            var(--m3e-shape-pill)   // bottom-right
+            var(--m3e-shape-sm);    // bottom-left
+
+        &:hover {
+            border-radius:
+                var(--m3e-shape-xl)
+                var(--m3e-shape-pill)
+                var(--m3e-shape-pill)
+                var(--m3e-shape-xl);
+        }
+    }
+
+    // Single button (no group effect needed)
+    .btn:only-child {
+        border-radius: var(--m3e-shape-pill);
+        &:hover { border-radius: var(--m3e-shape-xl); }
+    }
+}
+
+// ── M3E SPLIT BUTTON ─────────────────────────────────────────
+// Primary action + dropdown trigger as a connected pair
+// The gap between them is 1px; shapes morph individually
+
+.m3e-split-btn {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 1px;
+
+    // Primary action portion
+    .m3e-split-btn__primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 20px 0 16px;
+        min-height: 40px;
+        border-radius:
+            var(--m3e-shape-pill)  // top-left
+            var(--m3e-shape-sm)    // top-right
+            var(--m3e-shape-sm)    // bottom-right
+            var(--m3e-shape-pill); // bottom-left
+        background: var(--m3e-primary);
+        color: var(--m3e-on-primary);
+        border: none;
+        cursor: pointer;
+        font-size: var(--m3e-label-large);
+        font-weight: var(--m3e-label-large-weight);
+        font-family: var(--m3e-font-family);
+        white-space: nowrap;
+        transition:
+            border-radius var(--m3e-duration-200) var(--m3e-spring-standard),
+            background var(--m3e-duration-100) var(--m3e-easing-standard),
+            transform var(--m3e-duration-100) var(--m3e-spring-overshoot);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--m3e-on-primary);
+            opacity: 0;
+            transition: opacity var(--m3e-duration-100) var(--m3e-easing-standard);
+            pointer-events: none;
+        }
+
+        &:hover {
+            border-radius:
+                var(--m3e-shape-pill)
+                var(--m3e-shape-lg)
+                var(--m3e-shape-lg)
+                var(--m3e-shape-pill);
+            &::before { opacity: var(--m3e-state-hover); }
+        }
+
+        &:active {
+            transform: scale(0.98);
+            &::before { opacity: var(--m3e-state-pressed); }
+        }
+    }
+
+    // Dropdown trigger portion
+    .m3e-split-btn__dropdown {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        min-height: 40px;
+        padding: 0;
+        border-radius:
+            var(--m3e-shape-sm)    // top-left
+            var(--m3e-shape-pill)  // top-right
+            var(--m3e-shape-pill)  // bottom-right
+            var(--m3e-shape-sm);   // bottom-left
+        background: var(--m3e-primary);
+        color: var(--m3e-on-primary);
+        border: none;
+        cursor: pointer;
+        transition:
+            border-radius var(--m3e-duration-200) var(--m3e-spring-standard),
+            background var(--m3e-duration-100) var(--m3e-easing-standard);
+        position: relative;
+        overflow: hidden;
+
+        // Divider line between primary and dropdown
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: color-mix(in srgb, var(--m3e-on-primary) 30%, transparent);
+            pointer-events: none;
+        }
+
+        // State layer overlay (separate ::after since ::before is used for divider)
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--m3e-on-primary);
+            opacity: 0;
+            transition: opacity var(--m3e-duration-100) var(--m3e-easing-standard);
+            pointer-events: none;
+        }
+
+        .material-symbols-rounded {
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        &:hover::after { opacity: var(--m3e-state-hover); }
+        &:active::after { opacity: var(--m3e-state-pressed); }
+
+        // When dropdown is open — morph to pill (remove asymmetry)
+        &[aria-expanded="true"] {
+            border-radius: var(--m3e-shape-pill);
+        }
+    }
+
+    // Outlined variant
+    &.m3e-split-btn--outlined {
+        .m3e-split-btn__primary,
+        .m3e-split-btn__dropdown {
+            background: transparent;
+            color: var(--m3e-primary);
+            box-shadow: inset 0 0 0 1px var(--m3e-outline);
+
+            &::before,
+            &::after { background: var(--m3e-primary); }
+        }
+    }
+
+    // Tonal variant
+    &.m3e-split-btn--tonal {
+        .m3e-split-btn__primary,
+        .m3e-split-btn__dropdown {
+            background: var(--m3e-secondary-container);
+            color: var(--m3e-on-secondary-container);
+
+            &::before,
+            &::after { background: var(--m3e-on-secondary-container); }
+        }
+    }
+}
+
+// ── BUTTON GROUP APPLIED TO FRAPPE's NATIVE .page-actions ────
+// Auto-applied via JS (upgradeButtonGroups function)
+// The .m3e-btn-group wrapper is injected by m3_theme.bundle.js
+
+.page-actions .m3e-btn-group .btn {
+    // Slightly smaller than default for toolbar density
+    height: 36px;
+    padding: 0 16px;
+    font-size: var(--m3e-label-large);
+    font-weight: var(--m3e-label-large-weight);
+}

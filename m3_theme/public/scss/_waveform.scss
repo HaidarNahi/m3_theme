@@ -1,0 +1,202 @@
+// ═══════════════════════════════════════════════════════════════
+//  _waveform.scss — M3E Waveform Progress Indicators
+//  Replaces Frappe's default loading spinners
+//  Supports: full-page overlay, AJAX bar, inline, and indeterminate
+//  Depends on: _variables.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ── WAVEFORM ANIMATION KEYFRAME ───────────────────────────────
+@keyframes m3e-wave {
+    0%, 100% {
+        height: 8px;
+        opacity: 0.4;
+    }
+    50% {
+        height: 32px;
+        opacity: 1;
+    }
+}
+
+// Staggered variant with scale (more expressive)
+@keyframes m3e-wave-expressive {
+    0%, 100% {
+        transform: scaleY(0.25);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+// Horizontal wave (for linear progress bars)
+@keyframes m3e-wave-linear {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+// ── FULL-PAGE WAVEFORM OVERLAY ────────────────────────────────
+// Injected by JS on AJAX start — replaces freeze-overlay spinner
+
+.m3e-waveform-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: color-mix(in srgb, var(--m3e-surface) 80%, transparent);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    pointer-events: none;
+    animation: m3e-fade-in var(--m3e-duration-150) var(--m3e-easing-enter);
+
+    &.m3e-waveform-overlay--hidden {
+        animation: m3e-fade-out var(--m3e-duration-200) var(--m3e-easing-exit) forwards;
+    }
+}
+
+@keyframes m3e-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes m3e-fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+// ── WAVEFORM BAR CONTAINER ────────────────────────────────────
+
+.m3e-waveform-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 48px;
+    padding: 0 4px;
+}
+
+// ── INDIVIDUAL WAVE BAR ───────────────────────────────────────
+
+.m3e-wave-bar {
+    width: 4px;           // "thickness" token
+    height: 32px;         // Max height
+    border-radius: 100px; // Pill-shaped bar
+    transform-origin: center bottom;
+    animation: m3e-wave-expressive var(--m3e-duration-700) var(--m3e-easing-standard) infinite;
+
+    // Tri-color cycling across primary, secondary, tertiary
+    &:nth-child(1) { background: var(--m3e-primary);   animation-delay: 0s; }
+    &:nth-child(2) { background: var(--m3e-secondary); animation-delay: 0.1s; }
+    &:nth-child(3) { background: var(--m3e-tertiary);  animation-delay: 0.2s; }
+    &:nth-child(4) { background: var(--m3e-primary);   animation-delay: 0.3s; }
+    &:nth-child(5) { background: var(--m3e-secondary); animation-delay: 0.4s; }
+    // Extra bars for wider contexts
+    &:nth-child(6) { background: var(--m3e-tertiary);  animation-delay: 0.5s; }
+    &:nth-child(7) { background: var(--m3e-primary);   animation-delay: 0.6s; }
+}
+
+// ── SIZE VARIANTS ─────────────────────────────────────────────
+
+// Compact — for inline usage (AJAX bar, form fields)
+.m3e-waveform-container--compact {
+    height: 24px;
+    gap: 3px;
+
+    .m3e-wave-bar {
+        width: 3px;
+        height: 20px;
+    }
+}
+
+// Large — for full splash screens
+.m3e-waveform-container--large {
+    height: 64px;
+    gap: 7px;
+
+    .m3e-wave-bar {
+        width: 6px;
+        height: 48px;
+    }
+}
+
+// ── INLINE WAVEFORM ───────────────────────────────────────────
+// Used inside buttons or small components while loading
+
+.m3e-waveform-inline {
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
+    height: 20px;
+
+    .m3e-wave-bar {
+        width: 3px;
+        height: 16px;
+        border-radius: 100px;
+        animation: m3e-wave-expressive var(--m3e-duration-500) var(--m3e-easing-standard) infinite;
+
+        &:nth-child(1) { background: currentColor; animation-delay: 0s; }
+        &:nth-child(2) { background: currentColor; animation-delay: 0.1s; }
+        &:nth-child(3) { background: currentColor; animation-delay: 0.2s; }
+    }
+}
+
+// ── LINEAR PROGRESS BAR (M3E Indeterminate) ───────────────────
+// Replaces standard Bootstrap/Frappe progress bars
+
+.m3e-progress-linear {
+    width: 100%;
+    height: 4px;
+    background: var(--m3e-surface-container-high);
+    border-radius: var(--m3e-shape-pill);
+    overflow: hidden;
+    position: relative;
+
+    .m3e-progress-linear__track {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 40%;
+        border-radius: var(--m3e-shape-pill);
+        background: var(--m3e-primary);
+        animation: m3e-wave-linear var(--m3e-duration-700) var(--m3e-easing-standard) infinite;
+    }
+
+    // Determinate — set width via inline style (e.g. width: 75%)
+    &.m3e-progress-linear--determinate .m3e-progress-linear__track {
+        animation: none;
+        transition: width var(--m3e-duration-300) var(--m3e-easing-standard);
+    }
+
+    // Thick variant — for more visible status
+    &.m3e-progress-linear--thick {
+        height: 8px;
+    }
+}
+
+// ── FRAPPE OVERRIDE — Freeze Screen ───────────────────────────
+// Frappe's loading overlay uses #freeze, not .freeze-container.
+// Waveform is injected by JS into #freeze .freeze-message.
+
+#freeze .freeze-message .m3e-waveform-container {
+    display: flex !important;
+}
+
+// ── FRAPPE AJAX TOP BAR ───────────────────────────────────────
+// Replace the thin blue Frappe AJAX progress bar with M3E linear
+
+#nprogress,
+.request-progress-bar {
+    .bar {
+        height: 3px;
+        background: var(--m3e-primary);
+    }
+
+    .peg {
+        box-shadow: 0 0 10px var(--m3e-primary), 0 0 5px var(--m3e-primary);
+    }
+}

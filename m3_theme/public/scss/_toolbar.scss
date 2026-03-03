@@ -1,0 +1,271 @@
+// ═══════════════════════════════════════════════════════════════
+//  _toolbar.scss — M3E Flexible Toolbars + Floating Action Buttons
+//  Replaces Frappe's .page-head with M3E Toolbar + FAB patterns
+//  Depends on: _variables.scss, _shapes.scss
+// ═══════════════════════════════════════════════════════════════
+
+// ── M3E TOOLBAR ───────────────────────────────────────────────
+// Wraps Frappe's .page-head with M3E toolbar styling
+
+.m3e-toolbar,
+.page-head {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    padding: 8px 16px;
+    background: var(--m3e-surface);
+    border-bottom: 1px solid var(--m3e-outline-variant);
+    gap: 8px;
+    transition:
+        min-height var(--m3e-duration-200) var(--m3e-easing-standard),
+        padding var(--m3e-duration-200) var(--m3e-easing-standard);
+
+    // Toolbar title area
+    .m3e-toolbar__title,
+    .title-text,
+    .page-title {
+        font-size: var(--m3e-title-large);
+        font-weight: var(--m3e-title-large-weight);
+        line-height: var(--m3e-title-large-line);
+        letter-spacing: var(--m3e-title-large-tracking);
+        color: var(--m3e-on-surface);
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    // Actions cluster
+    .m3e-toolbar__actions,
+    .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    // Navigation back icon
+    .m3e-toolbar__nav-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--m3e-shape-pill);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        color: var(--m3e-on-surface);
+        transition: background var(--m3e-duration-100) var(--m3e-easing-standard);
+
+        &:hover {
+            background: color-mix(in srgb, var(--m3e-on-surface) calc(var(--m3e-state-hover) * 100%), transparent);
+        }
+    }
+}
+
+// ── TOOLBAR SIZE VARIANTS ─────────────────────────────────────
+
+// Collapsed — compact, used when content scrolls up
+.m3e-toolbar--collapsed {
+    min-height: 48px;
+    padding: 4px 12px;
+
+    .m3e-toolbar__title,
+    .title-text { font-size: var(--m3e-title-medium); }
+}
+
+// Medium — two-row toolbar (title + subtitle row)
+.m3e-toolbar--medium {
+    min-height: 112px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 16px 20px;
+
+    .m3e-toolbar__title,
+    .title-text {
+        font-size: var(--m3e-headline-small);
+        font-weight: var(--m3e-headline-small-weight);
+        line-height: var(--m3e-headline-small-line);
+        margin-top: auto;
+    }
+}
+
+// Large — spacious hero toolbar
+.m3e-toolbar--large {
+    min-height: 152px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 16px 28px;
+
+    .m3e-toolbar__title,
+    .title-text {
+        font-size: var(--m3e-headline-medium);
+        font-weight: var(--m3e-headline-medium-weight);
+        line-height: var(--m3e-headline-medium-line);
+        margin-top: auto;
+    }
+}
+
+// ── M3E FLOATING ACTION BUTTONS (FABs) ───────────────────────
+
+.m3e-fab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+
+    // Default: Standard FAB (56×56, shape-lg)
+    width: 56px;
+    height: 56px;
+    border-radius: var(--m3e-shape-lg);
+    background: var(--m3e-primary-container);
+    color: var(--m3e-on-primary-container);
+    box-shadow: var(--m3e-shadow-3);
+    font-size: 24px;
+
+    // Spring physics transitions
+    transition:
+        box-shadow var(--m3e-duration-200) var(--m3e-easing-standard),
+        transform var(--m3e-duration-200) var(--m3e-spring-standard),
+        border-radius var(--m3e-duration-300) var(--m3e-spring-standard),
+        background var(--m3e-duration-100) var(--m3e-easing-standard);
+
+    // Icon inside FAB
+    .material-symbols-rounded,
+    .m3e-fab__icon {
+        font-size: 24px;
+        pointer-events: none;
+    }
+
+    // State layer overlay
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--m3e-on-primary-container);
+        opacity: 0;
+        border-radius: inherit;
+        transition: opacity var(--m3e-duration-100) var(--m3e-easing-standard);
+        pointer-events: none;
+    }
+
+    &:hover {
+        box-shadow: var(--m3e-shadow-4);
+        transform: scale(1.03) translateY(-1px);
+        &::before { opacity: var(--m3e-state-hover); }
+    }
+
+    &:focus-visible {
+        box-shadow: var(--m3e-shadow-3);
+        &::before { opacity: var(--m3e-state-focus); }
+    }
+
+    &:active {
+        box-shadow: var(--m3e-shadow-1);
+        transform: scale(0.97) translateY(0);
+        &::before { opacity: var(--m3e-state-pressed); }
+    }
+}
+
+// Small FAB (40×40)
+.m3e-fab--small {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: var(--m3e-shape-md);
+
+    .material-symbols-rounded,
+    .m3e-fab__icon { font-size: 18px; }
+}
+
+// Large FAB (96×96)
+.m3e-fab--large {
+    width: 96px;
+    height: 96px;
+    font-size: 36px;
+    border-radius: var(--m3e-shape-xl);
+
+    .material-symbols-rounded,
+    .m3e-fab__icon { font-size: 36px; }
+}
+
+// Extended FAB (pill shape with icon + label)
+.m3e-fab--extended {
+    width: auto;
+    min-width: 80px;
+    padding: 0 20px 0 16px;
+    gap: 8px;
+    border-radius: var(--m3e-shape-pill);
+    font-size: var(--m3e-label-large);
+    font-weight: var(--m3e-label-large-weight);
+    letter-spacing: var(--m3e-label-large-tracking);
+    font-family: var(--m3e-font-family);
+    white-space: nowrap;
+
+    .material-symbols-rounded,
+    .m3e-fab__icon { font-size: 20px; }
+
+    // Extended FAB collapses to standard when scrolling
+    &.m3e-fab--collapsed {
+        width: 56px;
+        padding: 0;
+        border-radius: var(--m3e-shape-lg);
+        transition:
+            width var(--m3e-duration-200) var(--m3e-easing-exit),
+            padding var(--m3e-duration-200) var(--m3e-easing-exit),
+            border-radius var(--m3e-duration-200) var(--m3e-easing-exit);
+
+        .m3e-fab__label { display: none; }
+    }
+}
+
+// Secondary FAB color variant
+.m3e-fab--secondary {
+    background: var(--m3e-secondary-container);
+    color: var(--m3e-on-secondary-container);
+
+    &::before { background: var(--m3e-on-secondary-container); }
+}
+
+// Tertiary FAB color variant
+.m3e-fab--tertiary {
+    background: var(--m3e-tertiary-container);
+    color: var(--m3e-on-tertiary-container);
+
+    &::before { background: var(--m3e-on-tertiary-container); }
+}
+
+// Surface FAB color variant (neutral)
+.m3e-fab--surface {
+    background: var(--m3e-surface-container-high);
+    color: var(--m3e-primary);
+    box-shadow: var(--m3e-shadow-3);
+
+    &::before { background: var(--m3e-primary); }
+}
+
+// ── FAB CONTAINER (positioning) ───────────────────────────────
+
+// Fixed FAB in bottom-right corner of page
+.m3e-fab-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+// FAB embedded in page-head toolbar area
+.page-actions .m3e-fab--extended {
+    height: 40px;
+    min-height: 40px;
+    font-size: var(--m3e-label-large);
+}

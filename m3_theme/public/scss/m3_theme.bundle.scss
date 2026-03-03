@@ -1,17 +1,41 @@
-// This is the file Frappe compiles
+// ═══════════════════════════════════════════════════════════════
+//  m3_theme.bundle.scss — M3E Theme Bundle Entry Point
+//  Import order respects token dependencies:
+//    1. variables (tokens first — all others depend on this)
+//    2. shapes   (depends on variables)
+//    3. toolbar  (depends on shapes + variables)
+//    4. button_groups (depends on shapes + variables)
+//    5. waveform (depends on variables)
+//    6. components (depends on all above)
+//    7. layout   (depends on all above — imports variables internally)
+//    8. login    (standalone — only needs variables)
+// ═══════════════════════════════════════════════════════════════
+
 @import "variables";
-@import "layout";
+@import "shapes";
+@import "toolbar";
+@import "button_groups";
+@import "waveform";
 @import "components";
+@import "layout";
 @import "login";
 
-// Global smoothing tweaks
+// ── Global Baseline ───────────────────────────────────────────
 body {
     font-family: $font-family !important;
     background-color: var(--bg-color) !important;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-// Clean up standard Frappe borders
+// ── Page Head Border Cleanup ──────────────────────────────────
 .page-head {
     border-bottom: 1px solid var(--border-color) !important;
 }
+
+// ── Restore M3E shadows that were stripped by layout reset ────
+// (layout.scss has a blanket box-shadow: none reset for legacy Frappe
+//  shadows; these intentional M3E shadows are re-declared here)
+.m3e-fab        { box-shadow: var(--m3e-shadow-3) !important; }
+.m3e-fab:hover  { box-shadow: var(--m3e-shadow-4) !important; }
+.m3e-fab:active { box-shadow: var(--m3e-shadow-1) !important; }

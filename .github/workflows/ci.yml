@@ -1,0 +1,148 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── LINT ──────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python linters
+        run: pip install ruff pyupgrade
+
+      - name: Ruff — lint (errors, warnings, imports, pyupgrade rules)
+        run: ruff check . --select E,W,F,UP,I --ignore E501
+
+      - name: Ruff — format check
+        run: ruff format --check .
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install Node dev-dependencies
+        run: |
+          npm install --save-dev \
+            eslint \
+            prettier \
+            prettier-plugin-scss \
+            @prettier/plugin-xml || true
+          # Create minimal ESLint config if none exists
+          if [ ! -f .eslintrc.json ] && [ ! -f .eslintrc.js ] && [ ! -f eslint.config.js ]; then
+            echo '{"env":{"browser":true,"es2020":true,"jquery":true},"parserOptions":{"ecmaVersion":2020},"rules":{"no-undef":"warn","no-unused-vars":"warn"}}' > .eslintrc.json
+          fi
+          # Create minimal Prettier config if none exists
+          if [ ! -f .prettierrc ] && [ ! -f .prettierrc.json ]; then
+            echo '{"singleQuote":true,"tabWidth":4,"semi":true,"trailingComma":"all","printWidth":120}' > .prettierrc.json
+          fi
+
+      - name: ESLint — JavaScript
+        run: npx eslint "m3_theme/public/js/**/*.js" --max-warnings 50
+
+      - name: Prettier — SCSS format check
+        run: npx prettier --check "m3_theme/public/scss/**/*.scss"
+
+  # ── TEST ──────────────────────────────────────────────────────
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: lint
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: frappe_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install frappe-bench
+        run: pip install frappe-bench
+
+      - name: Initialize bench with Frappe v16
+        run: |
+          bench init \
+            --frappe-branch version-16 \
+            --skip-assets \
+            --python $(which python3) \
+            frappe-bench
+        env:
+          CI: true
+
+      - name: Create test site
+        working-directory: frappe-bench
+        run: |
+          bench new-site test.localhost \
+            --db-root-password root \
+            --admin-password admin \
+            --no-mariadb-socket
+        env:
+          CI: true
+
+      - name: Install m3_theme app
+        working-directory: frappe-bench
+        run: |
+          bench get-app m3_theme file://${{ github.workspace }}
+          bench --site test.localhost install-app m3_theme
+        env:
+          CI: true
+
+      - name: Run m3_theme tests
+        working-directory: frappe-bench
+        run: bench --site test.localhost run-tests --app m3_theme --coverage
+        env:
+          CI: true
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: frappe-bench/apps/m3_theme/coverage.xml
+          retention-days: 7
