@@ -485,7 +485,8 @@ body.m3-desk.sidebar-collapsed .navbar {
 }
 
 // SEARCH BAR — Locked Center
-.navbar .search-bar {
+.navbar .search-bar,
+.navbar .desktop-navbar-modal-search {
     width: 360px !important;
     max-width: 360px !important;
     min-width: 360px !important;
@@ -522,7 +523,9 @@ body.m3-desk.sidebar-collapsed .navbar {
     }
 
     #navbar-search,
-    input.form-control {
+    input.form-control,
+    .search-placeholder,
+    .text-muted {
         height: 48px !important;
         min-height: 48px !important;
         font-size: var(--m3e-body-medium) !important;
@@ -771,7 +774,9 @@ body.m3-desk.sidebar-collapsed .navbar {
 .desk-icon,
 [class*="desk-icon"],
 [class*="app-link"],
-[class*="module-link"] {
+[class*="module-link"],
+.desktop-icon,
+[class*="desktop-icon"] {
     border-radius: var(--m3e-shape-3xl) !important;
     transition: transform var(--m3e-dur-200) var(--m3e-spring), box-shadow var(--m3e-dur-200) var(--m3e-easing-standard) !important;
 
