@@ -514,8 +514,8 @@ input[type="checkbox"].list-row-checkbox {
         }
 
         // The text input inside — clip left side of pill
-        >input.form-control,
-        >input.input-with-feedback {
+        >input.form-control.form-control,
+        >input.input-with-feedback.input-with-feedback {
             flex: 1 !important;
             height: 100% !important;
             min-height: unset !important;

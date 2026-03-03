@@ -12,6 +12,26 @@
     background: var(--m3e-surface) !important;
 }
 
+// Frappe DataTable uses CSS variables natively!
+.datatable {
+    --dt-border-color: var(--m3e-outline-variant) !important;
+    --dt-cell-bg: var(--m3e-surface) !important;
+    --dt-header-cell-bg: var(--m3e-surface-container-low) !important;
+    --dt-text-color: var(--m3e-on-surface) !important;
+    --dt-header-text-color: var(--m3e-on-surface-variant) !important;
+    --dt-row-hover-bg: var(--m3e-surface-container-low) !important;
+    --dt-selection-highlight-color: var(--m3e-primary-container) !important;
+    --dt-light-bg: var(--m3e-surface-container) !important;
+    --dt-light-yellow: var(--m3e-secondary-container) !important;
+    --dt-orange: var(--m3e-primary) !important;
+    --dt-light-red: var(--m3e-error-container) !important;
+    --dt-primary-color: var(--m3e-primary) !important;
+
+    border-radius: var(--m3e-shape-lg) !important;
+    overflow: hidden !important;
+    border: 1px solid var(--m3e-outline-variant) !important;
+}
+
 .dt-header {
     background: var(--m3e-surface-container-low) !important;
     border-bottom: 2px solid var(--m3e-outline-variant) !important;
@@ -72,11 +92,7 @@
     background: var(--m3e-surface) !important;
 }
 
-.report-view .datatable {
-    border-radius: var(--m3e-shape-lg) !important;
-    overflow: hidden !important;
-    border: 1px solid var(--m3e-outline-variant) !important;
-}
+
 
 // ══════════════════════════════════════════════════════════════
 //  2. KANBAN VIEW

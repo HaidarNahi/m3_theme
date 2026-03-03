@@ -287,9 +287,42 @@ body.m3-desk {
         }
     }
 
+    // Force hidden elements inside body-sidebar-bottom to actually disappear
+    .body-sidebar-bottom {
+
+        .hidden,
+        [hidden],
+        .d-none {
+            display: none !important;
+        }
+
+        p:empty,
+        p:has(> .hidden),
+        p:has(> .d-none) {
+            display: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+
+
+
+
     .sidebar-item-container {
         margin: 4px 0 12px 0 !important;
         padding-bottom: 4px !important;
+
+        // Strip padding/margin and hide if child is natively hidden
+        &.d-none,
+        &.hidden,
+        &[hidden],
+        &:empty,
+        &:has(> .d-none),
+        &:has(> .hidden),
+        &:has(> [hidden]) {
+            display: none !important;
+        }
     }
 
     .desk-sidebar-item {
