@@ -146,8 +146,15 @@ body.m3-desk.sidebar-collapsed .page-container {
     }
 }
 
+.layout-main.row,
+.layout-main-section-wrapper,
+.page-body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
 .layout-main-section {
-    margin-top: 24px !important;
+    margin-top: 0 !important;
     padding: 16px 24px !important;
 }
 
